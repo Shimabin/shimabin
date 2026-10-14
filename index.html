@@ -1620,6 +1620,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 
 /* 信号灯は夜の場面なので、昼テーマでも元の濃い色のまま */
 .morse-key{background:radial-gradient(circle at 35% 30%,#1d3d4d,#16303e);}
+
+.credit{margin:10px 0 0;text-align:center;font:400 10.5px var(--font-body);letter-spacing:.04em;color:var(--ink-dim);opacity:.7;pointer-events:none;}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5608,7 +5610,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       '<div class="tt-list">'+rows+'</div>'+
       badgesGridHtml()+
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>' : '')+
-      '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>';
+      '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
+      '<p class="credit">© 2026 Shimabin</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -5634,6 +5637,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
         '<p class="title-sub">荷物と人を島へ届けよう</p>'+
         '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '<button type="button" class="tut-skip" data-action="tut-skip">チュートリアルをスキップ</button>'+
+        '<p class="credit">© 2026 Shimabin</p>'+
       '</div>';
   }
   function tutStart(){
