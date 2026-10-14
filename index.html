@@ -3438,12 +3438,31 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 
   var audioCtx = null;
   function ensureAudioCtx(){
+    // iPhone/Safari は、アプリを切り替えたり電話・通知が入ったりすると音の機能が止まる
+    // (suspended / interrupted / closed)。そのたびに再開 or 作り直して、音が消えたままにしない。
+    if(audioCtx && audioCtx.state==='closed') audioCtx = null;
     if(!audioCtx && (window.AudioContext||window.webkitAudioContext)){
       audioCtx = new (window.AudioContext||window.webkitAudioContext)();
     }
-    if(audioCtx && audioCtx.state==='suspended') audioCtx.resume();
+    if(audioCtx && audioCtx.state!=='running'){
+      try{ var rp = audioCtx.resume(); if(rp && rp.catch) rp.catch(function(){}); }catch(e){}
+    }
     return audioCtx;
   }
+  // 画面に戻ってきた時・触った時に音の機能を目覚めさせる（無音を1コマ鳴らすのが iOS では確実）
+  function unlockAudio(){
+    try{
+      var c = ensureAudioCtx();
+      if(!c) return;
+      var b = c.createBuffer(1,1,22050), sr = c.createBufferSource();
+      sr.buffer = b; sr.connect(c.destination); sr.start(0);
+    }catch(e){}
+  }
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) unlockAudio(); });
+  window.addEventListener('pageshow', unlockAudio);
+  window.addEventListener('focus', unlockAudio);
+  document.addEventListener('touchend', function(){ if(audioCtx && audioCtx.state!=='running') unlockAudio(); }, true);
+  document.addEventListener('click', function(){ if(audioCtx && audioCtx.state!=='running') unlockAudio(); }, true);
   function playHornSound(){
     try{
       var ctx = ensureAudioCtx();
