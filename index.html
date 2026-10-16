@@ -1622,6 +1622,41 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 .morse-key{background:radial-gradient(circle at 35% 30%,#1d3d4d,#16303e);}
 
 .credit{margin:10px 0 0;text-align:center;font:400 10.5px var(--font-body);letter-spacing:.04em;color:var(--ink-dim);opacity:.7;pointer-events:none;}
+#saleUI{position:fixed;inset:0;z-index:65;background:#9fd0e8;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto;-webkit-overflow-scrolling:touch;}
+.sale-card{margin:auto;}
+#saleUI[data-action]{cursor:pointer;-webkit-user-select:none;user-select:none;}
+.sale-card{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;background:var(--card);border:1px solid var(--card-line);border-radius:18px;padding:22px 18px;box-shadow:0 6px 24px rgba(30,70,90,.25);animation:storyIn .3s ease-out;}
+.sale-title{margin:0;font:800 22px/1.45 var(--font-body);color:var(--ink);}
+.sale-price{display:flex;align-items:baseline;gap:6px;color:var(--gold-ink);font:700 14px var(--font-body);}
+.sale-price b{font:800 40px/1 var(--font-body);color:var(--gold-ink);font-variant-numeric:tabular-nums;}
+.sale-price.done b{animation:salePop .45s cubic-bezier(.2,1.8,.4,1);color:#d9503d;}
+@keyframes salePop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.sale-sheet{width:100%;background:#fff;border:1px solid var(--card-line);border-radius:12px;padding:8px 14px;box-sizing:border-box;}
+.sale-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font:600 14px var(--font-body);color:var(--ink);border-bottom:1px dashed #e8dcc0;}
+.sale-row:last-child{border-bottom:0;}
+.sale-row b{font:800 18px var(--font-body);color:var(--ink);font-variant-numeric:tabular-nums;}
+.sale-roll-row b{font-size:26px;color:#d9503d;min-width:72px;text-align:right;}
+.sale-roll-row b.stop{animation:salePop .45s cubic-bezier(.2,1.8,.4,1);}
+.sale-add,.sale-total{opacity:0;transform:translateX(12px);transition:opacity .25s,transform .25s;}
+.sale-add.on,.sale-total.on{opacity:1;transform:none;}
+.sale-add b{color:#2f8f5b;}
+.sale-total b{font-size:30px;color:#fff;background:#d9503d;border-radius:999px;padding:4px 14px;}
+.sale-total.on b{animation:saleStamp .45s cubic-bezier(.2,1.6,.4,1);}
+.sale-rank{min-height:24px;font:800 18px var(--font-body);color:#d9503d;opacity:0;}
+.sale-rank.on{opacity:1;animation:salePop .5s cubic-bezier(.2,1.8,.4,1);}
+.sale-price{opacity:0;}
+.sale-price.on{opacity:1;}
+.sale-btns{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.sale-btns.on{opacity:1;pointer-events:auto;}
+.sale-note{margin:0;font:500 11px/1.6 var(--font-body);color:var(--ink-dim);}
+.sale-text{margin:0;font:500 14px/1.7 var(--font-body);color:var(--ink);}
+.sale-warn{margin:0;font:600 12px/1.6 var(--font-body);color:#b4412f;}
+.sale-card .story-cap{align-self:flex-start;}
+.sale-card .story-cap svg{width:64px;height:64px;}
+.sale-bubble{width:100%;text-align:left;box-sizing:border-box;min-height:96px;}
+.sale-card .story-tap{align-self:flex-end;}
+.sale-stamp{font:800 28px/1 var(--font-body);color:#c8553d;border:3px solid #c8553d;border-radius:10px;padding:8px 16px;transform:rotate(-6deg);animation:saleStamp .45s cubic-bezier(.2,1.6,.4,1);}
+@keyframes saleStamp{0%{transform:rotate(-6deg) scale(2.2);opacity:0}100%{transform:rotate(-6deg) scale(1);opacity:1}}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1838,6 +1873,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
         '<p class="goal-text">累計 1,500 フェリポ。<br>島はすっかり大きな港町になった。<br>遊んでくれて、ありがとう！</p>'+
         '<button type="button" class="btn-primary goal-btn" data-action="goal-x">Xで報告する</button>'+
         (FEEDBACK_URL ? '<button type="button" class="btn-secondary goal-btn" data-action="goal-feedback">感想を送る</button>' : '')+
+        '<button type="button" class="btn-secondary goal-btn" data-action="sale-open">事業を売却する</button>'+
         '<button type="button" class="tut-skip goal-close" data-action="goal-close">閉じる</button>'+
       '</div>';
     document.getElementById('app').appendChild(el);
@@ -1851,6 +1887,144 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     try{ window.open(href, '_blank', 'noopener'); }catch(e){}
   }
   function goalFeedback(){ if(FEEDBACK_URL){ try{ window.open(FEEDBACK_URL, '_blank', 'noopener'); }catch(e){} } }
+  // ---------- 事業売却（クリア後：すべてを手放して最初から） ----------
+  var SALE_LINES = [
+    'そうか……売ることにしたか。',
+    '小さなわかば号ひとつから、<br>よくここまで育てたな。',
+    'はな島のみんなも、<br>君のことはずっと忘れないさ。',
+    '……さて。<br>新しい船長が、もうすぐ港にやって来るぞ。'
+  ];
+  var saleState = null;
+  // 売却倍率 ＝ 買い手の提示（運：×10〜60、一度決まったら固定）＋ 上乗せ（大型船+10、バッジ1個+2）。上限×100
+  var SALE_ROLL_TABLE = [ // [下限, 上限, 確率%]
+    [10,19,45],[20,29,30],[30,44,17],[45,59,7],[60,60,1]
+  ];
+  var SALE_SHIP_BONUS = 10, SALE_BADGE_BONUS = 2, SALE_CAP = 100;
+  var SALE_RANKS = [ // [この倍率以上, ランク名]
+    [100,'伝説の売却！！！'],[80,'業界がざわつく大型買収！！'],[50,'大手が買収！！'],[30,'好条件で売却！'],[0,'まずまずの売却']
+  ];
+  function saleRoll(){
+    if(wallet.saleRoll>=10) return wallet.saleRoll;
+    var r = Math.random()*100, acc = 0, v = 10;
+    for(var i=0;i<SALE_ROLL_TABLE.length;i++){
+      var t = SALE_ROLL_TABLE[i]; acc += t[2];
+      if(r < acc){ v = t[0] + Math.floor(Math.random()*(t[1]-t[0]+1)); break; }
+    }
+    wallet.saleRoll = v; saveWallet();
+    return v;
+  }
+  function saleBadgeCount(){ return BADGES.filter(function(b){ return wallet.badges && wallet.badges[b.id]; }).length; }
+  function saleCalc(){
+    var roll = saleRoll(), ship = wallet.ownedShips.indexOf('oozora')!==-1 ? SALE_SHIP_BONUS : 0;
+    var nb = saleBadgeCount(), badge = nb*SALE_BADGE_BONUS;
+    var mult = Math.min(SALE_CAP, roll+ship+badge), rank = '';
+    for(var i=0;i<SALE_RANKS.length;i++){ if(mult>=SALE_RANKS[i][0]){ rank = SALE_RANKS[i][1]; break; } }
+    var base = wallet.total||0;
+    return {roll:roll, ship:ship, nb:nb, badge:badge, mult:mult, rank:rank, base:base, value:base*mult};
+  }
+  function fmtNum(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function saleAnim(){
+    var c = saleState && saleState.calc; if(!c) return;
+    var tok = saleState.tok = {};
+    function alive(){ return saleState && saleState.tok===tok && document.getElementById('saleRoll'); }
+    function $(id){ return document.getElementById(id); }
+    // 1) 買い手の提示倍率（最初から表示）→ 上乗せ → 合計 → 売却額
+    function start(){ if(!alive()) return; $('saleRoll').classList.add('stop'); setTimeout(bonus1, 500); }
+    function showRow(id){ var el=$(id); if(el){ el.classList.add('on'); try{ playTapSound(); }catch(e){} } }
+    function bonus1(){ if(!alive()) return; showRow('saleB1'); setTimeout(bonus2, 380); }
+    function bonus2(){ if(!alive()) return; showRow('saleB2'); setTimeout(total, 450); }
+    function total(){
+      if(!alive()) return;
+      $('saleMult').textContent = '×'+c.mult; $('saleMultRow').classList.add('on');
+      $('saleRank').textContent = c.rank; $('saleRank').classList.add('on');
+      try{ playClearSound(); }catch(e){}
+      setTimeout(count, 500);
+    }
+    function count(){
+      if(!alive()) return;
+      var el = $('saleNum'), from = c.base, to = c.value, s0 = null;
+      el.parentNode.classList.add('on');
+      function step(ts){
+        if(!alive()) return;
+        if(s0===null) s0 = ts;
+        var k = Math.min(1,(ts-s0)/1300), e = 1-Math.pow(1-k,3);
+        el.textContent = fmtNum(from+(to-from)*e);
+        if(k<1) requestAnimationFrame(step);
+        else { el.parentNode.classList.add('done'); try{ playCoinSound(); }catch(err){}
+               var bt = $('saleBtns'); if(bt) bt.classList.add('on'); }
+      }
+      requestAnimationFrame(step);
+    }
+    setTimeout(start, 350);
+  }
+  function saleUI(){
+    var el = document.getElementById('saleUI');
+    if(!el){ el = document.createElement('div'); el.id = 'saleUI'; document.getElementById('app').appendChild(el); }
+    var st = saleState; if(!st){ el.parentNode.removeChild(el); return; }
+    if(st.step==='confirm'){
+      var c = st.calc;
+      el.removeAttribute('data-action');
+      el.innerHTML =
+        '<div class="sale-card">'+
+          '<div class="goal-kicker">事業売却</div>'+
+          '<h2 class="sale-title">しま便フェリーを<br>売却しますか？</h2>'+
+          '<div class="sale-sheet">'+
+            '<div class="sale-row"><span>総フェリポ</span><b>'+fmtNum(c.base)+'</b></div>'+
+            '<div class="sale-row sale-roll-row"><span>買い手の提示倍率</span><b id="saleRoll">×'+c.roll+'</b></div>'+
+            '<div class="sale-row sale-add" id="saleB1"><span>🛳️ 大型船ボーナス</span><b>'+(c.ship?'+'+c.ship:'なし')+'</b></div>'+
+            '<div class="sale-row sale-add" id="saleB2"><span>🏅 バッジ '+c.nb+'個</span><b>+'+c.badge+'</b></div>'+
+            '<div class="sale-row sale-total" id="saleMultRow"><span>売却倍率</span><b id="saleMult"></b></div>'+
+          '</div>'+
+          '<div class="sale-rank" id="saleRank"></div>'+
+          '<div class="sale-price"><span>売却額</span><b id="saleNum">'+fmtNum(c.base)+'</b><span>フェリポ</span></div>'+
+          '<div class="sale-btns" id="saleBtns">'+
+            '<p class="sale-text">船も、フェリポも、称号も、はな島も、<br>すべて新しいオーナーに引き継がれます。</p>'+
+            '<p class="sale-warn">セーブデータは消え、最初からのやり直しになります。<br>この操作は取り消せません。</p>'+
+            '<button type="button" class="btn-primary goal-btn sale-do" data-action="sale-do">売却する</button>'+
+            '<button type="button" class="btn-secondary goal-btn" data-action="sale-cancel">やめておく</button>'+
+            '<p class="sale-note">※買い手の提示倍率は一度決まると変わりません。<br>バッジを集めたり大型船を買うと上乗せされます（上限×'+SALE_CAP+'）。</p>'+
+          '</div>'+
+        '</div>';
+    } else if(st.step==='story'){
+      el.setAttribute('data-action','sale-next');
+      el.innerHTML =
+        '<div class="sale-card">'+
+          '<div class="story-cap">'+captainFaceSvg()+'<div class="story-name">先代船長</div></div>'+
+          '<div class="story-bubble sale-bubble">'+SALE_LINES[st.i]+'</div>'+
+          '<div class="story-tap">タップで進む ▼</div>'+
+        '</div>';
+    } else {
+      el.removeAttribute('data-action');
+      el.innerHTML =
+        '<div class="sale-card">'+
+          '<div class="sale-stamp">売却完了</div>'+
+          '<h2 class="sale-title">おつかれさまでした、船長。</h2>'+
+          '<div class="sale-rank on">'+saleState.calc.rank+'（×'+saleState.calc.mult+'）</div>'+
+          '<div class="sale-price on done"><span>売却額</span><b>'+fmtNum(saleState.calc.value)+'</b><span>フェリポ</span></div>'+
+          '<p class="sale-text">しま便フェリーは新しいオーナーのもとで、<br>今日も島へ荷物を運んでいます。</p>'+
+          '<button type="button" class="btn-primary goal-btn" data-action="sale-restart">新しい船長として始める</button>'+
+        '</div>';
+    }
+  }
+  function saleOpen(){ goalClose(); saleState = {step:'confirm', calc:saleCalc()}; saleUI(); saleAnim(); }
+  function saleCancel(){ saleState = null; saleUI(); }
+  function saleDo(){
+    if(!saleState || saleState.step!=='confirm') return;
+    try{ playCoinSound(); }catch(e){}
+    saleState = {step:'story', i:0, calc:saleState.calc}; saleUI();
+  }
+  function saleNext(){
+    if(!saleState || saleState.step!=='story') return;
+    if(saleState.i < SALE_LINES.length-1){ saleState.i++; saleUI(); return; }
+    // 最後のセリフのあとで実際にデータを消す（途中でページを閉じても安全なように、ここまで消さない）
+    try{ localStorage.removeItem(WALLET_KEY); localStorage.removeItem(TUT_KEY); }catch(e){}
+    try{ playHornSound(); }catch(e){}
+    saleState = {step:'done', calc:saleState.calc}; saleUI();
+  }
+  function saleRestart(){
+    try{ localStorage.removeItem(WALLET_KEY); localStorage.removeItem(TUT_KEY); }catch(e){}
+    try{ var u = location.href.replace(/[?&#]tutorial\b/,''); location.replace(u); }catch(e){ location.reload(); }
+  }
   var WALLET_KEY = 'shimabin_wallet_v1';
   function loadWallet(){
     var validIds = SHIPS.map(function(s){ return s.id; });
@@ -1865,7 +2039,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
           var cur = validIds.indexOf(parsed.currentShip)!==-1 ? parsed.currentShip : 'wakaba';
           if(owned.indexOf(cur)===-1) cur = 'wakaba';
           return {ferripo: Math.max(0, Math.round(parsed.ferripo)), ownedShips: owned, currentShip: cur, total: Math.max(0, Math.round(parsed.total||0)),
-            badges: (parsed.badges && typeof parsed.badges==='object') ? parsed.badges : {}, stats: (parsed.stats && typeof parsed.stats==='object') ? parsed.stats : {}, streak: Math.max(0, parsed.streak|0), goalShown: !!parsed.goalShown};
+            badges: (parsed.badges && typeof parsed.badges==='object') ? parsed.badges : {}, stats: (parsed.stats && typeof parsed.stats==='object') ? parsed.stats : {}, streak: Math.max(0, parsed.streak|0), goalShown: !!parsed.goalShown, saleRoll: Math.max(0, Math.min(60, parsed.saleRoll|0))};
         }
       }
     } catch(e){ /* corrupt/blocked storage -> fall back to a fresh wallet */ }
@@ -5628,7 +5802,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       islandBlock(t)+
       '<div class="tt-list">'+rows+'</div>'+
       badgesGridHtml()+
-      (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>' : '')+
+      (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
+                 '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
       '<p class="credit">© 2026 Shimabin</p>';
   }
@@ -7334,6 +7509,11 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     else if(action==='goal-feedback') goalFeedback();
     else if(action==='goal-close') goalClose();
     else if(action==='goal-open') goalUI();
+    else if(action==='sale-open') saleOpen();
+    else if(action==='sale-cancel') saleCancel();
+    else if(action==='sale-do') saleDo();
+    else if(action==='sale-next') saleNext();
+    else if(action==='sale-restart') saleRestart();
     else if(action==='home-load'){ if(state.phase==='home'){ state.phase='dock'; render(); } }
     else if(action==='home-titles'){ if(state.phase==='home'){ state.phase='titles'; render(); } }
     else if(action==='switch-ship') switchShipAtDock(el.getAttribute('data-id'));
