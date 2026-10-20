@@ -2,7 +2,7 @@
    - ページ本体(index.html)は「ネット優先」: 公開後の修正がすぐ届く。オフラインなら保存版を使う。
    - アイコンなどは「保存優先」。
    更新したら CACHE の番号を上げる。 */
-var CACHE = 'shimabin-v47';
+var CACHE = 'shimabin-v53';
 var CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'];
 
 self.addEventListener('install', function(e){
@@ -19,7 +19,8 @@ self.addEventListener('fetch', function(e){
   var url = new URL(req.url);
   if(url.origin!==location.origin) return;           // フォントなど外部は触らない
   if(req.mode==='navigate' || url.pathname.endsWith('/index.html')){
-    e.respondWith(fetch(req).then(function(res){
+    // ブラウザのHTTPキャッシュを通さず、毎回サーバーの最新版を取りに行く
+    e.respondWith(fetch(url.origin+url.pathname+url.search, {cache:'no-store', credentials:'same-origin'}).then(function(res){
       var copy = res.clone(); caches.open(CACHE).then(function(c){ c.put('index.html', copy); });
       return res;
     }).catch(function(){ return caches.match('index.html').then(function(r){ return r || caches.match('./'); }); }));

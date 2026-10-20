@@ -1657,6 +1657,89 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 .sale-card .story-tap{align-self:flex-end;}
 .sale-stamp{font:800 28px/1 var(--font-body);color:#c8553d;border:3px solid #c8553d;border-radius:10px;padding:8px 16px;transform:rotate(-6deg);animation:saleStamp .45s cubic-bezier(.2,1.6,.4,1);}
 @keyframes saleStamp{0%{transform:rotate(-6deg) scale(2.2);opacity:0}100%{transform:rotate(-6deg) scale(1);opacity:1}}
+/* ===== 目標カード ===== */
+.goal-mini{background:var(--card);border:1px solid var(--card-line);border-radius:14px;padding:10px 12px 9px;box-shadow:0 2px 8px rgba(30,70,90,.12);margin:2px 0;}
+.goal-mini .gm-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;}
+.goal-mini .gm-tag{font:800 12.5px var(--font-body);color:var(--gold-ink);letter-spacing:.04em;}
+.goal-mini .gm-num{font:700 12px var(--font-mono);color:var(--ink-dim);white-space:nowrap;}
+.goal-mini .gm-text{margin-top:4px;font:700 14.5px/1.5 var(--font-body);color:var(--ink);}
+.goal-mini .gm-bar{margin-top:7px;height:8px;border-radius:4px;background:#efe3c2;overflow:hidden;}
+.goal-mini .gm-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#f0c363,#e08a3c);transition:width .6s ease-out;}
+.goal-mini .gm-reward{margin-top:6px;font:600 11.5px/1.5 var(--font-body);color:#2f8f5b;}
+.goal-mini.secret{background:linear-gradient(180deg,#fff8dc,#fbe9b0);border-color:#d9a441;}
+.goal-mini.done .gm-text{font-size:13px;}
+.result-card + .goal-mini,.bd-new + .goal-mini{margin-top:12px;}
+.hana-wrap.res-top{margin:4px 0 12px;}
+.home-top .home-wallet{font-size:13px;}
+.home-bar.has-isl{grid-template-columns:56px 56px 1fr 56px;gap:8px;}
+.home-bar.has-isl .home-load{font-size:16px;}
+.score-row.mats-row span:last-child{color:#2f8f5b;font-weight:700;}
+
+/* ===== 解放のお知らせ ===== */
+#unlockUI{position:fixed;inset:0;z-index:64;background:rgba(159,208,232,.96);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto;-webkit-overflow-scrolling:touch;}
+.ul-card{margin:auto;}
+.ul-kicker{font:800 13px var(--font-body);letter-spacing:.2em;color:#fff;background:#e08a3c;border-radius:999px;padding:4px 16px;}
+.ul-ic{font-size:54px;line-height:1;animation:salePop .6s cubic-bezier(.2,1.8,.4,1);}
+.ul-next{width:100%;box-sizing:border-box;background:#fff;border:1px dashed var(--card-line);border-radius:12px;padding:8px 12px;font:700 13px/1.6 var(--font-body);color:var(--ink);text-align:left;}
+.ul-next span{display:block;font:800 11px var(--font-body);color:var(--gold-ink);letter-spacing:.06em;}
+.ul-card .btn-primary,.ul-card .btn-secondary{width:100%;max-width:280px;}
+
+/* ===== 積荷：木材・鉄骨 ===== */
+.swatch.wood{width:24px;height:18px;}
+.swatch.steel{width:30px;height:15px;}
+.swatch.wood svg,.swatch.steel svg{width:100%;height:100%;display:block;}
+.deck-chip .swatch.wood{width:15px;height:11px;}
+.deck-chip .swatch.steel{width:18px;height:9px;}
+.boat-deck-icons .swatch.wood{width:10px;height:8px;}
+.boat-deck-icons .swatch.steel{width:13px;height:7px;}
+
+/* ===== ツアー便 ===== */
+.tour-offer{background:linear-gradient(180deg,#fff5fb,#ffe1ef);border:2px solid #e07aa0;border-radius:14px;padding:12px 14px;margin:4px 0 10px;text-align:center;animation:storyIn .3s ease-out;}
+.tour-offer .to-head{font:800 17px var(--font-body);color:#b4416d;}
+.tour-offer p{margin:6px 0 10px;font:500 13px/1.6 var(--font-body);color:var(--ink);}
+.tour-offer p b{color:#b4416d;}
+.tour-offer .to-btns{display:flex;flex-direction:column;gap:8px;align-items:center;}
+.tour-offer .to-btns button{width:100%;max-width:280px;}
+.phase-hint.tour-hint{color:#b4416d;font-weight:700;}
+
+/* ===== 島づくり ===== */
+.isl-stock{display:flex;justify-content:space-around;gap:6px;background:var(--card);border:1px solid var(--card-line);border-radius:12px;padding:8px 6px;font:600 13px var(--font-body);color:var(--ink);}
+.isl-stock b{color:var(--gold-ink);font-size:16px;}
+.isl-edit{margin:10px 0 6px;border:1px solid var(--card-line);border-radius:14px;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;}
+.isl-edit svg{display:block;width:100%;height:auto;touch-action:none;}
+.isl-slot rect{fill:rgba(255,255,255,.22);stroke:rgba(255,255,255,.9);stroke-width:1;stroke-dasharray:3 2;}
+.isl-slot.off{opacity:.25;}
+.isl-slot.ok rect{fill:rgba(255,236,150,.55);stroke:#c58a1a;stroke-width:1.3;animation:slotBlink 1.2s ease-in-out infinite;}
+.isl-slot text{font:800 12px sans-serif;fill:#8a5a00;text-anchor:middle;pointer-events:none;}
+.isl-slot.hot rect{fill:rgba(255,200,60,.9);stroke:#e08a3c;stroke-width:1.8;animation:none;}
+@keyframes slotBlink{0%,100%{opacity:1}50%{opacity:.55}}
+.isl-bld{cursor:grab;}
+.isl-bld.sel{filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 3px #e08a3c);}
+.isl-bld.hot{filter:drop-shadow(0 0 3px #e08a3c);}
+.isl-help{font:600 12.5px/1.6 var(--font-body);color:var(--ink-dim);text-align:center;padding:0 6px;}
+.isl-colors{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 2px;font:700 12px var(--font-body);color:var(--ink-dim);}
+.isl-col{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 4px rgba(30,70,90,.35);padding:0;cursor:pointer;}
+.isl-col.on{box-shadow:0 0 0 3px #e08a3c,0 1px 4px rgba(30,70,90,.35);}
+.isl-effects{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin:8px 0;}
+.isl-eff{display:flex;align-items:baseline;gap:6px;font:600 12.5px var(--font-body);color:var(--ink-dim);}
+.isl-eff b{font:800 14px var(--font-body);color:#2f8f5b;}
+.isl-eff small{font-size:10.5px;}
+.ib-list{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.ib-card{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--card-line);border-radius:14px;padding:10px 12px;touch-action:none;-webkit-user-select:none;user-select:none;}
+.ib-card.ok{cursor:grab;box-shadow:0 2px 8px rgba(30,70,90,.14);}
+.ib-card.on{border:2px solid #e08a3c;background:#fff4dd;}
+.ib-card.ng{opacity:.62;}
+.ib-card.done{opacity:.5;}
+.ib-ic{width:54px;height:54px;flex:none;display:flex;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,#bfe5f5,#8fcd85 78%);border-radius:10px;}
+.ib-ic svg{width:auto;height:46px;max-width:50px;}
+.ib-body{flex:1;min-width:0;}
+.ib-name{font:800 15px var(--font-body);color:var(--ink);}
+.ib-desc{font:600 12px/1.5 var(--font-body);color:#2f8f5b;}
+.ib-cost{font:600 12px/1.5 var(--font-body);color:var(--gold-ink);}
+.ib-why{font:600 11.5px/1.5 var(--font-body);color:#b4412f;}
+.isl-ghost{position:fixed;z-index:80;pointer-events:none;transform:translate(-50%,-100%);filter:drop-shadow(0 4px 6px rgba(0,0,0,.3));}
+.isl-ghost svg{display:block;height:64px;width:auto;}
+.isl-ghost.ib-park svg{height:84px;}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1704,20 +1787,20 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 
   var RACK_DEFS = [
     {id:'car1', label:'乗用車', weight:3, value:5, shape:'car', variant:0},
-    {id:'car2', label:'乗用車', weight:3, value:5, shape:'car', variant:1},
-    {id:'car3', label:'乗用車', weight:3, value:5, shape:'car', variant:2},
+    {id:'car2', label:'乗用車', weight:3, value:5, shape:'car', variant:1, unlock:150},
+    {id:'car3', label:'乗用車', weight:3, value:5, shape:'car', variant:2, unlock:150},
     {id:'box1', label:'コンテナ', weight:5, value:10, shape:'box'},
-    {id:'box2', label:'コンテナ', weight:5, value:10, shape:'box'},
+    {id:'box2', label:'コンテナ', weight:5, value:10, shape:'box', unlock:150},
     {id:'pax1', label:'乗客', weight:1, value:1, shape:'pax', variant:0},
     {id:'pax2', label:'乗客', weight:1, value:1, shape:'pax', variant:1},
     {id:'pax3', label:'乗客', weight:1, value:1, shape:'pax', variant:2},
     {id:'pax4', label:'乗客', weight:1, value:1, shape:'pax', variant:3},
     {id:'pax5', label:'乗客', weight:1, value:1, shape:'pax', variant:4},
-    {id:'pax6', label:'乗客', weight:1, value:1, shape:'pax', variant:5},
-    {id:'pax7', label:'乗客', weight:1, value:1, shape:'pax', variant:6},
-    {id:'pax8', label:'乗客', weight:1, value:1, shape:'pax', variant:7},
-    {id:'pax9', label:'乗客', weight:1, value:1, shape:'pax', variant:8},
-    {id:'pax10', label:'乗客', weight:1, value:1, shape:'pax', variant:9},
+    {id:'pax6', label:'乗客', weight:1, value:1, shape:'pax', variant:5, unlock:150},
+    {id:'pax7', label:'乗客', weight:1, value:1, shape:'pax', variant:6, unlock:150},
+    {id:'pax8', label:'乗客', weight:1, value:1, shape:'pax', variant:7, unlock:150},
+    {id:'pax9', label:'乗客', weight:1, value:1, shape:'pax', variant:8, unlock:150},
+    {id:'pax10', label:'乗客', weight:1, value:1, shape:'pax', variant:9, unlock:150},
     // 上位船「おおぞら」限定の追加積荷（tier:'advanced'）。積載量が増える
     // だけでなく積めるものの種類・量も増える、というのが目的なので、
     // 既存の車・コンテナ・乗客をそれぞれ1〜2点増量する形で揃えている。
@@ -1725,14 +1808,39 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     {id:'box3', label:'コンテナ', weight:5, value:10, shape:'box', tier:'advanced'},
     {id:'box4', label:'コンテナ', weight:5, value:10, shape:'box', unlock:1000}, // 累計1,000で解放
     {id:'pax11', label:'乗客', weight:1, value:1, shape:'pax', variant:10, tier:'advanced'},
-    {id:'pax12', label:'乗客', weight:1, value:1, shape:'pax', variant:11, tier:'advanced'}
+    {id:'pax12', label:'乗客', weight:1, value:1, shape:'pax', variant:11, tier:'advanced'},
+    // 累計600で「資材の取引先」と契約：木材・鉄骨。運ぶと島の資材置き場に貯まる（運賃は安め）
+    {id:'wood1', label:'木材', weight:2, value:3, shape:'wood', unlock:600},
+    {id:'wood2', label:'木材', weight:2, value:3, shape:'wood', unlock:600},
+    {id:'steel1', label:'鉄骨', weight:4, value:4, shape:'steel', unlock:600},
+    {id:'wood3', label:'木材', weight:2, value:3, shape:'wood', unlock:600, tier:'advanced'},
+    {id:'steel2', label:'鉄骨', weight:4, value:4, shape:'steel', unlock:600, tier:'advanced'},
+    // 遊園地ツアー便だけに来る観光客
+    {id:'tp1', label:'観光客', weight:1, value:1, shape:'pax', variant:2, tour:true},
+    {id:'tp2', label:'観光客', weight:1, value:1, shape:'pax', variant:5, tour:true},
+    {id:'tp3', label:'観光客', weight:1, value:1, shape:'pax', variant:0, tour:true},
+    {id:'tp4', label:'観光客', weight:1, value:1, shape:'pax', variant:7, tour:true},
+    {id:'tp5', label:'観光客', weight:1, value:1, shape:'pax', variant:3, tour:true},
+    {id:'tp6', label:'観光客', weight:1, value:1, shape:'pax', variant:9, tour:true},
+    {id:'tp7', label:'観光客', weight:1, value:1, shape:'pax', variant:1, tour:true},
+    {id:'tp8', label:'観光客', weight:1, value:1, shape:'pax', variant:6, tour:true}
   ];
   // Items available to load this voyage: the base set, plus the advanced-tier
   // set only when the currently selected ship is the advanced one.
   function availableRackDefs(){
     return RACK_DEFS.filter(function(item){
       if(state && state.tutorial) return TUT_RACK.indexOf(item.id)!==-1;
+      if(state && state.tour) return item.shape==='pax' && (item.tier!=='advanced' || isAdvancedShip());
+      if(item.tour) return false;
       if(item.unlock && (!wallet || (wallet.total||0) < item.unlock)) return false;
+      return item.tier!=='advanced' || isAdvancedShip();
+    });
+  }
+  // 指示書の抽選用：チュートリアル・ツアー便に関係なく「いつもの積荷リスト」
+  function baseRackDefs(){
+    return RACK_DEFS.filter(function(item){
+      if(item.tour) return false;
+      if(item.unlock && (wallet.total||0) < item.unlock) return false;
       return item.tier!=='advanced' || isAdvancedShip();
     });
   }
@@ -1743,65 +1851,89 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
   var SHIPS = [
     {id:'wakaba', name:'わかば', capacity:18, cost:0, tier:'basic',
       desc:'最初から所有している船。扱いやすいが積載量は小さめ。'},
-    {id:'oozora', name:'おおぞら', capacity:26, cost:500, tier:'advanced',
+    {id:'oozora', name:'おおぞら', capacity:26, cost:300, tier:'advanced',
       desc:'積載量が大幅UP（26t）。積める車・コンテナ・乗客の種類も増える。その分、水漏れ・ブレーカー・海賊・破れた資料・船酔いの乗客のトラブルも増える。'}
   ];
   // ---------- 称号と島の発展（累計フェリポ） ----------
   var MILES = [
-    {at:0,    title:'見習い船長',       build:'小さな桟橋'},
-    {at:300,  title:'島の配達人',       build:'港の待合所'},
-    {at:500,  title:'一人前の船長',     build:'大型船の桟橋'},
-    {at:800,  title:'海の運び屋',       build:'マンション'},
-    {at:1000, title:'船団の頼れる船長', build:'倉庫とコンテナ置き場'},
-    {at:1200, title:'名船長',           build:'遊園地'},
-    {at:1500, title:'日本一の船会社',   build:'夜景の島'}
+    {at:0,    title:'見習い船長'},
+    {at:150,  title:'港の新人船長'},
+    {at:300,  title:'島の配達人'},
+    {at:500,  title:'一人前の船長'},
+    {at:700,  title:'島の開拓者'},
+    {at:850,  title:'海の運び屋'},
+    {at:1000, title:'船団の頼れる船長'},
+    {at:1200, title:'名船長'},
+    {at:1500, title:'日本一の船会社'},
+    {at:2000, title:'伝説の船会社', hidden:true}
   ];
   function mileIdx(total){ var k=0; for(var i=0;i<MILES.length;i++){ if(total>=MILES[i].at) k=i; } return k; }
-  function islandSvg(total, newFrom){
-    var k = mileIdx(total), night = k>=6;
-    function pop(i){ return (i>=1 && i<=k && newFrom!=null && MILES[i].at>newFrom) ? ' isl-pop' : ''; }
+  function islandSvg(total, popPlot, edit){
+    var night = (total||0) >= 1500;
     var sky = night ? ['#0b1730','#1c2f55'] : ['#8fd0ee','#d7f0fa'];
     var win = night ? '#ffd86b' : '#cfe3ee';
-    var o = '<svg viewBox="0 0 360 160" class="hana-svg" role="img" aria-label="はな島">'+
+    var o = '<svg viewBox="'+(edit ? '84 0 314 126' : '0 0 394 160')+'" class="hana-svg" role="img" aria-label="はな島">'+
       '<defs><linearGradient id="islSky'+(night?'N':'D')+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+sky[0]+'"/><stop offset="1" stop-color="'+sky[1]+'"/></linearGradient></defs>'+
-      '<rect width="360" height="160" fill="url(#islSky'+(night?'N':'D')+')"/>';
+      '<rect width="420" height="160" fill="url(#islSky'+(night?'N':'D')+')"/>';
     if(night){ for(var q=0;q<14;q++){ o += '<circle cx="'+((q*47+13)%350)+'" cy="'+((q*23+7)%70)+'" r="1.2" fill="#fff" opacity=".8"/>'; } o += '<circle cx="320" cy="26" r="9" fill="#f6efc8"/>'; }
     // sea
-    o += '<rect y="112" width="360" height="48" fill="'+(night?'#12294a':'#3f9cc4')+'"/>'+
-         '<path d="M0 124 Q30 118 60 124 T120 124 T180 124 T240 124 T300 124 T360 124" stroke="'+(night?'#27487a':'#7fc6e0')+'" stroke-width="2" fill="none"/>';
+    o += '<rect y="112" width="420" height="48" fill="'+(night?'#12294a':'#3f9cc4')+'"/>'+
+         '<path d="M0 124 Q30 118 60 124 T120 124 T180 124 T240 124 T300 124 T360 124 T420 124" stroke="'+(night?'#27487a':'#7fc6e0')+'" stroke-width="2" fill="none"/>';
+    // となりの小さな島（はな島の少し奥。850で橋がかかる）
+    o += '<path d="M336 114 C344 92 354 76 366 76 C378 76 388 94 396 114 Z" fill="#58a553"/><path d="M340 114 C348 98 356 88 366 88 C376 88 384 100 392 114 Z" fill="#6cb862"/>'+
+         '<path d="M371 79 l1.5 -9 m-1.5 9 c-3 -5 -7 -6 -10 -4 m10 4 c2 -6 6 -8 10 -6 m-10 6 c-4 -2 -8 0 -9 3" stroke="#3f7f3a" stroke-width="1.3" fill="none" stroke-linecap="round"/>';
     // island
     o += '<path d="M80 114 C100 64 158 22 196 22 C234 22 298 64 330 114 Z" fill="#5fae5a"/><path d="M80 114 C106 82 160 44 196 44 C232 44 292 82 330 114 Z" fill="#74c06a"/>';
     // houses (always)
     function house(x,y,c){ return '<rect x="'+x+'" y="'+y+'" width="16" height="12" fill="#f1e6d0"/><path d="M'+(x-2)+' '+y+' L'+(x+8)+' '+(y-8)+' L'+(x+18)+' '+y+'Z" fill="'+c+'"/><rect x="'+(x+6)+'" y="'+(y+5)+'" width="4" height="7" fill="'+(night?'#ffd86b':'#b98a5a')+'"/>'; }
-    o += house(230,94,'#c8553d')+house(247,98,'#4f7fa8')+house(264,94,'#d49a3a');
-    // 桟橋（初期）
-    o += '<rect x="40" y="108" width="62" height="6" fill="#8a6a45"/><rect x="48" y="114" width="3" height="10" fill="#6e5236"/><rect x="72" y="114" width="3" height="10" fill="#6e5236"/><rect x="96" y="114" width="3" height="10" fill="#6e5236"/>';
-    // 300 待合所
-    if(k>=1) o += '<g class="isl-b'+pop(1)+'"><rect x="122" y="92" width="26" height="16" fill="#f4f1e8"/><path d="M118 92 L135 81 L152 92Z" fill="#d9503d"/><rect x="127" y="98" width="5" height="10" fill="#4f7fa8"/><rect x="136" y="98" width="7" height="6" fill="'+win+'"/></g>';
-    // 500 大型桟橋
-    if(k>=2) o += '<g class="isl-b'+pop(2)+'"><rect x="4" y="108" width="40" height="6" fill="#9a7a52"/><rect x="10" y="114" width="3" height="10" fill="#6e5236"/><rect x="30" y="114" width="3" height="10" fill="#6e5236"/><rect x="2" y="100" width="4" height="8" fill="#e0b030"/></g>';
-    // 800 マンション
-    if(k>=3){ var w=''; for(var r=0;r<4;r++) for(var c=0;c<3;c++) w += '<rect x="'+(192+c*9)+'" y="'+(62+r*9)+'" width="5" height="5" fill="'+win+'"/>'; o += '<g class="isl-b'+pop(3)+'"><rect x="188" y="56" width="34" height="48" fill="#b9bfc9"/><rect x="188" y="52" width="34" height="5" fill="#8d95a3"/>'+w+'</g>'; }
-    // 1000 倉庫+コンテナ
-    if(k>=4) o += '<g class="isl-b'+pop(4)+'"><rect x="284" y="96" width="38" height="18" fill="#8ea0b3"/><path d="M282 96 L303 88 L324 96Z" fill="#6f8196"/><rect x="289" y="104" width="10" height="10" fill="#4a5a6c"/><rect x="326" y="104" width="12" height="6" fill="#d9503d"/><rect x="326" y="110" width="12" height="4" fill="#3d7fd9"/><rect x="340" y="108" width="12" height="6" fill="#e0b030"/></g>';
-    // 1200 観覧車
-    if(k>=5){ var sp='', gd=''; for(var a=0;a<8;a++){ var ang=a*Math.PI/4, x2=162+Math.cos(ang)*19, y2=72+Math.sin(ang)*19; sp += '<line x1="162" y1="72" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="#e9e9ef" stroke-width="1.2"/>'; gd += '<circle cx="'+x2.toFixed(1)+'" cy="'+y2.toFixed(1)+'" r="3" fill="'+['#d9503d','#e0b030','#3d9ad9','#6cc070'][a%4]+'"/>'; }
-      o += '<g class="isl-b'+pop(5)+'"><path d="M153 108 L162 72 L171 108" stroke="#e9e9ef" stroke-width="2" fill="none"/><circle cx="162" cy="72" r="19" stroke="#e9e9ef" stroke-width="2" fill="none"/>'+sp+gd+'</g>'; }
+    // 島の人の家：最初は無人島に近く、航海を重ねるとだんだん人が住み始める
+    if(total>=150) o += house(247,98,'#4f7fa8');
+    if(total>=300) o += house(230,94,'#c8553d');
+    if(total>=500) o += house(264,94,'#d49a3a');
+    if(total>=500){
+      // 500 ハーバー：コンクリートの岸壁・クレーン・倉庫
+      o += '<g class="isl-b"><rect x="4" y="106" width="112" height="8" fill="#b9bec6"/><rect x="4" y="106" width="112" height="2" fill="#d6dbe2"/>'+
+        '<circle cx="20" cy="107.5" r="1.4" fill="#4a5360"/><circle cx="56" cy="107.5" r="1.4" fill="#4a5360"/><circle cx="92" cy="107.5" r="1.4" fill="#4a5360"/>'+
+        '<rect x="100" y="76" width="28" height="15" fill="#8ea0b3"/><path d="M98 76 L114 69 L130 76Z" fill="#6f8196"/><rect x="107" y="82" width="9" height="9" fill="#4a5a6c"/><rect x="118" y="80" width="7" height="4" fill="'+win+'"/>'+
+        '<rect x="74" y="50" width="2.6" height="56" fill="#e0b030"/><rect x="88" y="50" width="2.6" height="56" fill="#e0b030"/>'+
+        '<path d="M76 60 L88 72 M88 60 L76 72 M76 76 L88 88 M88 76 L76 88" stroke="#c99a20" stroke-width="1"/>'+
+        '<rect x="40" y="46" width="60" height="4" fill="#e0b030"/><rect x="80" y="40" width="10" height="7" fill="#d9503d"/>'+
+        '<line x1="50" y1="50" x2="50" y2="64" stroke="#4a5360" stroke-width=".8"/><rect x="45" y="64" width="10" height="5" fill="#3d7fd9"/></g>';
+    } else {
+      // 桟橋（初期）
+      o += '<rect x="40" y="108" width="62" height="6" fill="#8a6a45"/><rect x="48" y="114" width="3" height="10" fill="#6e5236"/><rect x="72" y="114" width="3" height="10" fill="#6e5236"/><rect x="96" y="114" width="3" height="10" fill="#6e5236"/>';
+    }
+    // 300 待合所（港の設備は航海を重ねると自動で育つ）
+    if(total>=300) o += '<g class="isl-b"><rect x="122" y="92" width="26" height="16" fill="#f4f1e8"/><path d="M118 92 L135 81 L152 92Z" fill="#d9503d"/><rect x="127" y="98" width="5" height="10" fill="#4f7fa8"/><rect x="136" y="98" width="7" height="6" fill="'+win+'"/></g>';
+    // 大型船の桟橋（おおぞらを持っている）
+    if(ownsBig() && total<500) o += '<g class="isl-b"><rect x="4" y="108" width="40" height="6" fill="#9a7a52"/><rect x="10" y="114" width="3" height="10" fill="#6e5236"/><rect x="30" y="114" width="3" height="10" fill="#6e5236"/><rect x="2" y="100" width="4" height="8" fill="#e0b030"/></g>';
+    // プレイヤーが建てた建物（奥＝上から順に描く）。島づくり画面では空き区画も見せる
+    var plots = islPlots(), ui = edit ? islUi() : null;
+    PLOTS.map(function(p,i){ return i; }).sort(function(a,b){ return PLOTS[a].y-PLOTS[b].y; }).forEach(function(i){
+      var p = PLOTS[i], bd = plots[i];
+      if(!bd && !plotUsable(i)) return;
+      if(bd){
+        var hh = p.t==='L' ? 48 : (p.t==='B' ? 18 : (bd.k==='mansion' ? 40 : (bd.k==='statue' ? 30 : 24))), ww = p.t==='L' ? 50 : (p.t==='B' ? 48 : 26);
+        o += '<g class="isl-bld'+(i===popPlot?' isl-pop':'')+(edit && ui.sel===i?' sel':'')+'"'+(edit?' data-isl-plot="'+i+'"':'')+'>'+bldSvg(bd.k, bd.c, p.x, p.y, night)+
+          (edit ? '<rect class="isl-hit" x="'+(p.x-ww/2)+'" y="'+(p.y-hh)+'" width="'+ww+'" height="'+hh+'" fill="transparent"/>' : '')+'</g>';
+      } else if(edit){
+        var okp = ui.pick && BUILDS[ui.pick].plot===p.t, w = p.t==='L' ? 44 : (p.t==='B' ? 44 : 20), h = p.t==='L' ? 40 : (p.t==='B' ? 14 : 16);
+        o += '<g class="isl-slot'+(okp?' ok':'')+(ui.pick && !okp ? ' off' : '')+'" data-isl-plot="'+i+'"><rect x="'+(p.x-w/2)+'" y="'+(p.y-h)+'" width="'+w+'" height="'+h+'" rx="3"/>'+
+          (okp ? '<text x="'+p.x+'" y="'+(p.y-h/2+4)+'">＋</text>' : '')+'</g>';
+      }
+    });
     // 停泊中の船（アイコンと同じ船）
     o += '<defs><clipPath id="hcI"><path id="hpI" d="M110 556 H690 Q735 556 752 536 L700 646 Q688 670 655 670 H170 Q128 670 118 640 Z"/></clipPath></defs><clipPath id="shipCut"><rect x="0" y="0" width="140" height="118"/></clipPath><g clip-path="url(#shipCut)"><g transform="translate(2 12) scale(.16)"> <g stroke-linejoin="round" stroke-linecap="round"> <g stroke="#1d3d4d" stroke-width="8" fill="none"><path d="M470 392 V296"/><path d="M446 330 H494"/><path d="M470 296 L520 312" stroke-width="5"/></g> <rect x="440" y="318" width="60" height="9" rx="3" fill="#eae3d3" stroke="#1d3d4d" stroke-width="5"/> <path d="M520 312 l22 6 -22 8z" fill="#e0563f" stroke="#1d3d4d" stroke-width="4"/> <path d="M700 646 q24 -10 50 6" fill="none" stroke="#e8f7fc" stroke-width="5" stroke-linecap="round" opacity=".25"/> <use href="#hpI" fill="#fbf8ee"/> <g clip-path="url(#hcI)"> <rect x="100" y="606" width="700" height="24" fill="#2f6fb0"/> <rect x="100" y="634" width="700" height="8" fill="#e0563f"/> <rect x="100" y="652" width="700" height="30" fill="#9c3a2e"/> <g fill="#3a9fd0" opacity=".95"><circle cx="380" cy="584" r="7"/><circle cx="440" cy="584" r="7"/><circle cx="500" cy="584" r="7"/><circle cx="560" cy="584" r="7"/></g> </g> <use href="#hpI" fill="none" stroke="#1d3d4d" stroke-width="10"/> <rect x="590" y="530" width="148" height="28" rx="6" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="620" y="512" width="30" height="20" rx="4" fill="#cfd8d6" stroke="#1d3d4d" stroke-width="5"/> <rect x="668" y="516" width="26" height="16" rx="4" fill="#cfd8d6" stroke="#1d3d4d" stroke-width="5"/> <rect x="116" y="534" width="150" height="26" rx="6" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="140" y="514" width="64" height="22" rx="10" fill="#f08a3c" stroke="#1d3d4d" stroke-width="5"/> <rect x="270" y="470" width="320" height="90" rx="10" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="330" y="418" width="220" height="56" rx="8" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="385" y="372" width="130" height="50" rx="8" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="379" y="360" width="142" height="16" rx="5" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="396" y="386" width="108" height="20" rx="4" fill="#27506a"/> <rect x="276" y="400" width="48" height="74" rx="6" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="276" y="400" width="48" height="26" rx="6" fill="#e0563f" stroke="#1d3d4d" stroke-width="8"/> <g fill="#27506a"><rect x="360" y="434" width="28" height="22" rx="3"/><rect x="420" y="434" width="28" height="22" rx="3"/><rect x="480" y="434" width="28" height="22" rx="3"/><rect x="330" y="488" width="26" height="20" rx="3"/><rect x="390" y="488" width="26" height="20" rx="3"/><rect x="450" y="488" width="26" height="20" rx="3"/><rect x="510" y="488" width="26" height="20" rx="3"/></g> <path d="M96 676 q40 -28 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" fill="none" stroke="#e8f7fc" stroke-width="5" opacity=".35"/> </g> </g></g><rect x="0" y="112" width="140" height="6" fill="'+(night?'#12294a':'#3f9cc4')+'" opacity=".6"/><path d="M4 114 Q16 111 28 114 T52 114 T76 114 T100 114 T124 114" stroke="'+(night?'#27487a':'#9bd6ea')+'" stroke-width="1" fill="none" opacity=".6"/>';
     o += '</svg>';
     return o;
   }
   function islandBlock(prevTotal){
-    var t = wallet.total||0, k = mileIdx(t), m = MILES[k], nxt = MILES[k+1];
+    var t = wallet.total||0, k = mileIdx(t), m = MILES[k];
     var up = mileIdx(prevTotal) < k;
-    var goal = nxt ? ('<div class="isl-goal"><span>次の称号「'+nxt.title+'」まで</span><span>'+t+' / '+nxt.at+'</span></div>'+
-        '<div class="isl-bar"><i style="width:'+Math.min(100,Math.max(0,(t-m.at)/(nxt.at-m.at)*100)).toFixed(1)+'%"></i></div>')
-      : '<div class="isl-goal"><span>最高の称号に到達！</span><span>'+t+'</span></div>';
     return '<div class="hana-wrap">'+
-      (up ? '<div class="isl-up">称号アップ！ 島に「'+m.build+'」ができた</div>' : '')+
-      islandSvg(t, up ? prevTotal : null)+
-      '<div class="isl-title">称号：<b>'+m.title+'</b></div>'+goal+'</div>';
+      (up ? '<div class="isl-up">称号アップ！「'+m.title+'」になった</div>' : '')+
+      islandSvg(t, null, false)+
+      '<div class="isl-title">称号：<b>'+m.title+'</b></div></div>';
   }
 
   // ---------- バッジ ----------
@@ -1818,7 +1950,11 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     {id:'dolphin',   ic:'🐬', name:'イルカ発見',   hint:'双眼鏡でイルカを見つける'},
     {id:'flawless',  ic:'⭐', name:'無傷の航海',   hint:'アクションを全部成功させて到着'},
     {id:'tip',       ic:'💴', name:'チップ長者',   hint:'乗客からチップをもらう'},
-    {id:'streak',    ic:'🔥', name:'連続到着',     hint:'沈まず5回続けて到着する'}
+    {id:'streak',    ic:'🔥', name:'連続到着',     hint:'沈まず5回続けて到着する'},
+    {id:'house',     ic:'🏠', name:'島の不動産屋', hint:'島に家を建てる'},
+    {id:'park',      ic:'🎡', name:'遊園地オープン', hint:'島に遊園地を建てる'},
+    {id:'tour',      ic:'🎟️', name:'ツアー添乗員', hint:'遊園地ツアー便で到着する'},
+    {id:'statue',    ic:'🏆', name:'黄金の船長',   hint:'？？？'}
   ];
   function grantBadge(id){
     if(!wallet.badges) wallet.badges = {};
@@ -1869,7 +2005,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       '<div class="goal-card">'+
         '<div class="goal-kicker">最高の称号</div>'+
         '<h2 class="goal-title">日本一の船会社</h2>'+
-        islandSvg(1500, null).replace('class="hana-svg"','class="hana-svg goal-svg"')+
+        islandSvg(Math.max(1500, wallet.total||0), null, false).replace('class="hana-svg"','class="hana-svg goal-svg"')+
         '<p class="goal-text">累計 1,500 フェリポ。<br>島はすっかり大きな港町になった。<br>遊んでくれて、ありがとう！</p>'+
         '<button type="button" class="btn-primary goal-btn" data-action="goal-x">Xで報告する</button>'+
         (FEEDBACK_URL ? '<button type="button" class="btn-secondary goal-btn" data-action="goal-feedback">感想を送る</button>' : '')+
@@ -1878,7 +2014,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       '</div>';
     document.getElementById('app').appendChild(el);
   }
-  function goalClose(){ var el = document.getElementById('goalUI'); if(el && el.parentNode) el.parentNode.removeChild(el); }
+  function goalClose(){ var el = document.getElementById('goalUI'); if(el && el.parentNode) el.parentNode.removeChild(el); setTimeout(runUnlocks, 300); }
   function goalShareX(){
     var url = '';
     try{ if(/^https?:$/.test(location.protocol)) url = location.origin + location.pathname; }catch(e){}
@@ -2025,6 +2161,429 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     try{ localStorage.removeItem(WALLET_KEY); localStorage.removeItem(TUT_KEY); }catch(e){}
     try{ var u = location.href.replace(/[?&#]tutorial\b/,''); location.replace(u); }catch(e){ location.reload(); }
   }
+  // ---------- 目標・解放・島づくり・ツアー便 ----------
+  // 目標はすべて「累計フェリポ」で判定（大型船の購入だけは「所持フェリポ」で買う）。
+  var GOALS = [
+    {id:'g150',  at:150,  text:'まずは150フェリポを獲得し、取引先を増やそう！', reward:'港に届く荷物が増える'},
+    {id:'g300',  at:300,  kind:'ship', text:'300フェリポを貯めて、大型船「おおぞら」を購入しよう！', reward:'大きな船で、もっと稼げる'},
+    {id:'g500',  at:500,  text:'累計500フェリポを目指そう！', reward:'島の港が立派になる？ 島長から相談もあるらしい…'},
+    {id:'g600',  at:600,  text:'累計600フェリポで、資材の取引先を見つけよう！', reward:'木材・鉄骨を運べるようになる'},
+    {id:'g700',  at:700,  text:'累計700フェリポで、不動産会社と取引契約しよう！', reward:'島に家を建てられるようになる'},
+    {id:'g850',  at:850,  text:'累計850フェリポで、橋の建設許可をもらおう！', reward:'となりの小さな島へ橋をかけられる'},
+    {id:'g1000', at:1000, text:'累計1,000フェリポで、マンションの建設を任せてもらおう！', reward:'マンションを建てられるようになる'},
+    {id:'g1200', at:1200, text:'累計1,200フェリポで、遊園地の建設許可をもらおう！', reward:'遊園地を建てられる（ツアー便の依頼が来るように）'},
+    {id:'g1500', at:1500, text:'累計1,500フェリポで、日本一の船会社を目指そう！', reward:'「日本一の船会社」の称号'},
+    {id:'g2000', at:2000, secret:true, text:'累計2,000フェリポ…島に「何か」を建てられるらしい', reward:'？？？'}
+  ];
+  function ownsBig(){ return wallet.ownedShips.indexOf('oozora')!==-1; }
+  function goalDone(g){
+    var t = wallet.total||0;
+    if(g.kind==='ship') return ownsBig() || t>=500; // 買わずに先へ進んだ人は、ここで止めない
+    return t>=g.at;
+  }
+  function currentGoal(){
+    for(var i=0;i<GOALS.length;i++){
+      var g = GOALS[i];
+      if(g.secret && (wallet.total||0)<1500) continue;
+      if(!goalDone(g)) return g;
+    }
+    return null;
+  }
+  function goalCardHtml(){
+    var g = currentGoal(), t = wallet.total||0;
+    if(!g) return '<div class="goal-mini done"><div class="gm-head"><span class="gm-tag">🏆 すべての目標を達成！</span><span class="gm-num">累計 '+fmtNum(t)+'</span></div>'+
+      '<div class="gm-text">伝説の船会社として、島をもっと育てよう。</div></div>';
+    var cur, lab, prev = 0, idx = GOALS.indexOf(g);
+    if(g.kind==='ship'){ cur = Math.min(wallet.ferripo, g.at); lab = '所持'; }
+    else { cur = t; lab = '累計'; if(idx>0) prev = GOALS[idx-1].at; }
+    var pct = Math.max(0, Math.min(100, (cur-prev)/(g.at-prev)*100));
+    var text = g.text;
+    if(g.kind==='ship' && wallet.ferripo>=g.at) text = 'ホームの「購入」から、大型船「おおぞら」を買おう！';
+    return '<div class="goal-mini'+(g.secret?' secret':'')+'">'+
+      '<div class="gm-head"><span class="gm-tag">'+(g.secret?'🌟 裏目標':'🎯 次の目標')+'</span><span class="gm-num">'+lab+' '+fmtNum(cur)+' / '+fmtNum(g.at)+'</span></div>'+
+      '<div class="gm-text">'+text+'</div>'+
+      '<div class="gm-bar"><i style="width:'+pct.toFixed(1)+'%"></i></div>'+
+      '<div class="gm-reward">達成すると：'+g.reward+'</div></div>';
+  }
+
+  // ---- 解放のお知らせ（1回ずつ。結果画面やホームで順番に出す） ----
+  var UNLOCKS = [
+    {id:'u150', ic:'🤝', at:150, title:'新しい取引先と契約！', body:'港に届く荷物が増えた！<br>車3台・コンテナ2個・乗客10人を積めるようになった。'},
+    {id:'u300', ic:'🛳️', ship:true, title:'大型船が買えるようになった！', body:'大型船「おおぞら」は積載量26t。積める荷物が増えて、もっと稼げる。<br>そのぶんトラブルも手ごわくなる。<br>ホームの「購入」から買おう！'},
+    {id:'u500', ic:'🏗️', at:500, chief:true, title:'島の開発が始まった！', body:'はな島の桟橋が、クレーンと倉庫のある立派なハーバーに生まれ変わった！<br>ホームの「島」から、島の様子と資材置き場を見られるようになった。'},
+    {id:'u600', ic:'🪵', at:600, title:'資材の取引先が見つかった！', body:'木材・鉄骨を運べるようになった。<br>運んだ資材は島の資材置き場に貯まり、建物を建てるのに使う。'},
+    {id:'u700', ic:'🏠', at:700, title:'不動産会社と取引契約！', body:'島に「家」を建てられるようになった。<br>家が増えると島に住む人が増え、乗客の運賃が上がる。<br>ホームの「島」から建てよう！'},
+    {id:'u850', ic:'🌉', at:850, title:'橋の建設許可が下りた！', body:'はな島のとなりの小さな島へ、橋をかけられるようになった。<br>橋ができると、小さな島にも建物を建てられる。'},
+    {id:'u1000', ic:'🏢', at:1000, title:'マンションを建てられるようになった！', body:'たくさんの人が住めるマンション。<br>乗客の運賃が、家よりも大きく上がる。<br>さらに、コンテナがもう1個届くようになった。'},
+    {id:'u1200', ic:'🎡', at:1200, title:'遊園地の建設許可が下りた！', body:'遊園地を建てると、島の外から観光客がやって来る。<br>5航海に1回、「遊園地ツアー便」の依頼が来るようになる。'},
+    {id:'u1500', at:1500, goal:true},
+    {id:'u2000', ic:'🏆', at:2000, title:'金の銅像を建てられるようになった！', body:'ここまで来た船長は、ほとんどいない。<br>島に、あなたの金の銅像を建てよう。'}
+  ];
+  function unlockReady(u){
+    if(wallet.seen && wallet.seen[u.id]) return false;
+    if(u.ship) return !ownsBig() && wallet.ferripo>=300;
+    if(u.goal) return (wallet.total||0)>=u.at && !wallet.goalShown;
+    return (wallet.total||0)>=u.at;
+  }
+  var CHIEF_LINES = [
+    'やあ、船長さん。<br>はな島の島長です。',
+    'あなたの船のおかげで、島に人と荷物が<br>どんどん届くようになった。ありがとう！',
+    'お礼に、島の桟橋をクレーンと倉庫のある<br>立派なハーバーにしておいたよ！',
+    'そこで相談なんだが……<br>この島を、もっと発展させたいんだ。',
+    '島の開発を手伝ってくれないか？<br>まずは建物に使う資材を集めよう！'
+  ];
+  function chiefFaceSvg(){
+    return '<svg viewBox="0 0 64 64" aria-hidden="true">'+
+      '<circle cx="32" cy="32" r="31" fill="#5fae5a"/>'+
+      '<ellipse cx="32" cy="35" rx="15" ry="16" fill="#f0c9a0"/>'+
+      '<path d="M18 30 Q17 20 24 17 Q32 14 40 17 Q47 20 46 30 Q44 24 32 24 Q20 24 18 30Z" fill="#e8e6df"/>'+
+      '<circle cx="26.5" cy="33" r="4.2" fill="none" stroke="#5a4632" stroke-width="1.4"/><circle cx="37.5" cy="33" r="4.2" fill="none" stroke="#5a4632" stroke-width="1.4"/>'+
+      '<line x1="30.7" y1="33" x2="33.3" y2="33" stroke="#5a4632" stroke-width="1.4"/>'+
+      '<circle cx="26.5" cy="33" r="1.5" fill="#1d3d4d"/><circle cx="37.5" cy="33" r="1.5" fill="#1d3d4d"/>'+
+      '<path d="M25 42 Q32 47 39 42 Q36 45.5 32 45.5 Q28 45.5 25 42Z" fill="#e8e6df"/>'+
+      '<path d="M27 44.5 Q32 48 37 44.5" stroke="#a5523d" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+      '<ellipse cx="32" cy="17" rx="22" ry="4.5" fill="#e3c26a" stroke="#a8862f" stroke-width="1"/>'+
+      '<path d="M21 17 Q21 6 32 6 Q43 6 43 17 Z" fill="#e8ca76" stroke="#a8862f" stroke-width="1"/>'+
+      '<rect x="21.3" y="12.5" width="21.4" height="3.2" fill="#c0495a"/>'+
+      '</svg>';
+  }
+  function chiefToast(text, ms){
+    try{
+      var old = document.getElementById('capToast'); if(old && old.parentNode) old.parentNode.removeChild(old);
+      var el = document.createElement('div'); el.id = 'capToast'; el.className = 'cap-toast';
+      el.innerHTML = chiefFaceSvg()+'<div>'+text+'</div>';
+      document.body.appendChild(el);
+      setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, ms||3400);
+    }catch(e){}
+  }
+  function runUnlocks(){
+    if(!state || state.tutorial || state.story) return;
+    if(state.phase!=='result' && state.phase!=='home') return;
+    if(document.getElementById('unlockUI') || document.getElementById('goalUI') || document.getElementById('saleUI')) return;
+    var u = UNLOCKS.filter(unlockReady)[0];
+    if(!u) return;
+    if(!wallet.seen) wallet.seen = {};
+    wallet.seen[u.id] = 1;
+    if(u.goal){ wallet.goalShown = true; saveWallet(); goalUI(); return; }
+    saveWallet();
+    if(u.chief){
+      state.story = {i:0, busy:false, lines:CHIEF_LINES, speaker:'chief', final:true, onDone:function(){ showUnlockModal(u); }};
+      render(); storyUI();
+      return;
+    }
+    showUnlockModal(u);
+  }
+  function showUnlockModal(u, opts){
+    var old = document.getElementById('unlockUI'); if(old && old.parentNode) old.parentNode.removeChild(old);
+    var el = document.createElement('div'); el.id = 'unlockUI';
+    var g = currentGoal();
+    var nxt = (opts && opts.noNext) ? '' : (g ? '<div class="ul-next"><span>次の目標</span>'+g.text+'</div>' : '');
+    var islBtn = (opts && opts.islBtn) ? '<button type="button" class="btn-secondary" data-action="unlock-isl">島へ行く</button>' : '';
+    el.innerHTML =
+      '<div class="sale-card ul-card">'+
+        '<div class="ul-kicker">'+((opts && opts.kicker) || '解放！')+'</div>'+
+        '<div class="ul-ic">'+u.ic+'</div>'+
+        '<h2 class="sale-title">'+u.title+'</h2>'+
+        '<p class="sale-text">'+u.body+'</p>'+
+        nxt+
+        '<button type="button" class="btn-primary ul-ok" data-action="unlock-ok">OK</button>'+islBtn+
+      '</div>';
+    document.getElementById('app').appendChild(el);
+    try{ playClearSound(); }catch(e){}
+  }
+  function unlockClose(goIsl){
+    var el = document.getElementById('unlockUI'); if(el && el.parentNode) el.parentNode.removeChild(el);
+    if(goIsl){ openIsland(); return; }
+    setTimeout(runUnlocks, 250);
+  }
+
+  // ---- 島づくり ----
+  var ISL_COLORS = [{n:'赤',c:'#d9503d'},{n:'青',c:'#3d7fd9'},{n:'黄',c:'#e0b030'},{n:'緑',c:'#4f9a55'},{n:'ピンク',c:'#e07aa0'}];
+  var BUILDS = {
+    house:  {name:'家',        unlock:700,  cost:60,  wood:2, steel:0, plot:'S', color:true,  desc:'乗客の運賃 +1/人'},
+    bridge: {name:'橋',        unlock:850,  cost:200, wood:2, steel:4, plot:'B', color:true,  max:1, desc:'小さな島へ渡れる（建てられる土地が2つ増える）'},
+    mansion:{name:'マンション', unlock:1000, cost:150, wood:2, steel:2, plot:'S', color:true,  desc:'乗客の運賃 +2/人'},
+    park:   {name:'遊園地',    unlock:1200, cost:300, wood:4, steel:4, plot:'L', color:true,  max:1, desc:'5航海に1回、ツアー便の依頼が来る'},
+    statue: {name:'金の銅像',  unlock:2000, cost:500, wood:0, steel:3, plot:'S', color:false, max:1, secret:true, desc:'伝説の船会社のあかし'}
+  };
+  var BUILD_ORDER = ['house','bridge','mansion','park','statue'];
+  var FARE_CAP = 4;      // 建物による運賃アップの上限（+4/人）
+  var TOUR_EVERY = 5;    // 遊園地ができたら、5航海に1回ツアー便
+  var PLOTS = [ // x:中心, y:地面の高さ（viewBox 360x160）。S=小区画, L=大区画
+    {x:166,y:110,t:'S'},{x:190,y:110,t:'S'},{x:214,y:110,t:'S'},{x:300,y:110,t:'S'},
+    {x:178,y:86,t:'S'},{x:204,y:86,t:'S'},{x:262,y:80,t:'S'},{x:242,y:62,t:'S'},{x:150,y:70,t:'S'},
+    {x:196,y:48,t:'L'},
+    {x:332,y:102,t:'B'},                               // 橋（はな島 ⇔ 小さな島）
+    {x:360,y:92,t:'S',isle:2},{x:379,y:108,t:'S',isle:2} // 橋がかかると使える小さな島の土地
+  ];
+  function bridgeBuilt(){ return islCount('bridge')>0; }
+  function plotUsable(i){ var p = PLOTS[i]; return !(p.isle===2 && !bridgeBuilt()); }
+  function islPlots(){ return (wallet.isl && wallet.isl.plots) || []; }
+  function islCount(k){ return islPlots().filter(function(p){ return p && p.k===k; }).length; }
+  function islOpen(){ return (wallet.total||0)>=500 && !!(wallet.seen && wallet.seen.u500); }
+  function parkBuilt(){ return islCount('park')>0; }
+  function fareBonus(){ return Math.min(FARE_CAP, islCount('house') + 2*islCount('mansion')); }
+  function colorOf(i){ return (ISL_COLORS[i]||ISL_COLORS[0]).c; }
+  function bldSvg(kind, ci, x, y, night){
+    var col = colorOf(ci), win = night ? '#ffd86b' : '#cfe3ee', o = '';
+    if(kind==='house'){
+      o += '<rect x="'+(x-8)+'" y="'+(y-12)+'" width="16" height="12" fill="#f4ecdc" stroke="rgba(0,0,0,.18)" stroke-width=".6"/>'+
+        '<path d="M'+(x-10)+' '+(y-12)+' L'+x+' '+(y-20)+' L'+(x+10)+' '+(y-12)+' Z" fill="'+col+'" stroke="rgba(0,0,0,.2)" stroke-width=".6"/>'+
+        '<rect x="'+(x-2)+'" y="'+(y-7)+'" width="4" height="7" fill="#8a6a45"/>'+
+        '<rect x="'+(x+3.5)+'" y="'+(y-9.5)+'" width="3" height="3" fill="'+win+'"/><rect x="'+(x-6.5)+'" y="'+(y-9.5)+'" width="3" height="3" fill="'+win+'"/>';
+    } else if(kind==='mansion'){
+      o += '<rect x="'+(x-11)+'" y="'+(y-36)+'" width="22" height="36" fill="'+col+'" stroke="rgba(0,0,0,.22)" stroke-width=".6"/>'+
+        '<rect x="'+(x-11)+'" y="'+(y-36)+'" width="22" height="36" fill="#fff" opacity=".35"/>'+
+        '<rect x="'+(x-12)+'" y="'+(y-38)+'" width="24" height="3" fill="'+col+'"/>';
+      for(var r=0;r<5;r++) for(var c=0;c<3;c++) o += '<rect x="'+(x-8+c*6)+'" y="'+(y-32+r*6.2)+'" width="4" height="3.6" fill="'+win+'"/>';
+      o += '<rect x="'+(x-2.5)+'" y="'+(y-5)+'" width="5" height="5" fill="#6e5236"/>';
+    } else if(kind==='park'){
+      var cx = x, cy = y-25, R = 18, sp = '', gd = '';
+      for(var a=0;a<8;a++){ var ang=a*Math.PI/4, x2=cx+Math.cos(ang)*R, y2=cy+Math.sin(ang)*R;
+        sp += '<line x1="'+cx+'" y1="'+cy+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="#e9e9ef" stroke-width="1.1"/>';
+        gd += '<circle cx="'+x2.toFixed(1)+'" cy="'+y2.toFixed(1)+'" r="2.8" fill="'+(a%2?col:(night?'#ffd86b':'#f4f1e8'))+'" stroke="rgba(0,0,0,.25)" stroke-width=".5"/>'; }
+      o += '<path d="M'+(cx-9)+' '+y+' L'+cx+' '+cy+' L'+(cx+9)+' '+y+'" stroke="#d8d8e0" stroke-width="2" fill="none"/>'+
+        '<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" stroke="#e9e9ef" stroke-width="1.8" fill="none"/>'+sp+gd+
+        '<circle cx="'+cx+'" cy="'+cy+'" r="2.4" fill="'+col+'"/>'+
+        '<path d="M'+(x+12)+' '+y+' L'+(x+12)+' '+(y-8)+' L'+(x+17)+' '+(y-15)+' L'+(x+22)+' '+(y-8)+' L'+(x+22)+' '+y+' Z" fill="'+col+'" stroke="rgba(0,0,0,.2)" stroke-width=".6"/>'+
+        '<path d="M'+(x+12)+' '+(y-8)+' L'+(x+22)+' '+(y-8)+'" stroke="#fff" stroke-width="1.2" stroke-dasharray="2 2"/>'+
+        '<path d="M'+(x-22)+' '+y+' Q'+(x-18)+' '+(y-14)+' '+(x-12)+' '+(y-8)+' T'+(x-4)+' '+(y-4)+'" stroke="'+col+'" stroke-width="1.6" fill="none"/>';
+    } else if(kind==='bridge'){
+      // 赤い太鼓橋：x,y は橋の中央の足元
+      var qx = function(t){ return (1-t)*(1-t)*(x-24) + 2*(1-t)*t*x + t*t*(x+24); };
+      var qy = function(t){ return (1-t)*(1-t)*y + 2*(1-t)*t*(y-14) + t*t*(y-2); };
+      o += '<line x1="'+(x-9)+'" y1="'+(qy(.31)).toFixed(1)+'" x2="'+(x-9)+'" y2="'+(y+16)+'" stroke="#8d95a1" stroke-width="2.4"/>'+
+           '<line x1="'+(x+9)+'" y1="'+(qy(.69)).toFixed(1)+'" x2="'+(x+9)+'" y2="'+(y+16)+'" stroke="#8d95a1" stroke-width="2.4"/>'+
+           '<path d="M'+(x-24)+' '+y+' Q'+x+' '+(y-14)+' '+(x+24)+' '+(y-2)+'" stroke="#6e5236" stroke-width="4.4" fill="none" stroke-linecap="round"/>'+
+           '<path d="M'+(x-24)+' '+(y-5)+' Q'+x+' '+(y-19)+' '+(x+24)+' '+(y-7)+'" stroke="'+col+'" stroke-width="1.5" fill="none" stroke-linecap="round"/>';
+      for(var bt=0;bt<=6;bt++){ var tt = bt/6; o += '<line x1="'+qx(tt).toFixed(1)+'" y1="'+(qy(tt)-1).toFixed(1)+'" x2="'+qx(tt).toFixed(1)+'" y2="'+(qy(tt)-5.5).toFixed(1)+'" stroke="'+col+'" stroke-width="1.4"/>'; }
+      if(night){ o += '<circle cx="'+x+'" cy="'+(y-15)+'" r="1.6" fill="#ffd86b"/>'; }
+    } else if(kind==='statue'){
+      o += '<rect x="'+(x-7)+'" y="'+(y-7)+'" width="14" height="7" fill="#b9bfc9" stroke="rgba(0,0,0,.2)" stroke-width=".6"/>'+
+        '<rect x="'+(x-8.5)+'" y="'+(y-8.5)+'" width="17" height="2" fill="#d6dbe2"/>'+
+        '<path d="M'+(x-4)+' '+(y-8.5)+' L'+(x-3)+' '+(y-19)+' Q'+x+' '+(y-21)+' '+(x+3)+' '+(y-19)+' L'+(x+4)+' '+(y-8.5)+' Z" fill="#e9c13b" stroke="#a8862f" stroke-width=".6"/>'+
+        '<path d="M'+(x+3)+' '+(y-18)+' L'+(x+8)+' '+(y-25)+'" stroke="#e9c13b" stroke-width="2.2" stroke-linecap="round"/>'+
+        '<circle cx="'+x+'" cy="'+(y-23.5)+'" r="3.2" fill="#f2d25a" stroke="#a8862f" stroke-width=".6"/>'+
+        '<path d="M'+(x-1.5)+' '+(y-17)+' L'+(x-1.5)+' '+(y-11)+'" stroke="#fff3b0" stroke-width=".9" opacity=".8"/>'+
+        '<path d="M'+(x+10)+' '+(y-27)+' l1 -2.5 l1 2.5 l2.5 1 l-2.5 1 l-1 2.5 l-1 -2.5 l-2.5 -1 z" fill="#fff6c8"/>';
+    }
+    return o;
+  }
+  function bldIconSvg(kind, ci){
+    var box = {house:[0,0,24,24,12,23], mansion:[0,0,26,42,13,41], park:[0,0,50,48,25,47], statue:[0,0,24,32,10,31], bridge:[0,0,54,30,27,14]}[kind];
+    return '<svg viewBox="'+box[0]+' '+box[1]+' '+box[2]+' '+box[3]+'" aria-hidden="true">'+bldSvg(kind, ci, box[4], box[5], false)+'</svg>';
+  }
+  function plotCenter(i){ var p = PLOTS[i]; return {x:p.x, y:p.y - (p.t==='L' ? 20 : (p.t==='B' ? 6 : 9))}; }
+
+  // 島づくり画面の状態（ホームに戻ると消える）
+  function islUi(){ if(!state.isl) state.isl = {pick:null, color:0, sel:null, popPlot:null, hot:null}; return state.isl; }
+  function openIsland(){
+    if(!islOpen()) return;
+    if(state.phase!=='home' && state.phase!=='result' && state.phase!=='titles') return;
+    state = freshState(); state.phase = 'island';
+    render();
+  }
+  function buildState(kind){
+    var b = BUILDS[kind], t = wallet.total||0, m = wallet.mats||{wood:0,steel:0};
+    if(t < b.unlock) return {ok:false, why:'🔒 累計'+fmtNum(b.unlock)+'で解放'};
+    if(b.max && islCount(kind)>=b.max) return {ok:false, why:'建設済み', done:true};
+    var free = PLOTS.some(function(p,i){ return p.t===b.plot && !islPlots()[i] && plotUsable(i); });
+    if(!free) return {ok:false, why:'空いている土地がない'};
+    var lack = [];
+    if(wallet.ferripo < b.cost) lack.push('フェリポ あと'+(b.cost-wallet.ferripo));
+    if(m.wood < b.wood) lack.push('木材 あと'+(b.wood-m.wood)+'本');
+    if(m.steel < b.steel) lack.push('鉄骨 あと'+(b.steel-m.steel)+'本');
+    if(lack.length) return {ok:false, why:lack.join('・')};
+    return {ok:true};
+  }
+  function costText(b){
+    var p = [fmtNum(b.cost)+'フェリポ'];
+    if(b.wood) p.push('木材'+b.wood);
+    if(b.steel) p.push('鉄骨'+b.steel);
+    return p.join(' ＋ ');
+  }
+  function renderIsland(){
+    var ui = islUi(), t = wallet.total||0, m = wallet.mats||{wood:0,steel:0}, plots = islPlots();
+    var help;
+    if(ui.pick) help = '「'+BUILDS[ui.pick].name+'」を置く場所をタップ、またはカードを島へドラッグ';
+    else if(ui.sel!=null && plots[ui.sel]) help = '選択中の「'+BUILDS[plots[ui.sel].k].name+'」：ドラッグで移動／下の色で塗り替え';
+    else if(t < 700) help = 'まずは資材を集めよう。累計700フェリポで、家を建てられるようになる。';
+    else help = '建てたい建物のカードを選んで、島へドラッグしよう。建てた建物もドラッグで動かせる。';
+    var showColor = (ui.pick && BUILDS[ui.pick].color) || (ui.sel!=null && plots[ui.sel] && BUILDS[plots[ui.sel].k].color);
+    var curC = (ui.sel!=null && plots[ui.sel]) ? plots[ui.sel].c : ui.color;
+    var colorRow = showColor ? '<div class="isl-colors"><span>色</span>'+ISL_COLORS.map(function(c,i){
+      return '<button type="button" class="isl-col'+(i===curC?' on':'')+'" data-action="isl-color" data-c="'+i+'" style="background:'+c.c+'" aria-label="'+c.n+'"></button>'; }).join('')+'</div>' : '';
+    var fb = fareBonus();
+    var eff = '<div class="isl-eff"><span>乗客の運賃</span><b>+'+fb+'/人</b><small>（上限 +'+FARE_CAP+'）</small></div>';
+    if(parkBuilt()){
+      var left = Math.max(0, (TOUR_EVERY-1) - (wallet.tourCount||0));
+      eff += '<div class="isl-eff"><span>🎡 ツアー便</span><b>'+(left===0 ? '次の便で依頼あり！' : 'あと'+left+'航海')+'</b></div>';
+    }
+    var cards = BUILD_ORDER.filter(function(k){ return !BUILDS[k].secret || t>=BUILDS[k].unlock; }).map(function(k){
+      var b = BUILDS[k], st = buildState(k), on = ui.pick===k;
+      return '<div class="ib-card'+(st.ok?' ok':' ng')+(st.done?' done':'')+(on?' on':'')+'"'+(st.ok?' data-isl-kind="'+k+'"':'')+'>'+
+        '<div class="ib-ic">'+bldIconSvg(k, b.color ? ui.color : 0)+'</div>'+
+        '<div class="ib-body"><div class="ib-name">'+b.name+'</div><div class="ib-desc">'+b.desc+'</div>'+
+        '<div class="ib-cost">'+costText(b)+'</div>'+(st.ok ? '' : '<div class="ib-why">'+st.why+'</div>')+'</div>'+
+      '</div>';
+    }).join('');
+    document.getElementById('stage').innerHTML =
+      '<div class="phase-heading"><h2>はな島の開発</h2></div>'+
+      '<div class="isl-stock"><span>🪵 木材 <b>'+m.wood+'</b></span><span>🔩 鉄骨 <b>'+m.steel+'</b></span><span>所持 <b>'+fmtNum(wallet.ferripo)+'</b></span></div>'+
+      '<div class="isl-edit" id="islEdit">'+islandSvg(t, ui.popPlot, true)+'</div>'+
+      '<div class="isl-help">'+help+'</div>'+
+      colorRow+
+      '<div class="isl-effects">'+eff+'</div>'+
+      '<div class="ib-list">'+cards+'</div>'+
+      '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">ホームへ戻る</button></div>';
+    ui.popPlot = null;
+  }
+  function islBuild(kind, i){
+    var b = BUILDS[kind], p = PLOTS[i], ui = islUi();
+    if(!b || !p || p.t!==b.plot || islPlots()[i] || !plotUsable(i)) return;
+    var st = buildState(kind); if(!st.ok) return;
+    if(!wallet.mats) wallet.mats = {wood:0, steel:0};
+    wallet.ferripo -= b.cost; wallet.mats.wood -= b.wood; wallet.mats.steel -= b.steel;
+    wallet.isl.plots[i] = {k:kind, c: b.color ? ui.color : 0};
+    ui.popPlot = i; ui.pick = null; ui.sel = null;
+    var msg = null, modal = null;
+    if(kind==='house'){ grantBadge('house'); msg = fareBonus()>=FARE_CAP ? '家が建った！（運賃アップは上限に達している）' : '家が建った！島に住む人が増え、乗客の運賃が上がった。'; }
+    else if(kind==='mansion'){ grantBadge('house'); msg = 'マンションが完成！乗客の運賃が大きく上がった。'; }
+    else if(kind==='bridge'){ modal = {ic:'🌉', title:'橋がかかった！', body:'はな島と小さな島が、橋でつながった！<br>小さな島にも、建物を建てられるようになった。'}; }
+    else if(kind==='park'){ grantBadge('park'); wallet.tourCount = TOUR_EVERY-1;
+      modal = {ic:'🎡', title:'遊園地が完成！', body:'島の外から、観光客がやって来るようになった！<br>次の航海で、さっそく「遊園地ツアー便」の依頼が来る。<br>その後は5航海に1回。観光客だけを運ぶ特別便で、運賃は2倍！'}; }
+    else if(kind==='statue'){ grantBadge('statue');
+      modal = {ic:'🏆', title:'金の銅像が完成！', body:'島のみんなが、あなたの銅像を見上げている。<br>伝説の船会社のあかしだ。'}; }
+    checkBadges(); saveWallet();
+    try{ playCoinSound(); }catch(e){}
+    render();
+    if(modal) setTimeout(function(){ showUnlockModal(modal, {kicker:'完成！', noNext:true}); }, 700);
+    else if(msg) chiefToast(msg, 3200);
+  }
+  function islMove(from, to){
+    var plots = islPlots(), a = plots[from], ui = islUi();
+    if(!a || from===to || PLOTS[to].t!==BUILDS[a.k].plot) return;
+    var b = plots[to];
+    plots[to] = a; plots[from] = b || null;
+    ui.sel = to; ui.popPlot = null;
+    saveWallet(); render();
+  }
+  function islSetColor(c){
+    var ui = islUi(), plots = islPlots();
+    if(ui.sel!=null && plots[ui.sel]){ plots[ui.sel].c = c; saveWallet(); }
+    ui.color = c;
+    render();
+  }
+  // ドラッグ：カード→島（新しく建てる）、建物→別の区画（移動）
+  var islDrag = null;
+  function islNearestPlot(cx, cy, kind, exclude){
+    var svg = document.querySelector('#islEdit svg'); if(!svg) return null;
+    var pt = svg.createSVGPoint(); pt.x = cx; pt.y = cy;
+    var ctm = svg.getScreenCTM(); if(!ctm) return null;
+    var p = pt.matrixTransform(ctm.inverse());
+    var want = BUILDS[kind].plot, best = null, bd = 30;
+    PLOTS.forEach(function(pl, i){
+      if(pl.t!==want || i===exclude || !plotUsable(i)) return;
+      var occ = islPlots()[i];
+      if(occ && exclude==null) return; // 新しく建てるときは空き地だけ
+      var c = plotCenter(i), d = Math.hypot(c.x-p.x, c.y-p.y);
+      if(d < bd){ bd = d; best = i; }
+    });
+    return best;
+  }
+  function islMarkHot(i){
+    var els = document.querySelectorAll('#islEdit [data-isl-plot]');
+    for(var k=0;k<els.length;k++) els[k].classList.toggle('hot', +els[k].getAttribute('data-isl-plot')===i);
+  }
+  document.addEventListener('pointerdown', function(e){
+    if(!state || state.phase!=='island') return;
+    var t = e.target; if(!t || !t.closest) return;
+    var card = t.closest('[data-isl-kind]'), plot = t.closest('#islEdit [data-isl-plot]');
+    if(!card && !plot) return;
+    var src;
+    if(card) src = {type:'new', kind:card.getAttribute('data-isl-kind')};
+    else { var i = +plot.getAttribute('data-isl-plot'), occ = islPlots()[i]; src = occ ? {type:'move', from:i, kind:occ.k} : {type:'slot', at:i}; }
+    islDrag = {src:src, x0:e.clientX, y0:e.clientY, moved:false, ghost:null, target:null};
+    activeDrag = {kind:'isl'}; // ページのスクロールを止める
+  });
+  document.addEventListener('pointermove', function(e){
+    if(!islDrag) return;
+    var d = islDrag;
+    if(!d.moved && Math.hypot(e.clientX-d.x0, e.clientY-d.y0) > 8) d.moved = true;
+    if(!d.moved || d.src.type==='slot') return;
+    if(!d.ghost){
+      var occ = d.src.type==='move' ? islPlots()[d.src.from] : null;
+      d.ghost = document.createElement('div'); d.ghost.className = 'isl-ghost ib-'+d.src.kind;
+      d.ghost.innerHTML = bldIconSvg(d.src.kind, occ ? occ.c : islUi().color);
+      document.body.appendChild(d.ghost);
+    }
+    // 指で隠れないよう、建物は指の少し上に出す
+    d.ghost.style.left = e.clientX+'px'; d.ghost.style.top = (e.clientY-34)+'px';
+    d.target = islNearestPlot(e.clientX, e.clientY-46, d.src.kind, d.src.type==='move' ? d.src.from : null);
+    islMarkHot(d.target);
+  });
+  function islPointerEnd(e, cancel){
+    if(!islDrag) return;
+    var d = islDrag; islDrag = null; activeDrag = null;
+    if(d.ghost && d.ghost.parentNode) d.ghost.parentNode.removeChild(d.ghost);
+    if(cancel || !state || state.phase!=='island') return;
+    var ui = islUi();
+    if(!d.moved){
+      if(d.src.type==='new'){ ui.pick = ui.pick===d.src.kind ? null : d.src.kind; ui.sel = null; render(); }
+      else if(d.src.type==='move'){ ui.sel = ui.sel===d.src.from ? null : d.src.from; ui.pick = null; render(); }
+      else if(d.src.type==='slot'){ if(ui.pick) islBuild(ui.pick, d.src.at); else if(ui.sel!=null) islMove(ui.sel, d.src.at); }
+      return;
+    }
+    if(d.target==null){ islMarkHot(null); return; }
+    if(d.src.type==='new') islBuild(d.src.kind, d.target);
+    else if(d.src.type==='move') islMove(d.src.from, d.target);
+  }
+  document.addEventListener('pointerup', function(e){ islPointerEnd(e, false); });
+  document.addEventListener('pointercancel', function(e){ islPointerEnd(e, true); });
+
+  // ---- 遊園地ツアー便 ----
+  function tourAccept(){
+    if(state.phase!=='dock' || !state.tourOffer) return;
+    state.tourOffer = false; state.tour = true;
+    wallet.tourCount = 0; saveWallet();
+    state.loadedIds = []; state.placement = {}; state.weight = 0;
+    state.luxuryCarId = null;
+    state.troublemakerIds = shuffleArr(paxIds()).slice(0, 3);
+    state.mission = randomTourMission(); state.missionResult = null;
+    render();
+  }
+  function tourDecline(){
+    if(state.phase!=='dock' || !state.tourOffer) return;
+    state.tourOffer = false; wallet.tourCount = 0; saveWallet();
+    render();
+  }
+  function tourOfferHtml(){
+    return '<div class="tour-offer"><div class="to-head">🎡 遊園地ツアー便の依頼！</div>'+
+      '<p>遊園地へ向かう観光客だけを乗せる特別便。<br>指示書はすべてお客さん対応。<b>運賃は2倍！</b></p>'+
+      '<div class="to-btns"><button type="button" class="btn-primary" data-action="tour-accept">ツアー便を出す</button>'+
+      '<button type="button" class="btn-secondary" data-action="tour-decline">今回は通常便</button></div></div>';
+  }
+
+  // ---- 島長の依頼（資材を届けろ） ----
+  function chiefRequestMission(){
+    if((wallet.total||0) < 600) return null;
+    var avail = {wood:0, steel:0}, m = wallet.mats||{wood:0,steel:0};
+    baseRackDefs().forEach(function(d){ if(avail[d.shape]!=null) avail[d.shape]++; });
+    for(var i=0;i<BUILD_ORDER.length;i++){
+      var k = BUILD_ORDER[i], b = BUILDS[k];
+      if((wallet.total||0) < b.unlock) continue;
+      if(b.max && islCount(k)>=b.max) continue;
+      var needS = b.steel - m.steel, needW = b.wood - m.wood;
+      var mat = (needS>0 && avail.steel>0) ? 'steel' : ((needW>0 && avail.wood>0) ? 'wood' : null);
+      if(!mat) continue;
+      var n = Math.max(1, Math.min(avail[mat], mat==='steel' ? needS : needW, 2));
+      var nm = mat==='steel' ? '鉄骨' : '木材';
+      return {id:'chief_'+k+'_'+mat+n, chief:true, evalAt:'depart', reward: mat==='steel' ? 16 : 12,
+        label:'「'+b.name+'」の資材がほしい！'+nm+'を'+n+'本積んで出航する',
+        check:(function(mm,nn){ return function(){ return countShape(mm)>=nn; }; })(mat, n)};
+    }
+    return null;
+  }
   var WALLET_KEY = 'shimabin_wallet_v1';
   function loadWallet(){
     var validIds = SHIPS.map(function(s){ return s.id; });
@@ -2039,14 +2598,27 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
           var cur = validIds.indexOf(parsed.currentShip)!==-1 ? parsed.currentShip : 'wakaba';
           if(owned.indexOf(cur)===-1) cur = 'wakaba';
           return {ferripo: Math.max(0, Math.round(parsed.ferripo)), ownedShips: owned, currentShip: cur, total: Math.max(0, Math.round(parsed.total||0)),
-            badges: (parsed.badges && typeof parsed.badges==='object') ? parsed.badges : {}, stats: (parsed.stats && typeof parsed.stats==='object') ? parsed.stats : {}, streak: Math.max(0, parsed.streak|0), goalShown: !!parsed.goalShown, saleRoll: Math.max(0, Math.min(60, parsed.saleRoll|0))};
+            badges: (parsed.badges && typeof parsed.badges==='object') ? parsed.badges : {}, stats: (parsed.stats && typeof parsed.stats==='object') ? parsed.stats : {}, streak: Math.max(0, parsed.streak|0), goalShown: !!parsed.goalShown, saleRoll: Math.max(0, Math.min(60, parsed.saleRoll|0)),
+            mats: {wood: Math.max(0, (parsed.mats && parsed.mats.wood)|0), steel: Math.max(0, (parsed.mats && parsed.mats.steel)|0)},
+            isl: {plots: cleanPlots(parsed.isl && parsed.isl.plots)},
+            seen: (parsed.seen && typeof parsed.seen==='object') ? parsed.seen : {},
+            tourCount: Math.max(0, parsed.tourCount|0)};
         }
       }
     } catch(e){ /* corrupt/blocked storage -> fall back to a fresh wallet */ }
     // DEV NOTE: starting ferripo is temporarily boosted (0 -> 1000) purely to
     // make testing the advanced ship fast while this feature is still being
     // discussed/iterated on. Set back to 0 before treating this as final.
-    return {ferripo:0, ownedShips:['wakaba'], currentShip:'wakaba', total:0, badges:{}, stats:{}, streak:0, goalShown:false};
+    return {ferripo:0, ownedShips:['wakaba'], currentShip:'wakaba', total:0, badges:{}, stats:{}, streak:0, goalShown:false,
+      mats:{wood:0, steel:0}, isl:{plots:cleanPlots(null)}, seen:{}, tourCount:0};
+  }
+  function cleanPlots(arr){
+    var out = [];
+    for(var i=0;i<PLOTS.length;i++){
+      var p = arr && arr[i];
+      out.push((p && BUILDS[p.k] && BUILDS[p.k].plot===PLOTS[i].t) ? {k:p.k, c:Math.max(0, Math.min(ISL_COLORS.length-1, p.c|0))} : null);
+    }
+    return out;
   }
   function saveWallet(){
     try{ localStorage.setItem(WALLET_KEY, JSON.stringify(wallet)); } catch(e){ /* storage unavailable -> progress just won't persist */ }
@@ -2081,6 +2653,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     wallet.ownedShips.push(id);
     checkBadges(); saveWallet(); // 購入しただけでは乗り換えない（積み込み画面の「変更」ボタンで乗り換える）
     render();
+    if(id==='oozora') captainToast('大型船「おおぞら」を手に入れた！<br>積み込み画面の「変更」で乗り換えよう', 3800);
   }
   function selectShip(id){
     if(wallet.ownedShips.indexOf(id)===-1) return;
@@ -2309,23 +2882,23 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
   // balance0/carpaxequal) are easy to hit with a big mixed load on purpose —
   // that loadout should still feel rewarded sometimes, just not every time.
   var MISSIONS = [
-    { id:'freight2', label:'コンテナを2個積んで出航する', evalAt:'depart', reward:10,
+    { id:'freight2', label:'コンテナを2個積んで出航する', evalAt:'depart', reward:10, req:{box:2},
       check:function(){ return countShape('box')>=2; } },
-    { id:'pax7', label:'乗客を7人以上積んで出航する', evalAt:'depart', reward:10,
+    { id:'pax7', label:'乗客を7人以上積んで出航する', evalAt:'depart', reward:10, req:{pax:7},
       check:function(){ return countShape('pax')>=7; } },
     { id:'balance0', label:'左右の重量差ゼロで出航する', evalAt:'depart', reward:10,
       check:function(){ var w=sideWeights(); return w.diff===0; } },
-    { id:'car3', label:'車を3台積載して出航する', evalAt:'depart', reward:10,
+    { id:'car3', label:'車を3台積載して出航する', evalAt:'depart', reward:10, req:{car:3},
       check:function(){ return countShape('car')>=3; } },
-    { id:'boxcar1', label:'コンテナと車を1個ずつ積載して出航する', evalAt:'depart', reward:10,
+    { id:'boxcar1', label:'コンテナと車を1個ずつ積載して出航する', evalAt:'depart', reward:10, req:{box:1,car:1},
       check:function(){ return countShape('box')>=1 && countShape('car')>=1; } },
-    { id:'box1pax6', label:'コンテナを1つ、乗客を6人積載して出航する', evalAt:'depart', reward:10,
+    { id:'box1pax6', label:'コンテナを1つ、乗客を6人積載して出航する', evalAt:'depart', reward:10, req:{box:1,pax:6},
       check:function(){ return countShape('box')>=1 && countShape('pax')>=6; } },
-    { id:'boxcarpax1', label:'コンテナ、車、乗客を1つずつ積載して出航する', evalAt:'depart', reward:10,
+    { id:'boxcarpax1', label:'コンテナ、車、乗客を1つずつ積載して出航する', evalAt:'depart', reward:10, req:{box:1,car:1,pax:1},
       check:function(){ return countShape('box')>=1 && countShape('car')>=1 && countShape('pax')>=1; } },
     { id:'maxload', label:'積載重量を最大量まで積んで出航する', evalAt:'depart', reward:10,
       check:function(){ return state.weight===CAPACITY; } },
-    { id:'carpaxequal', label:'車と乗客を同じ人数だけ積載して出航する', evalAt:'depart', reward:10,
+    { id:'carpaxequal', label:'車と乗客を同じ人数だけ積載して出航する', evalAt:'depart', reward:10, req:{car:1,pax:1},
       check:function(){
         var carCount = countShape('car'), paxCount = countShape('pax');
         return carCount>0 && carCount===paxCount;
@@ -2335,19 +2908,19 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     // tier:'basic' -- 26t積めるおおぞらだと「わざわざ少なく積む」指示に見えて
     // しまうので、わかば（18t）限定にしてある。おおぞら用の対になる指示は
     // exact20t/exact24t（下のtier:'advanced'ミッション）が担う。
-    { id:'exact8t', label:'積載量を8tぴったりにして出航する', evalAt:'depart', reward:10, tier:'basic',
+    { id:'exact8t', label:'積載量を8tぴったりにして出航する', evalAt:'depart', reward:10, tier:'basic', wt:8,
       check:function(){ return state.weight===8; } },
-    { id:'exact12t', label:'積載量を12tぴったりにして出航する', evalAt:'depart', reward:10, tier:'basic',
+    { id:'exact12t', label:'積載量を12tぴったりにして出航する', evalAt:'depart', reward:10, tier:'basic', wt:12,
       check:function(){ return state.weight===12; } },
-    { id:'exact15t', label:'積載量を15tぴったりにして出航する', evalAt:'depart', reward:10, tier:'basic',
+    { id:'exact15t', label:'積載量を15tぴったりにして出航する', evalAt:'depart', reward:10, tier:'basic', wt:15,
       check:function(){ return state.weight===15; } },
     // 純粋カテゴリ系：1種類だけに全振りする構成。混載最大化はもちろん全滅する。
     { id:'carsOnly', label:'車だけを積載して出航する（他は一切積まない）', evalAt:'depart', reward:10, rewardAdv:20,
-      check:function(){ return countShape('car')>0 && countShape('box')===0 && countShape('pax')===0; } },
+      req:{car:1}, check:function(){ return countShape('car')>0 && countShape('car')===state.loadedIds.length; } },
     { id:'boxesOnly', label:'コンテナだけを積載して出航する（他は一切積まない）', evalAt:'depart', reward:10,
-      check:function(){ return countShape('box')>0 && countShape('car')===0 && countShape('pax')===0; } },
+      req:{box:1}, check:function(){ return countShape('box')>0 && countShape('box')===state.loadedIds.length; } },
     { id:'paxOnly', label:'乗客だけを積載して出航する（他は一切積まない）', evalAt:'depart', reward:10, rewardAdv:25,
-      check:function(){ return countShape('pax')>0 && countShape('box')===0 && countShape('car')===0; } },
+      req:{pax:1}, check:function(){ return countShape('pax')>0 && countShape('pax')===state.loadedIds.length; } },
     // 上限系：下限系（pax7/car3）だけだと「多ければ多いほど勝ち」側に偏るので、
     // 少なくする方向の制約も用意してバランスを取る。
     { id:'pax3max', label:'乗客を3人以下にして出航する', evalAt:'depart', reward:10,
@@ -2357,7 +2930,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     // 排他系：3種類とも積む構成（混載最大化を含む）を狙い撃ちで否定する。
     { id:'twoKindsMax', label:'積荷の種類を2種類以下にして出航する', evalAt:'depart', reward:10,
       check:function(){
-        var kinds = ['car','box','pax'].filter(function(s){ return countShape(s)>0; }).length;
+        var kinds = ['car','box','pax','wood','steel'].filter(function(s){ return countShape(s)>0; }).length;
         return state.loadedIds.length>0 && kinds<=2;
       } },
     // ネタ枠：普段なら絶対選ばない極端な構成を、このミッションの時だけ選ぶ理由にする。
@@ -2368,6 +2941,24 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     // 上位船「おおぞら」限定ミッション（tier:'advanced'）。積載量26tと
     // 追加の積荷（車4台目・コンテナ3個目・乗客11〜12人目）があってこそ
     // 狙える目標値なので、わかば（18t・積荷12点）では選ばれない。
+    // 資材（累計600〜）：運んだ分は島の資材置き場へ
+    { id:'wood2', label:'木材を2本以上積んで出航する（島の資材になる）', evalAt:'depart', reward:10, req:{wood:2},
+      check:function(){ return countShape('wood')>=2; } },
+    { id:'steel1', label:'鉄骨を積んで出航する（島の資材になる）', evalAt:'depart', reward:10, req:{steel:1},
+      check:function(){ return countShape('steel')>=1; } },
+    { id:'woodsteel', label:'木材と鉄骨を両方積んで出航する', evalAt:'depart', reward:12, req:{wood:1,steel:1},
+      check:function(){ return countShape('wood')>=1 && countShape('steel')>=1; } },
+    // 遊園地ツアー便だけの指示書（すべてお客さん対応）
+    { id:'tour15', label:'観光客を15人以上乗せて出航する', evalAt:'depart', reward:15, tier:'tour',
+      check:function(){ return countShape('pax')>=15; } },
+    { id:'tourBal', label:'左右のお客さんを同じ人数にして出航する', evalAt:'depart', reward:15, tier:'tour',
+      check:function(){ var l=0,r=0; state.loadedIds.forEach(function(id){ if(state.placement[id]==='L') l++; else r++; }); return l>0 && l===r; } },
+    { id:'tourLight', label:'積みすぎず、スピードを落とさずに出航する（積載量の85%以下）', evalAt:'depart', reward:15, tier:'tour',
+      check:function(){ return state.loadedIds.length>0 && state.weight <= CAPACITY*0.85; } },
+    { id:'tourSick', label:'船酔いのお客さんを介抱して、島に到着する', evalAt:'arrive', reward:20, tier:'tour',
+      check:function(){ return (state.checkpoints||[]).some(function(c){ return c.type==='sick' && c.success; }); } },
+    { id:'tourPerfect', label:'アクションをすべて成功させて到着する（お客さんを怖がらせない）', evalAt:'arrive', reward:20, tier:'tour',
+      check:function(){ return !!(state.checkpoints && state.checkpoints.length && state.checkpoints.every(function(c){ return c.success; })); } },
     { id:'exact20t', label:'積載量を20tぴったりにして出航する', evalAt:'depart', reward:14, tier:'advanced',
       check:function(){ return state.weight===20; } },
     { id:'exact24t', label:'積載量を24tぴったりにして出航する', evalAt:'depart', reward:14, tier:'advanced',
@@ -2379,11 +2970,31 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
   ];
   // わかば（基本船）では上位船限定ミッションは絶対に引かない（積載量・
   // 積荷のどちらも足りず達成不可能になってしまうため）。
+  // 今の積荷リストで達成できる指示書だけを出す（荷物が少ない序盤に「無理な指示」を出さない）
+  function missionFeasible(m){
+    var defs = baseRackDefs(), cnt = {};
+    defs.forEach(function(d){ cnt[d.shape] = (cnt[d.shape]||0) + 1; });
+    if(m.req){ for(var k in m.req){ if((cnt[k]||0) < m.req[k]) return false; } }
+    var target = m.wt || (m.id==='maxload' ? CAPACITY : 0);
+    if(target){
+      var ok = {0:true};
+      defs.forEach(function(d){ Object.keys(ok).map(Number).forEach(function(w){ if(w+d.weight<=CAPACITY) ok[w+d.weight] = true; }); });
+      if(!ok[target]) return false;
+    }
+    return true;
+  }
+  function randomTourMission(){
+    var pool = MISSIONS.filter(function(m){ return m.tier==='tour'; });
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
   function randomMission(){
+    var cr = chiefRequestMission();
+    if(cr && Math.random()<0.35) return cr;
     var pool = MISSIONS.filter(function(m){
-      if(m.tier==='advanced') return isAdvancedShip();
-      if(m.tier==='basic') return !isAdvancedShip();
-      return true;
+      if(m.tier==='tour') return false;
+      if(m.tier==='advanced' && !isAdvancedShip()) return false;
+      if(m.tier==='basic' && isAdvancedShip()) return false;
+      return missionFeasible(m);
     });
     var pick = pool[Math.floor(Math.random()*pool.length)];
     // 大型船は積荷が多いぶん「指示に従う損」が大きいので、一部は報酬を上乗せ
@@ -2406,7 +3017,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       statusText = live ? '達成中' : '未達成';
     }
     return '<div class="mission-banner'+statusCls+'">'+
-      '<div class="mission-banner-row"><span class="mission-tag">🎯 積付指示書</span><span class="mission-status">'+statusText+'（+'+m.reward+'）</span></div>'+
+      '<div class="mission-banner-row"><span class="mission-tag">'+(m.chief ? '🏝️ 島長の依頼' : (m.tier==='tour' ? '🎡 ツアー指示書' : '🎯 積付指示書'))+'</span><span class="mission-status">'+statusText+'（+'+m.reward+'）</span></div>'+
       '<div class="mission-label">'+m.label+'</div></div>';
   }
 
@@ -2416,6 +3027,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
   var state = null;
 
   function freshState(){
+    if(state){ state.tour = false; state.tutorial = false; } // 古い便のツアー/お手本設定を新しい便の抽選に持ち込まない
     var s = {
       phase:'dock', // dock | sailing | event | result | shipyard
       loadedIds:[],
@@ -2457,6 +3069,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       s.luxuryCarId = null;
       s.mission = MISSIONS.filter(function(m){ return m.id==='boxcarpax1'; })[0] || s.mission;
     }
+    // 遊園地があれば、5航海に1回ツアー便の依頼が来る
+    s.tourOffer = !s.tutorial && parkBuilt() && (wallet.tourCount||0) >= TOUR_EVERY-1;
     return s;
   }
 
@@ -2648,7 +3262,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     list.innerHTML = state.log.map(function(m){ return '<li>› '+m+'</li>'; }).join('');
   }
 
-  var SPEED_FACTOR = {box:0.6, car:1, pax:1.4}; // containers are slow ballast, cars are the neutral middle, passengers travel light
+  var SPEED_FACTOR = {box:0.6, car:1, pax:1.4, wood:1.1, steel:0.5}; // containers are slow ballast, cars are the neutral middle, passengers travel light
   // How heavily loaded the ship is (relative to CAPACITY) now determines
   // speed instead of stability. Simplified to a single either/or: normal
   // load cruises at full speed, overloaded drags at a flat penalty —
@@ -2694,6 +3308,19 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       '<circle cx="25.5" cy="14.2" r="3.1" fill="rgba(0,0,0,.55)"/>'+
       '<circle cx="25.5" cy="14.2" r="1.3" fill="rgba(255,255,255,.5)"/>'+
     '</svg>';
+  }
+  function woodIconSvg(){ // 丸太を3本積んだ木材（断面が見える）
+    function log(cx,cy){ return '<circle cx="'+cx+'" cy="'+cy+'" r="4.2" fill="#d9a86a" stroke="#7a4f24" stroke-width=".9"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="2.4" fill="none" stroke="#a87440" stroke-width=".7"/><circle cx="'+cx+'" cy="'+cy+'" r=".8" fill="#a87440"/>'; }
+    return '<svg viewBox="0 0 22 17"><ellipse cx="11" cy="16" rx="9" ry="1.1" fill="rgba(0,0,0,.2)"/>'+log(6.6,11.2)+log(15.4,11.2)+log(11,4.8)+'</svg>';
+  }
+  function steelIconSvg(){ // H形鋼（端の断面＋長さ）
+    return '<svg viewBox="0 0 28 14"><ellipse cx="14" cy="13" rx="12" ry="1" fill="rgba(0,0,0,.2)"/>'+
+      '<path d="M6 2 H26 V4 H6 Z" fill="#a7b2bf" stroke="#4a5462" stroke-width=".6"/>'+
+      '<path d="M6 4 H26 V9 H6 Z" fill="#8c98a6" stroke="#4a5462" stroke-width=".6"/>'+
+      '<path d="M6 9 H26 V11 H6 Z" fill="#7b8794" stroke="#4a5462" stroke-width=".6"/>'+
+      '<path d="M1.5 2 H8.5 V4 H6 V9 H8.5 V11 H1.5 V9 H4 V4 H1.5 Z" fill="#5d6876" stroke="#3a424d" stroke-width=".6"/>'+
+      '</svg>';
   }
   function containerIconSvg(){
     return '<svg viewBox="0 0 22 22">'+
@@ -2761,6 +3388,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     if(shape==='car') return '<span class="swatch car" data-variant="'+(variant||0)+'">'+carIconSvg()+'</span>';
     if(shape==='box') return '<span class="swatch box">'+containerIconSvg()+'</span>';
     if(shape==='pax') return '<span class="swatch pax">'+personIconSvg(variant||0)+'</span>';
+    if(shape==='wood') return '<span class="swatch wood">'+woodIconSvg()+'</span>';
+    if(shape==='steel') return '<span class="swatch steel">'+steelIconSvg()+'</span>';
     return '<span class="swatch '+shape+'"></span>';
   }
 
@@ -3207,7 +3836,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
   ];
   var END_LINES = [
     'やるじゃないか！',
-    'この調子で、日本一の船会社を<br>目指して頑張りたまえ！'
+    'この調子で、日本一の船会社を<br>目指して頑張りたまえ！',
+    'まずは150フェリポを稼いで、<br>取引先を増やすところからだ！'
   ];
   var PRAC_STEPS = [
     {type:'leak',       hand:'tap',    text:'穴をタップして塞げ'},
@@ -3242,10 +3872,11 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     if(!state.story) return;
     var ui = document.getElementById('storyUI');
     if(!ui){ ui = document.createElement('div'); ui.id = 'storyUI'; ui.setAttribute('data-action','story-next'); document.getElementById('app').appendChild(ui); }
+    var chief = state.story.speaker==='chief';
     ui.innerHTML =
       (state.story.final ? '' : '<button type="button" class="tut-skip" data-action="tut-skip">スキップ</button>')+
-      '<div class="story-top">'+captainFaceSvg()+
-        '<div class="story-box"><div class="story-name">先代船長</div>'+
+      '<div class="story-top">'+(chief ? chiefFaceSvg() : captainFaceSvg())+
+        '<div class="story-box"><div class="story-name">'+(chief ? '島長' : '先代船長')+'</div>'+
         '<div class="story-bubble">'+(state.story.lines||STORY_LINES)[state.story.i]+'</div>'+
         '<div class="story-tap">タップで進む ▼</div></div></div>'+
       (state.story.busy ? '<div class="story-depart">出航！</div>' : '');
@@ -3256,8 +3887,9 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     var lines0 = state.story.lines || STORY_LINES;
     if(state.story.i < lines0.length-1){ state.story.i++; storyUI(); return; }
     if(state.story.lines){
-      var fin = state.story.final;
+      var fin = state.story.final, cb = state.story.onDone;
       removeStoryUI(); state.story = null;
+      if(cb){ render(); cb(); return; }
       if(fin){ goHome(); } else { render(); } // 最後のセリフ→ホームへ / 積み込み前の説明→積み込み画面
       return;
     }
@@ -3347,6 +3979,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     if(w.diff>=4) return {text:'左右をそろえよう', target:'balance'};
     return {text:'🎯指示書どおり！ 出航しよう', target:'depart'};
   }
+  function countAvail(shape){ return availableRackDefs().filter(function(d){ return d.shape===shape; }).length; }
   function renderDock(){
     var w = sideWeights();
     var tut = state.tutorial ? tutDockStep(w) : null;
@@ -3395,7 +4028,9 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       dockTop+
       '<div class="phase-heading"><h2>接岸中 — 積み込み</h2></div>'+
       (tut ? '<div class="tut-row"><div class="tut-hint">'+tut.text+'</div><button type="button" class="tut-skip" data-action="tut-skip">スキップ</button></div>'
-           : '<p class="phase-hint">車・コンテナ・乗客から積み込むものを選び、安定度や速度を考えながら左右に振り分けろ！</p>')+
+           : (state.tourOffer ? tourOfferHtml()
+           : (state.tour ? '<p class="phase-hint tour-hint">🎡 遊園地ツアー便：観光客だけを乗せる特別便。運賃は2倍！</p>'
+           : '<p class="phase-hint">'+(countAvail('wood')||countAvail('steel') ? '車・コンテナ・乗客・資材' : '車・コンテナ・乗客')+'から積み込むものを選び、安定度や速度を考えながら左右に振り分けろ！</p>')))+
       '<div class="dock-boat-wrap">'+portSceneHtml('<div class="boat-topdown static'+bigCls()+'">'+ferryTopdownSvg()+'<div class="boat-deck-icons">'+loadedIconsHtml()+'</div></div>', false)+'</div>'+
       '<div class="balance-readout'+(warn?' warn':'')+(tut&&tut.target==='balance'?' tut-glow':'')+'">左舷 '+fmt(w.left)+'t　／　右舷 '+fmt(w.right)+'t　（差 '+fmt(w.diff)+'t）</div>'+
       '<div class="deck-split">'+
@@ -5661,9 +6296,12 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
           (state.luxuryCarId ? (s.luxuryLoaded ? '積んだ車の中に💎高級車が混ざっていた！' : '実は車の中に💎高級車が混ざっていたが、今回は積まずに見送った……') : '')+
         '</p>'+
         '<div class="score-table">'+
-          '<div class="score-row"><span>車 × '+s.cars+(s.luxuryLoaded?'（💎高級車含む）':'')+'</span><span>+'+s.carsValue+' フェリポ</span></div>'+
-          '<div class="score-row"><span>コンテナ × '+s.boxes+'</span><span>+'+s.boxesValue+' フェリポ</span></div>'+
-          '<div class="score-row"><span>乗客 × '+s.pax+'</span><span>+'+s.paxValue+' フェリポ</span></div>'+
+          (state.tour ? '' : '<div class="score-row"><span>車 × '+s.cars+(s.luxuryLoaded?'（💎高級車含む）':'')+'</span><span>+'+s.carsValue+' フェリポ</span></div>'+
+          '<div class="score-row"><span>コンテナ × '+s.boxes+'</span><span>+'+s.boxesValue+' フェリポ</span></div>')+
+          '<div class="score-row"><span>'+(state.tour?'観光客':'乗客')+' × '+s.pax+(s.fare&&s.pax?'（運賃+'+s.fare+'/人）':'')+'</span><span>+'+s.paxValue+' フェリポ</span></div>'+
+          (s.wood ? '<div class="score-row"><span>木材 × '+s.wood+'</span><span>+'+s.woodValue+' フェリポ</span></div>' : '')+
+          (s.steel ? '<div class="score-row"><span>鉄骨 × '+s.steel+'</span><span>+'+s.steelValue+' フェリポ</span></div>' : '')+
+          (s.tourBonus ? '<div class="score-row"><span>🎡 ツアー運賃（2倍）</span><span>+'+s.tourBonus+' フェリポ</span></div>' : '')+
           (s.freightBonus ? '<div class="score-row"><span>満載貨物ボーナス（コンテナのみ）</span><span>+'+s.freightBonus+' フェリポ</span></div>' : '')+
           (s.rescueBonus ? '<div class="score-row"><span>🛟 救助ボーナス</span><span>+'+s.rescueBonus+' フェリポ</span></div>' : '')+
           (s.mopBonus ? '<div class="score-row"><span>🧹 浸水掃き出しボーナス</span><span>+'+s.mopBonus+' フェリポ</span></div>' : '')+
@@ -5675,7 +6313,9 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
           (s.perfectBonus ? '<div class="score-row"><span>⭐ 完全クリアボーナス</span><span>+'+s.perfectBonus+' フェリポ</span></div>' : '')+
           '<div class="score-row'+(s.missionAchieved?'':' muted')+'"><span>🎯 '+state.mission.label+'（'+(s.missionAchieved?'達成':'未達成')+'）</span><span>'+(s.missionBonus?'+'+s.missionBonus+' フェリポ':'+0')+'</span></div>'+
           '<div class="score-row total"><span>合計フェリポ</span><span>'+s.total+'</span></div>'+
-          '<div class="score-row wallet-row"><span>所持フェリポ</span><span>'+wallet.ferripo+'</span></div>'+
+          '<div class="score-row wallet-row"><span>所持フェリポ</span><span>'+fmtNum(wallet.ferripo)+'</span></div>'+
+          '<div class="score-row wallet-row"><span>累計フェリポ</span><span>'+fmtNum(wallet.total||0)+'</span></div>'+
+          ((s.wood||s.steel) ? '<div class="score-row mats-row"><span>🏗️ 島の資材置き場へ</span><span>'+(s.wood?'木材+'+s.wood:'')+(s.wood&&s.steel?'・':'')+(s.steel?'鉄骨+'+s.steel:'')+'</span></div>' : '')+
         '</div>'+
         '<div class="result-actions">'+
           '<button type="button" class="btn-primary" data-action="retry">次の便を出す</button>'+
@@ -5693,7 +6333,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
         '<div class="result-card sunk">'+
         '<h2>沈没</h2>'+
         '<p class="result-note">'+note+'</p>'+
-        '<div class="score-table"><div class="score-row wallet-row"><span>所持フェリポ</span><span>'+wallet.ferripo+'</span></div></div>'+
+        '<div class="score-table"><div class="score-row wallet-row"><span>所持フェリポ</span><span>'+fmtNum(wallet.ferripo)+'</span></div><div class="score-row wallet-row"><span>累計フェリポ</span><span>'+fmtNum(wallet.total||0)+'</span></div></div>'+
         '<div class="result-actions">'+
           '<button type="button" class="btn-primary" data-action="retry">やり直す</button>'+
           '<button type="button" class="btn-secondary" data-action="go-home">ホームへ戻る</button>'+
@@ -5702,7 +6342,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     }
     document.getElementById('stage').innerHTML =
       '<div class="phase-heading"><h2>航海結果</h2></div>'+
-      body+(arrived ? newBadgesHtml()+islandBlock(state.prevTotal||0) : '');
+      (arrived ? islandBlock(state.prevTotal||0).replace('class="hana-wrap"','class="hana-wrap res-top"') : '')+
+      body+(arrived ? newBadgesHtml()+goalCardHtml() : goalCardHtml());
   }
 
   function renderShipyard(){
@@ -5779,22 +6420,26 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     '</div>';
   }
   function renderHome(){
-    var t = wallet.total||0, m = MILES[mileIdx(t)];
+    var t = wallet.total||0, m = MILES[mileIdx(t)], isl = islOpen();
     document.getElementById('stage').innerHTML =
       '<div class="home">'+
-        '<div class="home-top"><span class="home-title">称号：<b>'+m.title+'</b></span><span class="home-wallet">所持フェリポ <b>'+wallet.ferripo+'</b></span></div>'+
+        '<div class="home-top"><span class="home-title">称号：<b>'+m.title+'</b></span><span class="home-wallet">所持 <b>'+fmtNum(wallet.ferripo)+'</b>　累計 <b>'+fmtNum(t)+'</b></span></div>'+
+        goalCardHtml()+
         '<div class="home-scene">'+portSceneHtml('<div class="boat-topdown static'+bigCls()+'">'+ferryTopdownSvg()+'</div>', true,
-          '<div class="home-bar">'+
+          '<div class="home-bar'+(isl?' has-isl':'')+'">'+
             '<button type="button" class="home-side" data-action="home-shop"><span class="hs-ic">🚢</span><span>購入</span></button>'+
+            (isl ? '<button type="button" class="home-side" data-action="home-island"><span class="hs-ic">🏝️</span><span>島</span></button>' : '')+
             '<button type="button" class="btn-primary home-load" data-action="home-load">荷物を積む</button>'+
             '<button type="button" class="home-side" data-action="home-titles"><span class="hs-ic">🏅</span><span>称号</span></button>'+
           '</div>')+'</div>'+
       '</div>';
+    setTimeout(runUnlocks, 400);
   }
   function renderTitles(){
     var t = wallet.total||0, k = mileIdx(t);
     var rows = MILES.map(function(m,i){
       var got = i<=k;
+      if(m.hidden && !got) return '';
       return '<div class="tt-row'+(got?' got':'')+'"><span>'+(got?'✓ ':'🔒 ')+(got?m.title:'？？？')+'</span><span>'+m.at+'</span></div>';
     }).join('');
     document.getElementById('stage').innerHTML =
@@ -5805,7 +6450,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.53</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -5831,7 +6476,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
         '<p class="title-sub">荷物と人を島へ届けよう</p>'+
         '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '<button type="button" class="tut-skip" data-action="tut-skip">チュートリアルをスキップ</button>'+
-        '<p class="credit">© 2026 Shimabin</p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.53</p>'+
       '</div>';
   }
   function tutStart(){
@@ -5850,7 +6495,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 
   function render(){
     var appEl = document.getElementById('app');
-    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles'); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); }
+    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island'); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); }
     renderGauges();
     if(state.phase==='dock') renderDock();
     else if(state.phase==='sailing' || state.phase==='event') renderSea();
@@ -5859,6 +6504,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     else if(state.phase==='title') renderTitle();
     else if(state.phase==='home') renderHome();
     else if(state.phase==='titles') renderTitles();
+    else if(state.phase==='island') renderIsland();
   }
 
   // ---------- game logic ----------
@@ -5869,6 +6515,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     // Defense in depth: the rack UI already hides advanced-tier cargo unless
     // the advanced ship is selected, but guard here too in case of stale state.
     if(def.tier==='advanced' && !isAdvancedShip()) return;
+    if(availableRackDefs().indexOf(def)===-1 && state.loadedIds.indexOf(id)===-1) return;
     var idx = state.loadedIds.indexOf(id);
     if(idx!==-1){
       if(state.placement[id]===side){
@@ -5894,7 +6541,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
   }
 
   function shuffle2(a,b){ return Math.random()<0.5 ? [a,b] : [b,a]; }
-  function pickStormOrRescue(exclude){ var pool=['storm','rescue','pirate','leak','morse','breaker','mop','binoculars','iceberg']; if(isAdvancedShip()){ pool[pool.indexOf('breaker')]='fuse'; pool.push('torn'); pool.push('papers'); if(countShape('pax')>0) pool.push('sick'); } if(exclude){ var kept = pool.filter(function(t){ return t!==exclude; }); if(kept.length) pool = kept; } return pool[Math.floor(Math.random()*pool.length)]; }
+  function pickStormOrRescue(exclude){ var pool=['storm','rescue','pirate','leak','morse','breaker','mop','binoculars','iceberg']; if(isAdvancedShip()){ pool[pool.indexOf('breaker')]='fuse'; pool.push('torn'); pool.push('papers'); if(countShape('pax')>0) pool.push('sick'); } else if(state.tour && countShape('pax')>0){ pool.push('sick'); } if(exclude){ var kept = pool.filter(function(t){ return t!==exclude; }); if(kept.length) pool = kept; } return pool[Math.floor(Math.random()*pool.length)]; }
   var prevVoyageLastType = null; // so the first action of a voyage never repeats the previous voyage's last one
   function shuffleArr(arr){
     var a = arr.slice();
@@ -5938,6 +6585,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     var lastType = (isAdvancedShip() && Math.random() < ROCKWALL_POOL_CHANCE) ? 'rockwall' : pickStormOrRescue(prevForLast);
     types.push(lastType);
     prevVoyageLastType = lastType;
+    // ツアー便：お客さん対応の「船酔い」アクションを必ず1回入れる
+    if(state.tour && countShape('pax')>0 && types.indexOf('sick')===-1){ types[Math.floor(Math.random()*Math.max(1,lastIdx))] = 'sick'; }
     state.checkpoints = CHECKPOINTS_AT.map(function(at,i){ return {at:at, type:types[i], fired:false}; });
     if(state.tutorial){
       // お手本航海: 練習した4種類から2つだけ。失敗してもペナルティなし
@@ -6873,14 +7522,18 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
   }
 
   function computeScore(){
-    var cars=0,carsValue=0,boxes=0,boxesValue=0,pax=0,paxValue=0;
+    var cars=0,carsValue=0,boxes=0,boxesValue=0,pax=0,paxValue=0,wood=0,woodValue=0,steel=0,steelValue=0;
     var luxuryLoaded = state.luxuryCarId && state.loadedIds.indexOf(state.luxuryCarId)!==-1;
+    var fare = fareBonus();
     state.loadedIds.forEach(function(id){
       var d = byId[id];
       if(d.shape==='car'){ cars++; carsValue+=itemValue(id); }
       else if(d.shape==='box'){ boxes++; boxesValue+=itemValue(id); }
-      else { pax++; paxValue+=d.value; }
+      else if(d.shape==='wood'){ wood++; woodValue+=d.value; }
+      else if(d.shape==='steel'){ steel++; steelValue+=d.value; }
+      else { pax++; paxValue+=d.value+fare; }
     });
+    var tourBonus = state.tour ? paxValue : 0; // ツアー便は運賃2倍
     // Going all-in on containers still pays off explicitly: a full container
     // run gets a freight premium for committing to the slow heavy haul. A
     // matching "express" premium for all-passenger runs used to exist too,
@@ -6889,7 +7542,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     // load), which made light-and-fast dominate every other strategy. The
     // speed bonus alone is enough to make passengers-only worthwhile.
     var freightBonus = 0;
-    if(boxes>0 && cars===0 && pax===0) freightBonus = Math.round(boxesValue*0.3);
+    if(boxes>0 && cars===0 && pax===0 && wood===0 && steel===0) freightBonus = Math.round(boxesValue*0.3);
 
     var missionAchieved = state.mission.evalAt==='depart' ? !!state.missionResult : !!state.mission.check();
     var missionBonus = missionAchieved ? state.mission.reward : 0;
@@ -6903,8 +7556,9 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     var perfectBonus = (state.checkpoints && state.checkpoints.length>0 &&
       state.checkpoints.every(function(c){ return c.success; })) ? (isAdvancedShip() ? PERFECT_VOYAGE_BONUS_ADV : PERFECT_VOYAGE_BONUS) : 0;
 
-    var total = carsValue+boxesValue+paxValue+freightBonus+missionBonus+rescueBonus+mopBonus+heartBonus+binocBonus+tipBonus+treasureBonus+speedBonus+perfectBonus;
-    return {cars:cars,carsValue:carsValue,boxes:boxes,boxesValue:boxesValue,pax:pax,paxValue:paxValue,
+    var total = carsValue+boxesValue+paxValue+woodValue+steelValue+tourBonus+freightBonus+missionBonus+rescueBonus+mopBonus+heartBonus+binocBonus+tipBonus+treasureBonus+speedBonus+perfectBonus;
+    return {cars:cars,carsValue:carsValue,boxes:boxes,boxesValue:boxesValue,pax:pax,paxValue:paxValue,fare:fare,
+      wood:wood,woodValue:woodValue,steel:steel,steelValue:steelValue,tourBonus:tourBonus,
       rescueBonus:rescueBonus,mopBonus:mopBonus,heartBonus:heartBonus,binocBonus:binocBonus,tipBonus:tipBonus,treasureBonus:treasureBonus,speedBonus:speedBonus,
       freightBonus:freightBonus,perfectBonus:perfectBonus,
       luxuryLoaded:!!luxuryLoaded,
@@ -6925,13 +7579,20 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       wallet.total = state.prevTotal + state.score.total;
       wallet.ferripo += state.score.total;
       wallet.streak = (wallet.streak||0) + 1;
+      // 運んだ資材は島の資材置き場へ
+      if(state.score.wood || state.score.steel){
+        if(!wallet.mats) wallet.mats = {wood:0, steel:0};
+        wallet.mats.wood += state.score.wood; wallet.mats.steel += state.score.steel;
+      }
+      if(state.tour) grantBadge('tour');
+      if(!wasTut && !state.tour && parkBuilt()) wallet.tourCount = (wallet.tourCount||0) + 1;
       grantBadge('first');
       if(state.score.missionAchieved) grantBadge('mission');
       if(state.score.perfectBonus) grantBadge('flawless');
       if(state.score.tipBonus) grantBadge('tip');
       checkBadges();
-      if(wallet.total>=1500 && !wallet.goalShown){ wallet.goalShown = true; setTimeout(function(){ if(state.phase==='result') goalUI(); }, 900); }
       saveWallet();
+      if(!wasTut) setTimeout(function(){ if(state.phase==='result') runUnlocks(); }, 900);
       if(state.score.tipBonus) log('乗客からチップをもらった！（+'+state.score.tipBonus+' フェリポ）');
       log('はな島に到着した。フェリポ '+state.score.total);
       if(wasTut) setTimeout(function(){ if(state.phase==='result'){ state.story = {i:0, busy:false, lines:END_LINES, final:true}; render(); storyUI(); } }, 600);
@@ -7520,6 +8181,12 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     else if(action==='leave-shipyard') leaveShipyard();
     else if(action==='buy-ship') buyShip(el.getAttribute('data-id'));
     else if(action==='select-ship') selectShip(el.getAttribute('data-id'));
+    else if(action==='unlock-ok') unlockClose(false);
+    else if(action==='unlock-isl') unlockClose(true);
+    else if(action==='home-island') openIsland();
+    else if(action==='isl-color') islSetColor(parseInt(el.getAttribute('data-c'),10)||0);
+    else if(action==='tour-accept') tourAccept();
+    else if(action==='tour-decline') tourDecline();
   });
 
   // ---------- boot / hot reload ----------
@@ -7565,6 +8232,13 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     try{ var sel = window.getSelection(); if(sel && sel.rangeCount && !sel.isCollapsed) sel.removeAllRanges(); }catch(err){}
   });
   ['contextmenu','selectstart','dragstart'].forEach(function(t){ document.addEventListener(t, function(e){ e.preventDefault(); }); });
+
+  // 動作確認用（URLに ?sbdebug を付けたときだけ）
+  try{ if(/[?&]sbdebug/.test(location.search)) window.__sb = {
+    state:function(){ return state; }, wallet:function(){ return wallet; }, render:function(){ render(); },
+    endVoyage:endVoyage, goHome:goHome, freshState:freshState, setState:function(s){ state = s; }, runUnlocks:runUnlocks,
+    load:function(ids, side){ ids.forEach(function(id){ toggleItemSide(id, side||'L'); }); }
+  }; }catch(e){}
 
   function start(data){
     if(data && data.phase){
