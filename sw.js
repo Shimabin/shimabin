@@ -2,7 +2,7 @@
    - ページ本体(index.html)は「ネット優先」: 公開後の修正がすぐ届く。オフラインなら保存版を使う。
    - アイコンなどは「保存優先」。
    更新したら CACHE の番号を上げる。 */
-var CACHE = 'shimabin-v53';
+var CACHE = 'shimabin-v55';
 var CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-32.png'];
 
 self.addEventListener('install', function(e){

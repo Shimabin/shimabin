@@ -113,6 +113,14 @@ button:focus-visible,[data-action]:focus-visible{outline:2px solid var(--brass-b
 /* Rack */
 .rack-label{font:600 11px var(--font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin:14px 0 8px;}
 .rack{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;}
+.rack-group{margin:0 0 12px;padding:8px 8px 10px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.35);}
+.rack-group-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 2px 7px;font:700 13px var(--font-body);color:var(--ink);}
+.rack-group-head .rg-count{font:600 11px var(--font-mono);color:var(--ink-dim);}
+.rack-item{position:relative;}
+.rack-sub{margin:2px 2px 6px;font:700 11.5px var(--font-body);color:var(--ink-dim);}
+.rack + .rack-sub{margin-top:12px;padding-top:8px;border-top:1px dashed var(--border);}
+.rack-item.is-new{border-color:#e08a3c;box-shadow:0 0 0 1px #e08a3c inset;}
+.rack-new{position:absolute;top:-7px;right:-4px;background:#e08a3c;color:#fff;font:800 9.5px var(--font-body);letter-spacing:.05em;padding:2px 6px;border-radius:999px;box-shadow:0 1px 3px rgba(0,0,0,.2);}
 .rack-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:10px;border:1px solid var(--border);background:var(--hull-3);font:500 11.5px var(--font-body);color:var(--ink);text-align:center;}
 .rack-item.loaded{background:var(--brass-dim);border-color:var(--brass);color:var(--hull);}
 .rack-item .weight-badge{font:600 10px var(--font-mono);opacity:.8;}
@@ -3995,7 +4003,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
     var leftHtml = leftIds.length ? leftIds.map(sideChip).join('') : '<span class="deck-empty">空き</span>';
     var rightHtml = rightIds.length ? rightIds.map(sideChip).join('') : '<span class="deck-empty">空き</span>';
 
-    var rackHtml = availableRackDefs().map(function(item){
+    function rackItemHtml(item){
       var isLoaded = state.loadedIds.indexOf(item.id) !== -1;
       var side = state.placement[item.id];
       var wouldExceed = !isLoaded && (state.weight + item.weight > CAPACITY);
@@ -4004,7 +4012,9 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       // voyage and never tied to a particular color/slot, so the color
       // never gives away which car is the valuable one.
       var tg = (tut && tut.item===item.id) ? ' tut-glow' : '';
-      return '<div class="rack-item'+(isLoaded?' loaded':'')+'">'+
+      // 届くようになったばかりの荷物（解放から累計+100まで）には NEW を付ける
+      var isNew = !state.tutorial && !state.tour && item.unlock && (wallet.total||0) - item.unlock < 100;
+      return '<div class="rack-item'+(isLoaded?' loaded':'')+(isNew?' is-new':'')+'">'+
         swatch(item.shape, item.variant)+
         '<span>'+item.label+'</span>'+
         '<span class="weight-badge">'+item.weight+'t</span>'+
@@ -4012,7 +4022,27 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
           '<button type="button" class="side-btn'+(side==='L'?' active':'')+tg+'" data-action="load-side" data-id="'+item.id+'" data-side="L"'+(wouldExceed?' disabled':'')+'>左</button>'+
           '<button type="button" class="side-btn'+(side==='R'?' active':'')+tg+'" data-action="load-side" data-id="'+item.id+'" data-side="R"'+(wouldExceed?' disabled':'')+'>右</button>'+
         '</div>'+
+        (isNew ? '<span class="rack-new">NEW</span>' : '')+
       '</div>';
+    }
+    // 積荷リストは種類ごとの欄に分ける。新しく届くようになった荷物は、その種類の欄に加わる
+    var RACK_GROUPS = [
+      {label:'車', shapes:['car']},
+      {label:'コンテナ', shapes:['box']},
+      {label:'乗客', shapes:['pax']},
+      {label:'建築資材', shapes:['wood','steel'], sub:{wood:'木材', steel:'鉄骨'}}
+    ];
+    var avail = availableRackDefs();
+    var rackHtml = RACK_GROUPS.map(function(g){
+      var items = avail.filter(function(d){ return g.shapes.indexOf(d.shape)!==-1; });
+      if(!items.length) return '';
+      var loadedN = items.filter(function(d){ return state.loadedIds.indexOf(d.id)!==-1; }).length;
+      return '<div class="rack-group"><div class="rack-group-head"><span>'+g.label+'</span><span class="rg-count">'+loadedN+' / '+items.length+'</span></div>'+
+        (g.sub ? g.shapes.map(function(sh){
+            var sub = items.filter(function(d){ return d.shape===sh; });
+            return sub.length ? '<div class="rack-sub">'+g.sub[sh]+'</div><div class="rack">'+sub.map(rackItemHtml).join('')+'</div>' : '';
+          }).join('')
+        : '<div class="rack">'+items.map(rackItemHtml).join('')+'</div>')+'</div>';
     }).join('');
 
     // Always allowed, including with nothing loaded — the "空荷出航"
@@ -4040,7 +4070,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       (tut && tut.target==='depart' ? missionBannerHtml().replace('class="mission-banner','class="mission-banner tut-glow') : missionBannerHtml())+
       (state.luxuryCarId ? '<p class="luxury-banner">💎 今回は車の中に高級車が1台まぎれているらしい……どれかは出航するまでわからない。</p>' : '')+
       '<div class="rack-label">積荷リスト</div>'+
-      '<div class="rack">'+rackHtml+'</div>'+
+      rackHtml+
       '<div class="depart-row">'+
         '<button type="button" class="btn-primary depart-btn'+(tut&&tut.target==='depart'?' tut-glow':'')+'" data-action="depart"'+(canDepart?'':' disabled')+'>'+
           '<span class="depart-label">出航する</span>'+
@@ -6450,7 +6480,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin ・ ver.53</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.55</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -6476,7 +6506,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
         '<p class="title-sub">荷物と人を島へ届けよう</p>'+
         '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '<button type="button" class="tut-skip" data-action="tut-skip">チュートリアルをスキップ</button>'+
-        '<p class="credit">© 2026 Shimabin ・ ver.53</p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.55</p>'+
       '</div>';
   }
   function tutStart(){
