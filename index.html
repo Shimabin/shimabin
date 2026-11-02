@@ -533,7 +533,7 @@ img,svg{-webkit-user-drag:none;}
 .deck-scene.rockwall-scene{background:linear-gradient(180deg,#bfe0ea 0,#dff0f4 31%,var(--water-light) 31%,var(--water) 50%,var(--water) 100%);}
 .deck-scene.rockwall-scene::before{content:none;animation:none;}
 
-.rockwall-obj{position:absolute;left:50%;top:-13%;width:300px;height:316px;z-index:4;
+.rockwall-obj{position:absolute;left:50%;top:calc(33.8% - 126.4px);width:300px;height:316px;z-index:4;
   transform-origin:50% 40%;transform:translate(-50%,0) scale(.18);}
   /* Scaled about a fixed point a little above the middle of the wall
      (transform-origin 50% 40%) and never moved, so it comes straight at the
@@ -2079,6 +2079,56 @@ body{background:#123548;}
   .app.at-dock .dk-scene .ds .ds-boat{transform:translate(-50%,-50%) scale(.7);}
   .app.at-dock .dk-scene .ds.big .ds-boat{transform:translate(-50%,-50%) scale(.95);}
 }
+
+/* ver.96 航行中：海が画面いっぱいの背景。メーターと航海日誌はその上に浮かぶ */
+.app.at-sea{background:linear-gradient(180deg,var(--water-light) 0%,var(--water) 55%,var(--water) 100%);}
+.app.at-sea > .bridge-bar,.app.at-sea > .log-panel{position:relative;z-index:5;background:rgba(251,247,236,.86);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-color:rgba(255,255,255,.6);box-shadow:0 6px 18px rgba(8,40,70,.25);}
+.app.at-sea > .log-panel{margin-top:auto;}
+.app.at-sea > .stage{position:absolute;inset:0;z-index:1;background:transparent;border:none;border-radius:0;padding:var(--ovT,150px) 10px var(--ovB,80px);overflow:hidden;}
+.app.at-sea > .stage > .phase-heading{display:none;}
+/* ふつうの航行中：海の画面そのものを全面に */
+.app.at-sea:not(.in-action) > .stage > .deck-scene{position:absolute;inset:0;height:auto;min-height:0;border:none;border-radius:0;z-index:0;}
+.app.at-sea:not(.in-action) > .stage > .progress-caption{position:relative;z-index:2;margin-top:auto;align-self:center;background:rgba(251,247,236,.86);border-radius:999px;padding:4px 14px;color:var(--ink);box-shadow:0 3px 10px rgba(8,40,70,.2);}
+.app.at-sea:not(.in-action) > .stage > .horn-row{position:relative;z-index:2;margin-top:8px;}
+.app.at-sea:not(.in-action) > .stage .horn-btn{background:rgba(251,247,236,.92);box-shadow:0 4px 12px rgba(8,40,70,.25);}
+/* アクション中：メーターと日誌の間にアクション画面 */
+.app.at-sea.in-action > .stage > .deck-scene{border:none;box-shadow:0 8px 24px rgba(8,40,70,.35);}
+.app.at-sea.in-action > .stage > .voyage-instruction,.app.at-sea.in-action > .stage > .progress-caption{position:relative;z-index:2;}
+.app.at-sea.in-action > .stage > .progress-caption{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4);}
+
+/* ver.97 ホーム：港の海が画面いっぱい、その上に船名・目標・ボタン */
+.app.at-home{background:#2a84b3;}
+.app.at-home > .stage{position:absolute;inset:0;padding:0;border:none;border-radius:0;background:transparent;overflow:hidden;}
+.home.home-full{position:absolute;inset:0;display:block;min-height:0;height:auto;gap:0;}
+.home-full .home-scene{position:absolute;inset:0;z-index:0;display:block;}
+.home-full .home-scene .ds,.home-full .home-scene .ds.big{height:100%;min-height:0;border-radius:0;box-shadow:none;}
+.home-full .ds-boat,.home-full .ds.big .ds-boat{top:var(--boatY,50%);transform:translate(-50%,-50%) scale(var(--boatK,1.2));}
+.home-ov{position:absolute;left:10px;right:10px;z-index:3;display:flex;flex-direction:column;gap:8px;}
+.home-ov.top{top:calc(8px + env(safe-area-inset-top));}
+.home-ov.bot{bottom:calc(8px + env(safe-area-inset-bottom));}
+.home-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:16px;background:rgba(251,247,236,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.6);box-shadow:0 6px 18px rgba(8,40,70,.25);}
+.hc-ship{display:flex;flex-direction:column;line-height:1.1;}
+.hc-ship small{font:700 11px var(--font-body);color:var(--ink-dim);letter-spacing:.08em;}
+.hc-ship b{font:900 26px var(--font-body);color:var(--gold-ink);letter-spacing:.02em;}
+.hc-right{text-align:right;font:600 12px/1.6 var(--font-body);color:var(--ink-dim);}
+.hc-right b{color:var(--gold-ink);font-weight:800;}
+.hc-title b{font-size:14px;}
+.home-ov .goal-mini{margin:0;background:rgba(251,247,236,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 6px 18px rgba(8,40,70,.22);}
+.home-ov .goal-mini.secret{background:linear-gradient(180deg,rgba(255,248,220,.94),rgba(251,233,176,.94));}
+.home-ov.bot .home-bar{position:static;}
+.home-ov.bot .home-drill{margin-top:0;background:rgba(251,247,236,.92);box-shadow:0 4px 12px rgba(8,40,70,.25);}
+@container (max-height:760px){
+  .hc-ship b{font-size:22px;} .home-card{padding:8px 12px;}
+  .home-ov .goal-mini{padding:7px 10px 6px;} .home-ov .goal-mini .gm-text{font-size:13px;} .home-ov .goal-mini .gm-reward{display:none;}
+  .home-ov.bot .home-drill{padding:9px;} .home-ov.bot .home-load{min-height:56px;}
+}
+
+/* ver.98 航行中の船を1.5倍に */
+.app.at-sea:not(.in-action) .boat-topdown{width:111px;height:177px;}
+.app.at-sea:not(.in-action) .boat-topdown.big{height:203px;}
+.app.at-sea:not(.in-action) .wake-trail{width:90px;height:150px;}
+.app.at-sea:not(.in-action) .wake-trail span{width:51px;height:15px;}
+.deck-scene.ev-scaled{border-radius:9px;}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2120,7 +2170,7 @@ body{background:#123548;}
 
   // ===================== ver.87 利用状況の計測（Google アナリティクス 4） =====================
   // GA_ID に Google アナリティクスの「測定ID」（G-から始まる文字列）を入れると計測が始まる。空のあいだは何も送らない。
-  var GA_ID = '';
+  var GA_ID = 'G-NKHNWPG6JW';
   var gaOn = false;
   (function(){
     if(!GA_ID || /[?&]sbdebug/.test(location.search) || location.protocol==='file:') return; // テスト中は送らない
@@ -3859,7 +3909,17 @@ body{background:#123548;}
 
   function boatTop(progress){ return BOAT_TOP_START - (BOAT_TOP_START-BOAT_TOP_END)*(progress/100); }
   // during the iceberg action the ship sits high so the big steering wheel fits below it
-  function boatTopNow(){ var e = state.currentEvent; return (e && e.type==='iceberg') ? 33 : boatTop(state.progress); }
+  function boatTopNow(){ var e = state.currentEvent; return (e && e.type==='iceberg') ? 33 : fsTop(boatTop(state.progress)); }
+  // ver.96 ふつうの航行中は海が画面いっぱいなので、メーターと汽笛ボタンの間に収まるよう位置を換算する
+  function fsTop(p){
+    if(!state || state.phase==='event') return p;
+    var app = document.getElementById('app'); if(!app) return p;
+    var H = app.offsetHeight || 844, cs = getComputedStyle(app);
+    var T = parseFloat(cs.getPropertyValue('--ovT')) || 150, B = (parseFloat(cs.getPropertyValue('--ovB')) || 80) + 92;
+    var bh = isAdvancedShip() ? 203 : 177; // ver.98 船を1.5倍にしたぶん
+    var avail = Math.max(40, H - T - B - bh - 10);
+    return ((T + 10 + Math.min(1, p/BOAT_TOP_START)*avail) / H) * 100;
+  }
 
   // Top-down car-ferry illustration: pointed bow, a forward wheelhouse/bridge
   // block (with mast + radar yard), and an open wood-planked deck toward the
@@ -7247,22 +7307,44 @@ body{background:#123548;}
     '</div>';
   }
   function renderHome(){
-    var t = wallet.total||0, m = MILES[mileIdx(t)], isl = islOpen();
+    var t = wallet.total||0, m = MILES[mileIdx(t)], isl = islOpen(), sh = currentShip();
+    // ver.97 港の海が画面いっぱいの背景。その上に船名・目標・ボタン類を載せる
     document.getElementById('stage').innerHTML =
-      '<div class="home">'+
-        '<div class="home-top"><span class="home-title">称号：<b>'+m.title+'</b></span><span class="home-wallet">所持 <b>'+fmtNum(wallet.ferripo)+'</b>　累計 <b>'+fmtNum(t)+'</b></span></div>'+
-        goalCardHtml()+
-        '<div class="home-scene">'+portSceneHtml('<div class="boat-topdown static'+bigCls()+'">'+ferryTopdownSvg()+'</div>', true,
+      '<div class="home home-full">'+
+        '<div class="home-scene">'+portSceneHtml('<div class="boat-topdown static'+bigCls()+'">'+ferryTopdownSvg()+'</div>', true)+'</div>'+
+        '<div class="home-ov top">'+
+          '<div class="home-card">'+
+            '<div class="hc-ship"><small>'+(sh.tier==='advanced'?'大型船':'フェリー')+'</small><b>'+sh.name+'</b></div>'+
+            '<div class="hc-right"><div class="hc-title">称号：<b>'+m.title+'</b></div>'+
+            '<div class="hc-wallet">所持 <b>'+fmtNum(wallet.ferripo)+'</b>　累計 <b>'+fmtNum(t)+'</b></div></div>'+
+          '</div>'+
+          goalCardHtml()+
+        '</div>'+
+        '<div class="home-ov bot">'+
           '<div class="home-bar'+(isl?' has-isl':'')+'">'+
             '<button type="button" class="home-side" data-action="home-shop"><span class="hs-ic">🚢</span><span>購入</span></button>'+
             (isl ? '<button type="button" class="home-side" data-action="home-island"><span class="hs-ic">🏝️</span><span>島</span></button>' : '')+
             '<button type="button" class="btn-primary home-load" data-action="home-load">荷物を積む</button>'+
             '<button type="button" class="home-side" data-action="home-titles"><span class="hs-ic">🏅</span><span>称号</span></button>'+
-          '</div>')+'</div>'+
-        '<button type="button" class="btn-secondary home-drill" data-action="drill-list">🎯 アクション練習</button>'+
+          '</div>'+
+          '<button type="button" class="btn-secondary home-drill" data-action="drill-list">🎯 アクション練習</button>'+
+        '</div>'+
       '</div>';
+    placeHomeBoat();
     setTimeout(runUnlocks, 400);
   }
+  // 上のカードと下のボタンの間のちょうど真ん中に、入る大きさで船を置く
+  function placeHomeBoat(){
+    var home = document.querySelector('.home-full'); if(!home) return;
+    var top = home.querySelector('.home-ov.top'), bot = home.querySelector('.home-ov.bot'), boat = home.querySelector('.ds-boat');
+    if(!top || !bot || !boat) return;
+    var H = home.clientHeight, y0 = top.offsetTop + top.offsetHeight, y1 = bot.offsetTop;
+    var free = Math.max(80, y1 - y0), bh = boat.offsetHeight || 160;
+    var k = Math.max(0.6, Math.min(1.45, (free - 24) / bh));
+    home.style.setProperty('--boatY', ((y0 + y1) / 2) + 'px');
+    home.style.setProperty('--boatK', k.toFixed(3));
+  }
+  window.addEventListener('resize', function(){ setTimeout(placeHomeBoat, 50); });
 
   // ---------- ver.63 アクション練習：一度出会ったアクションを、いつでも練習できる ----------
   var DRILLS = [
@@ -7385,7 +7467,7 @@ body{background:#123548;}
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin ・ ver.95</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.99</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -7445,7 +7527,7 @@ body{background:#123548;}
         '<div class="ts-bottom">'+
           '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '</div>'+
-        '<p class="credit">© 2026 Shimabin ・ ver.95　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.99　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
       '</div>';
   }
   var titleLeaving = false;
@@ -7492,13 +7574,49 @@ body{background:#123548;}
     var h = Math.min(FRAME_HMAX, vh/k);
     app.style.setProperty('--fk', k.toFixed(4)); app.style.setProperty('--fh', h.toFixed(1)+'px');
   }
+  // ver.96 航行中は海を一番後ろの全面レイヤーにし、メーターと航海日誌をその上に載せる。
+  // その間の余白を CSS 変数で渡す。
+  function measureOverlays(){
+    var app = document.getElementById('app'); if(!app) return;
+    var hd = app.querySelector('.bridge-bar'), lg = app.querySelector('.log-panel');
+    var ah = app.offsetHeight;
+    var top = hd && hd.offsetHeight ? hd.offsetTop + hd.offsetHeight + 6 : 8;
+    var bot = lg && lg.offsetHeight ? ah - lg.offsetTop + 6 : 8;
+    app.style.setProperty('--ovT', top+'px'); app.style.setProperty('--ovB', bot+'px');
+  }
+  try{ if(window.ResizeObserver){ var _ro = new ResizeObserver(function(){ measureOverlays(); });
+    document.addEventListener('DOMContentLoaded', function(){}); setTimeout(function(){ var a=document.getElementById('app'); if(!a) return; _ro.observe(a); var h=a.querySelector('.bridge-bar'), l=a.querySelector('.log-panel'); if(h) _ro.observe(h); if(l) _ro.observe(l); }, 0); } }catch(e){}
+  // ver.98 アクション画面：縦に広がった分、中身ごと拡大して画面に合わせる
+  // （論理サイズを小さくして transform で拡大。タップ位置の計算は getBoundingClientRect 基準なので崩れない）
+  var EV_W_MIN = 255, EV_H_MIN = 270, EV_K_MAX = 1.4;
+  function scaleEventScene(){
+    var app = document.getElementById('app'); if(!app) return;
+    var st = document.getElementById('stage'); if(!st) return;
+    var sc = st.querySelector(':scope > .deck-scene'); if(!sc) return;
+    if(!app.classList.contains('in-action')){ return; }
+    if(sc.__evScaled) return;
+    sc.style.scale = ''; sc.style.translate = ''; sc.style.width = ''; sc.style.height = ''; sc.style.margin = ''; sc.style.flex = '';
+    var W = sc.offsetWidth, H = sc.offsetHeight;
+    if(!W || !H) return;
+    var k = Math.min(EV_K_MAX, W/EV_W_MIN, H/EV_H_MIN);
+    sc.__evScaled = true;
+    if(k <= 1.02) return;
+    var w = W/k, h = H/k;
+    sc.style.flex = 'none';
+    sc.style.width = w.toFixed(1)+'px'; sc.style.height = h.toFixed(1)+'px';
+    sc.style.scale = k.toFixed(4); sc.style.translate = ((k-1)*w/2).toFixed(1)+'px '+((k-1)*h/2).toFixed(1)+'px'; // 個別の scale/translate：揺れなどの transform アニメ（中心基準）と重ねられる
+    sc.style.marginRight = (W - w).toFixed(1)+'px'; sc.style.marginBottom = (H - h).toFixed(1)+'px';
+    sc.classList.add('ev-scaled');
+  }
+  try{ var _evMo = new MutationObserver(function(){ scaleEventScene(); });
+    setTimeout(function(){ var st=document.getElementById('stage'); if(st) _evMo.observe(st, {childList:true}); }, 0); }catch(e){}
   window.addEventListener('resize', fitFrame);
   window.addEventListener('orientationchange', function(){ setTimeout(fitFrame, 200); });
   fitFrame();
   function render(){
     var _st = document.getElementById('stage'); var _keep = _st ? _st.scrollTop : 0, _ph = render._ph; render._ph = state.phase;
     var appEl = document.getElementById('app');
-    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('at-dock', state.phase==='dock'); appEl.classList.toggle('at-sea', state.phase==='sailing' || state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island' || state.phase==='drills' || state.phase==='shipyard'); appEl.classList.toggle('drilling', !!state.drill); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); }
+    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.classList.toggle('at-dock', state.phase==='dock'); appEl.classList.toggle('at-home', state.phase==='home'); appEl.classList.toggle('at-sea', state.phase==='sailing' || state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island' || state.phase==='drills' || state.phase==='shipyard'); appEl.classList.toggle('drilling', !!state.drill); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); }
     renderGauges();
     if(state.phase==='dock') renderDock();
     else if(state.phase==='sailing' || state.phase==='event' || state.phase==='intro') renderSea();
@@ -7510,6 +7628,8 @@ body{background:#123548;}
     else if(state.phase==='drills') renderDrills();
     else if(state.phase==='island') renderIsland();
     if(state.phase!=='intro') removeIntro();
+    measureOverlays();
+    scaleEventScene();
     if(_st){ _st.scrollTop = (_ph===state.phase) ? _keep : 0; }
     ambientSync();
   }
