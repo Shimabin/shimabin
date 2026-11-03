@@ -2129,6 +2129,11 @@ body{background:#123548;}
 .app.at-sea:not(.in-action) .wake-trail{width:90px;height:150px;}
 .app.at-sea:not(.in-action) .wake-trail span{width:51px;height:15px;}
 .deck-scene.ev-scaled{border-radius:9px;}
+
+/* ver.100 アクション画面は等倍に戻し、小さかったものだけ個別に大きく（当たり判定も一緒に大きくなる） */
+.app.in-action .leak-spot{scale:1.35;}
+.app.in-action .storm-deck .lane-object.cargo{scale:1.35;}
+.app.in-action #troublePax{scale:1.3;}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2170,7 +2175,7 @@ body{background:#123548;}
 
   // ===================== ver.87 利用状況の計測（Google アナリティクス 4） =====================
   // GA_ID に Google アナリティクスの「測定ID」（G-から始まる文字列）を入れると計測が始まる。空のあいだは何も送らない。
-  var GA_ID = '';
+  var GA_ID = 'G-NKHNWPG6JW';
   var gaOn = false;
   (function(){
     if(!GA_ID || /[?&]sbdebug/.test(location.search) || location.protocol==='file:') return; // テスト中は送らない
@@ -2914,10 +2919,34 @@ body{background:#123548;}
   }
   // ドラッグ：カード→島（新しく建てる）、建物→別の区画（移動）
   var islDrag = null;
+
+  // ver.100 SVG の座標変換。Safari の getScreenCTM() は画面の拡大（CSS transform）を無視することがあり、
+  // なぞった位置と線の位置がずれる。SVG の外枠は getBoundingClientRect（拡大込みで正確）から自前で計算し、
+  // SVG 内部の変換だけ getScreenCTM の差分から使う。
+  function screenCTM(el){
+    if(!el || !el.getScreenCTM) return null;
+    var root = el; while(root.ownerSVGElement) root = root.ownerSVGElement;
+    var m = el.getScreenCTM(), mr = root.getScreenCTM(); if(!m || !mr) return m;
+    var r = root.getBoundingClientRect(), w = root.clientWidth || r.width, h = root.clientHeight || r.height;
+    if(!w || !h) return m;
+    var kx = r.width/w, ky = r.height/h, sx = 1, sy = 1, tx = 0, ty = 0;
+    var vb = root.viewBox && root.viewBox.baseVal;
+    if(vb && vb.width && vb.height){
+      sx = w/vb.width; sy = h/vb.height;
+      var par = root.preserveAspectRatio && root.preserveAspectRatio.baseVal, al = par ? par.align : 6;
+      if(al!==1){
+        var sc = (par && par.meetOrSlice===2) ? Math.max(sx,sy) : Math.min(sx,sy);
+        var ax = [0,.5,1][(al-2)%3], ay = [0,.5,1][Math.floor((al-2)/3)];
+        sx = sy = sc; tx = -vb.x*sc + (w - vb.width*sc)*ax; ty = -vb.y*sc + (h - vb.height*sc)*ay;
+      } else { tx = -vb.x*sx; ty = -vb.y*sy; }
+    }
+    var t = root.createSVGMatrix(); t.a = sx*kx; t.b = 0; t.c = 0; t.d = sy*ky; t.e = r.left + tx*kx; t.f = r.top + ty*ky;
+    try{ return t.multiply(mr.inverse().multiply(m)); }catch(e){ return m; }
+  }
   function islNearestPlot(cx, cy, kind, exclude){
     var svg = document.querySelector('#islEdit svg'); if(!svg) return null;
     var pt = svg.createSVGPoint(); pt.x = cx; pt.y = cy;
-    var ctm = svg.getScreenCTM(); if(!ctm) return null;
+    var ctm = screenCTM(svg); if(!ctm) return null;
     var p = pt.matrixTransform(ctm.inverse());
     var want = BUILDS[kind].plot, best = null, bd = 30;
     PLOTS.forEach(function(pl, i){
@@ -4110,7 +4139,7 @@ body{background:#123548;}
   function turtleProbe(ev, cx, cy){
     if(ev.resolving) return;
     var svg = document.querySelector('#turtleScene .t-svg'); if(!svg) return;
-    var m = svg.getScreenCTM(); if(!m) return;
+    var m = screenCTM(svg); if(!m) return;
     if(!ev.samples) turtlePrep(ev);
     var pt = svg.createSVGPoint(); pt.x = cx; pt.y = cy;
     var u = pt.matrixTransform(m.inverse());
@@ -4135,7 +4164,7 @@ body{background:#123548;}
       var onSkin = false;
       (ev.skinEls||[]).forEach(function(el){
         if(onSkin || !el.isPointInFill) return;
-        var cm = el.getScreenCTM(); if(!cm) return;
+        var cm = screenCTM(el); if(!cm) return;
         var q = pt.matrixTransform(cm.inverse());
         try{ if(el.isPointInFill(q) || el.isPointInStroke(q)) onSkin = true; }catch(err){}
       });
@@ -4154,7 +4183,7 @@ body{background:#123548;}
     var d = activeDrag; if(!d || d.kind!=='turtle') return;
     var svg = document.querySelector('#turtleScene .t-svg'); if(!svg) return;
     var pt = svg.createSVGPoint(); pt.x = cx; pt.y = cy;
-    var u = pt.matrixTransform(svg.getScreenCTM().inverse());
+    var u = pt.matrixTransform(screenCTM(svg).inverse());
     d.path = (d.path ? d.path+' L' : 'M') + u.x.toFixed(1)+','+u.y.toFixed(1);
     if(!d.pathEl){
       d.pathEl = document.createElementNS('http://www.w3.org/2000/svg','path');
@@ -7467,7 +7496,7 @@ body{background:#123548;}
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin ・ ver.98</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.100</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -7527,7 +7556,7 @@ body{background:#123548;}
         '<div class="ts-bottom">'+
           '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '</div>'+
-        '<p class="credit">© 2026 Shimabin ・ ver.98　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.100　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
       '</div>';
   }
   var titleLeaving = false;
@@ -7593,6 +7622,7 @@ body{background:#123548;}
     var app = document.getElementById('app'); if(!app) return;
     var st = document.getElementById('stage'); if(!st) return;
     var sc = st.querySelector(':scope > .deck-scene'); if(!sc) return;
+    return; // ver.100 拡大表示は中止：iPhone(Safari)でタッチ位置と反応位置がずれるため。アクション画面は等倍に戻す
     if(!app.classList.contains('in-action')){ return; }
     if(sc.__evScaled) return;
     sc.style.scale = ''; sc.style.translate = ''; sc.style.width = ''; sc.style.height = ''; sc.style.margin = ''; sc.style.flex = '';
@@ -9446,7 +9476,7 @@ body{background:#123548;}
     state:function(){ return state; }, wallet:function(){ return wallet; }, render:function(){ render(); },
     endVoyage:endVoyage, goHome:goHome, freshState:freshState, setState:function(s){ state = s; }, runUnlocks:runUnlocks,
     trigger:function(t){ startEventNow(t); }, triggerIntro:function(t){ triggerEvent(t); },
-    load:function(ids, side){ ids.forEach(function(id){ toggleItemSide(id, side||'L'); }); }
+    screenCTM:screenCTM, load:function(ids, side){ ids.forEach(function(id){ toggleItemSide(id, side||'L'); }); }
   }; }catch(e){}
 
   function start(data){
