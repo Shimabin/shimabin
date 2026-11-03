@@ -2170,7 +2170,7 @@ body{background:#123548;}
 
   // ===================== ver.87 利用状況の計測（Google アナリティクス 4） =====================
   // GA_ID に Google アナリティクスの「測定ID」（G-から始まる文字列）を入れると計測が始まる。空のあいだは何も送らない。
-  var GA_ID = 'G-NKHNWPG6JW';
+  var GA_ID = '';
   var gaOn = false;
   (function(){
     if(!GA_ID || /[?&]sbdebug/.test(location.search) || location.protocol==='file:') return; // テスト中は送らない
@@ -7467,7 +7467,7 @@ body{background:#123548;}
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin ・ ver.99</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.98</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -7527,7 +7527,7 @@ body{background:#123548;}
         '<div class="ts-bottom">'+
           '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '</div>'+
-        '<p class="credit">© 2026 Shimabin ・ ver.99　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.98　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
       '</div>';
   }
   var titleLeaving = false;
