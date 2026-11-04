@@ -178,15 +178,15 @@ img,svg{-webkit-user-drag:none;}
 .deck-scene{position:relative;height:270px;border-radius:12px;overflow:hidden;border:1px solid var(--border);touch-action:none;
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
   background:linear-gradient(180deg,var(--water-light) 0%,var(--water) 55%,var(--water) 100%);}
-.deck-scene::before{content:"";position:absolute;inset:0;
+.deck-scene::before{content:"";position:absolute;inset:-26px 0 0 0;
   background:repeating-linear-gradient(3deg,rgba(255,255,255,.12) 0 5px,transparent 5px 26px);
-  animation:sea-flow 900ms linear infinite;}
+  animation:sea-flow 900ms linear infinite;will-change:transform;}
 /* Storm interior: swap the sea view for the ship's own deck underfoot,
    since this event happens belowdecks scrambling for loose gear rather
    than watching the water go by. */
 .deck-scene.storm-deck{background:repeating-linear-gradient(90deg,#4a3826 0 46px,#42311f 46px 48px);}
 .deck-scene.storm-deck::before{content:none;animation:none;}
-@keyframes sea-flow{from{background-position:0 -26px;}to{background-position:0 0;}}
+@keyframes sea-flow{from{transform:translateY(-26px);}to{transform:translateY(0);}} /* ver.104 再描画の重い background-position をやめ、GPUだけで動く transform に */
 
 .deck-island{position:absolute;left:50%;top:1%;width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:24px solid #3a6b4a;transform-origin:bottom center;transition:opacity .3s linear;z-index:1;}
 .deck-island::after{content:"";position:absolute;top:-9px;left:4px;width:7px;height:7px;border-radius:50%;background:#2f5a3d;}
@@ -271,9 +271,9 @@ img,svg{-webkit-user-drag:none;}
    gulls can fly in front of the ferry while fish/reefs stay under it. */
 .ambient-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
 .ambient-obj{position:absolute;transform:translate(-50%,-50%) rotate(var(--rot,0deg));
-  transition:top .25s linear,left .25s linear,opacity .6s ease-out,transform .25s ease-out;will-change:top,left;}
-.ambient-obj.turning{transition:top .25s linear,left .25s linear,transform .2s ease-out;}
-.ambient-obj.scattering{opacity:0 !important;transition:left 1s ease-out,top 1s ease-out,opacity .95s ease-in,transform .2s ease-out;}
+  transition:translate .25s linear,opacity .6s ease-out,transform .25s ease-out;will-change:translate;}
+.ambient-obj.turning{transition:translate .25s linear,transform .2s ease-out;}
+.ambient-obj.scattering{opacity:0 !important;transition:translate 1s ease-out,opacity .95s ease-in,transform .2s ease-out;}
 .ambient-fish{width:16px;height:50px;opacity:.4;z-index:1;}
 .ambient-fish svg{width:100%;height:100%;display:block;}
 .ambient-gull{width:16px;height:9px;opacity:.75;z-index:5;}
@@ -850,7 +850,7 @@ img,svg{-webkit-user-drag:none;}
    to be dragged over so the torn edges line up. */
 .deck-scene.torn-scene{background:repeating-linear-gradient(90deg,#8a6a45 0 44px,#7d6040 44px 46px);}
 .deck-scene.torn-scene::before{content:none;animation:none;}
-.torn-piece{position:absolute;width:132px;height:100px;touch-action:none;cursor:grab;z-index:4;
+.torn-piece{position:absolute;width:132px;height:130px;touch-action:none;cursor:grab;z-index:4;
   transition:left .3s ease,top .3s ease,transform .3s ease,scale .12s ease;}
 .torn-piece svg{display:block;width:100%;height:100%;overflow:visible;pointer-events:none;
   filter:drop-shadow(0 3px 4px rgba(0,0,0,.45));}
@@ -1425,9 +1425,9 @@ img,svg{-webkit-user-drag:none;}
 .home-scene{flex:1;display:flex;}
 .ds{position:relative;width:100%;height:240px;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,#3fa6d6,#2a84b3);box-shadow:0 6px 22px rgba(0,0,0,.4);}
 .ds.big{height:auto;min-height:400px;flex:1;}
-.ds-waves{position:absolute;inset:0;opacity:.5;animation:dsWave 7s linear infinite;
+.ds-waves{position:absolute;inset:-36px -64px 0 0;opacity:.5;animation:dsWave 7s linear infinite;will-change:transform;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='36'%3E%3Cpath d='M0 12 q16 -9 32 0 t32 0' stroke='white' stroke-width='1.4' fill='none'/%3E%3Cpath d='M-16 30 q16 -9 32 0 t32 0 t32 0' stroke='white' stroke-width='1' fill='none' opacity='.6'/%3E%3C/svg%3E");background-size:64px 36px;}
-@keyframes dsWave{from{background-position:0 0}to{background-position:-64px 36px}}
+@keyframes dsWave{from{transform:translate(0,0)}to{transform:translate(-64px,36px)}}
 .home-bar{position:absolute;left:12px;right:12px;bottom:12px;z-index:5;display:grid;grid-template-columns:64px 1fr 64px;gap:10px;align-items:stretch;}
 .home-load{font-size:18px;white-space:nowrap;min-height:64px;padding:0 8px;}
 .home-side{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(13,27,36,.72);backdrop-filter:blur(3px);color:var(--ink);font:600 12px/1.2 var(--font-body);cursor:pointer;min-height:64px;}
@@ -1809,7 +1809,7 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 /* ===== ver.58 航行中：船首の波・船体まわりの白波・船尾からの航跡 ===== */
 .wake-trail{display:none;}
 .boat-fx{position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;overflow:visible;pointer-events:none;}
-.bfx-kel{fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;opacity:.45;stroke-dasharray:18 5 9 7 4 11;animation:bfxFoam 1.3s linear infinite;filter:blur(.7px);}
+.bfx-kel{fill:none;stroke-width:2.2;stroke-linecap:round;opacity:.42;stroke-dasharray:18 5 9 7 4 11;animation:bfxFoam 1.3s linear infinite;}
 .bfx-kel.k2{stroke-width:1.2;opacity:.3;stroke-dasharray:6 9 12 5;animation-duration:1s;}
 @keyframes bfxFoam{to{stroke-dashoffset:-54}}
 .bfx-side{animation:bfxSide 1.1s ease-in-out infinite alternate;}
@@ -1824,13 +1824,13 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 .bfx-wake{animation:bfxWake 1.1s ease-in-out infinite alternate;}
 @keyframes bfxWake{from{opacity:.75}to{opacity:1}}
 /* ===== ver.56 演出：航行中 ===== */
-.sky-cloud{position:absolute;z-index:7;pointer-events:none;width:170px;height:96px;animation:cloudShade linear infinite;}
+.sky-cloud{position:absolute;top:0;z-index:7;pointer-events:none;width:170px;height:96px;animation:cloudShade linear infinite;will-change:transform;}
 .sky-cloud.c1{left:18%;animation-duration:13s;animation-delay:-4s;}
 .sky-cloud.c2{left:62%;width:130px;height:74px;animation-duration:17s;animation-delay:-12s;}
 .sky-cloud svg{display:block;width:100%;height:100%;}
 .sc-cloud{position:absolute;inset:0;opacity:.42;fill:#fff;filter:blur(1.5px);}
 .sc-shadow{position:absolute;inset:0;transform:translate(-34%,48%);opacity:.16;fill:#0a2840;filter:blur(5px);}
-@keyframes cloudShade{from{top:-50%}to{top:130%}}
+@keyframes cloudShade{from{transform:translateY(calc(var(--sh,844px) * -.5))}to{transform:translateY(calc(var(--sh,844px) * 1.3))}}
 .ambient-ship{width:20px;height:48px;opacity:.95;z-index:1;}
 .ambient-ship svg,.ambient-islet svg{width:100%;height:100%;display:block;}
 .ambient-islet{width:52px;height:38px;opacity:.95;z-index:1;}
@@ -2082,7 +2082,7 @@ body{background:#123548;}
 
 /* ver.96 航行中：海が画面いっぱいの背景。メーターと航海日誌はその上に浮かぶ */
 .app.at-sea{background:linear-gradient(180deg,var(--water-light) 0%,var(--water) 55%,var(--water) 100%);}
-.app.at-sea > .bridge-bar,.app.at-sea > .log-panel{position:relative;z-index:5;background:rgba(251,247,236,.86);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-color:rgba(255,255,255,.6);box-shadow:0 6px 18px rgba(8,40,70,.25);}
+.app.at-sea > .bridge-bar,.app.at-sea > .log-panel{position:relative;z-index:5;background:rgba(251,247,236,.94);border-color:rgba(255,255,255,.6);box-shadow:0 6px 18px rgba(8,40,70,.25);}
 .app.at-sea > .log-panel{margin-top:auto;}
 .app.at-sea > .stage{position:absolute;inset:0;z-index:1;background:transparent;border:none;border-radius:0;padding:var(--ovT,150px) 10px var(--ovB,80px);overflow:hidden;}
 .app.at-sea > .stage > .phase-heading{display:none;}
@@ -2106,14 +2106,14 @@ body{background:#123548;}
 .home-ov{position:absolute;left:10px;right:10px;z-index:3;display:flex;flex-direction:column;gap:8px;}
 .home-ov.top{top:calc(8px + env(safe-area-inset-top));}
 .home-ov.bot{bottom:calc(8px + env(safe-area-inset-bottom));}
-.home-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:16px;background:rgba(251,247,236,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.6);box-shadow:0 6px 18px rgba(8,40,70,.25);}
+.home-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:16px;background:rgba(251,247,236,.95);border:1px solid rgba(255,255,255,.6);box-shadow:0 6px 18px rgba(8,40,70,.25);}
 .hc-ship{display:flex;flex-direction:column;line-height:1.1;}
 .hc-ship small{font:700 11px var(--font-body);color:var(--ink-dim);letter-spacing:.08em;}
 .hc-ship b{font:900 26px var(--font-body);color:var(--gold-ink);letter-spacing:.02em;}
 .hc-right{text-align:right;font:600 12px/1.6 var(--font-body);color:var(--ink-dim);}
 .hc-right b{color:var(--gold-ink);font-weight:800;}
 .hc-title b{font-size:14px;}
-.home-ov .goal-mini{margin:0;background:rgba(251,247,236,.9);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 6px 18px rgba(8,40,70,.22);}
+.home-ov .goal-mini{margin:0;background:rgba(251,247,236,.95);box-shadow:0 6px 18px rgba(8,40,70,.22);}
 .home-ov .goal-mini.secret{background:linear-gradient(180deg,rgba(255,248,220,.94),rgba(251,233,176,.94));}
 .home-ov.bot .home-bar{position:static;}
 .home-ov.bot .home-drill{margin-top:0;background:rgba(251,247,236,.92);box-shadow:0 4px 12px rgba(8,40,70,.25);}
@@ -2131,9 +2131,67 @@ body{background:#123548;}
 .deck-scene.ev-scaled{border-radius:9px;}
 
 /* ver.100 アクション画面は等倍に戻し、小さかったものだけ個別に大きく（当たり判定も一緒に大きくなる） */
-.app.in-action .leak-spot{scale:1.35;}
-.app.in-action .storm-deck .lane-object.cargo{scale:1.35;}
-.app.in-action #troublePax{scale:1.3;}
+
+/* ===== ver.102 アクション画面の中身を、広くなった画面に合わせて拡大（--ek は画面の余裕から自動計算） =====
+   scale は要素の中心を基準に効くので、translate(-50%,..) で位置合わせしている要素は
+   translate プロパティで補正して「置いてある点」を基準に大きくする（そうしないと上や左にずれる）。 */
+.app.in-action .leak-spot,
+.app.in-action .storm-deck > .lane-object.cargo,
+.app.in-action #troublePax,
+.app.in-action .rescue-castaway,
+.app.in-action .lane-object.iceberg-obj:not(.ice-adv),
+.app.in-action .rockwall-scene .wheel-wrap,
+.app.in-action #padvShip,
+.app.in-action .cannon-pivot,
+.app.in-action .breaker-unit,
+.app.in-action .mop-head,
+.app.in-action #stormOrder,
+.app.in-action .morse-distant-ship{scale:var(--k);translate:calc((var(--k) - 1) * 50%) calc((var(--k) - 1) * 50%);}
+.app.in-action .deck-scene .wheel-wrap.low.big,
+.app.in-action .morse-lamp-post{scale:var(--k);translate:calc((var(--k) - 1) * 50%) calc((1 - var(--k)) * 50%);}
+.app.in-action #pirateShip{scale:var(--k);translate:calc((var(--k) - 1) * 50%) calc((var(--k) - 1) * 10%);}
+.app.in-action .leak-spot{--k:var(--ek);}
+.app.in-action .storm-deck > .lane-object.cargo{--k:calc(var(--ek) * 1.05);}
+.app.in-action .storm-deck:has(#stormOrder) > .lane-object.cargo{--k:calc(var(--ek) * .9);}
+.app.in-action #stormOrder{--k:var(--ek);}
+.app.in-action #troublePax{--k:calc(var(--ek) * 1.6);}
+.app.in-action .rescue-castaway{--k:calc(var(--ek) * 1.25);}
+.app.in-action .lane-object.iceberg-obj:not(.ice-adv){--k:calc(var(--ek) * 1.15);}
+.app.in-action .deck-scene .wheel-wrap.low.big{--k:var(--ek);}
+.app.in-action .rockwall-scene .wheel-wrap{--k:calc(var(--ek) * .95);}
+.app.in-action #pirateShip{--k:calc(var(--ek) * 1.1);}
+.app.in-action #padvShip{--k:calc(var(--ek) * .95);}
+.app.in-action .cannon-pivot{--k:var(--ek);}
+.app.in-action .breaker-unit{--k:min(var(--ek), 1.12);}
+.app.in-action .mop-head{--k:var(--ek);}
+.app.in-action .morse-distant-ship{--k:calc(var(--ek) * 1.15);}
+.app.in-action .morse-lamp-post{--k:var(--ek);}
+/* 船（氷山・救助）。大型船の氷山（避ける判定に船幅を使う）は難しさが変わるので等倍のまま */
+.app.in-action:not([data-adv="1"]) .deck-scene .boat-topdown{width:calc(74px * var(--ek));height:calc(118px * var(--ek));}
+.app.in-action:not([data-adv="1"]) .deck-scene .boat-topdown.big{height:calc(135.3px * var(--ek));}
+.app.in-action[data-ev="rescue"] .deck-scene .boat-topdown{translate:0 calc(-118px * (var(--ek) - 1));}
+.app.in-action[data-ev="rescue"] .deck-scene .boat-topdown.big{translate:0 calc(-135.3px * (var(--ek) - 1));}
+.app.in-action .rescue-ring{width:calc(50px * var(--ek));height:calc(50px * var(--ek));}
+/* 双眼鏡（ピント合わせ）：レンズは中心から、メーターはレンズの下へ */
+.app.in-action #binocLens{scale:var(--ek);}
+.app.in-action .binoc-meter{scale:var(--ek);translate:0 calc((var(--ek) - 1) * 112px);}
+/* 船酔い：人と印を、画面の中心からの位置関係を保って拡大 */
+.app.in-action .sick-person{scale:var(--ek);translate:calc(-7px * (var(--ek) - 1)) 0;}
+.app.in-action .sick-target{scale:var(--ek);translate:calc(44px * (var(--ek) - 1)) 0;}
+/* 海賊（大型船）のパドル：下を基準に */
+.app.in-action .padv-paddle{scale:var(--ek);}
+/* 信号灯の合図表示 */
+.app.in-action .morse-sequence{scale:var(--ek);transform-origin:50% 0;}
+/* 風で飛んだ資料：資料と船員を大きく（受け止める範囲も一緒に広がる） */
+.app.in-action .paper{width:calc(24px * var(--ek));height:calc(30px * var(--ek));margin:calc(-15px * var(--ek)) 0 0 calc(-12px * var(--ek));}
+.app.in-action .papers-crew{width:calc(56px * var(--ek));height:calc(74px * var(--ek));margin-left:calc(-28px * var(--ek));}
+
+/* ver.104 長押しで文字選択・コピーのメニューが出ないように（ボタンや画面のどこでも） */
+body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;}
+
+/* ver.106 航行中の船・航跡は translate で動かす（GPUだけで動いて軽い） */
+.app.at-sea:not(.in-action) .boat-topdown,.app.at-sea:not(.in-action) .wake-trail{transition:translate .25s linear;will-change:translate;}
+.app.at-sea:not(.in-action) .boat-topdown.tilting,.app.at-sea:not(.in-action) .boat-topdown.tilt-back{transition:translate .25s linear,transform .3s ease;}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2330,7 +2388,7 @@ body{background:#123548;}
       }
     });
     // 停泊中の船（アイコンと同じ船）
-    o += '<defs><clipPath id="hcI"><path id="hpI" d="M110 556 H690 Q735 556 752 536 L700 646 Q688 670 655 670 H170 Q128 670 118 640 Z"/></clipPath></defs><clipPath id="shipCut"><rect x="0" y="0" width="140" height="118"/></clipPath><g clip-path="url(#shipCut)"><g class="isl-ship"><g transform="translate(2 12) scale(.16)"> <g stroke-linejoin="round" stroke-linecap="round"> <g stroke="#1d3d4d" stroke-width="8" fill="none"><path d="M470 392 V296"/><path d="M446 330 H494"/><path d="M470 296 L520 312" stroke-width="5"/></g> <rect x="440" y="318" width="60" height="9" rx="3" fill="#eae3d3" stroke="#1d3d4d" stroke-width="5"/> <path d="M520 312 l22 6 -22 8z" fill="#e0563f" stroke="#1d3d4d" stroke-width="4"/> <path d="M700 646 q24 -10 50 6" fill="none" stroke="#e8f7fc" stroke-width="5" stroke-linecap="round" opacity=".25"/> <use href="#hpI" fill="#fbf8ee"/> <g clip-path="url(#hcI)"> <rect x="100" y="606" width="700" height="24" fill="#2f6fb0"/> <rect x="100" y="634" width="700" height="8" fill="#e0563f"/> <rect x="100" y="652" width="700" height="30" fill="#9c3a2e"/> <g fill="#3a9fd0" opacity=".95"><circle cx="380" cy="584" r="7"/><circle cx="440" cy="584" r="7"/><circle cx="500" cy="584" r="7"/><circle cx="560" cy="584" r="7"/></g> </g> <use href="#hpI" fill="none" stroke="#1d3d4d" stroke-width="10"/> <rect x="590" y="530" width="148" height="28" rx="6" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="620" y="512" width="30" height="20" rx="4" fill="#cfd8d6" stroke="#1d3d4d" stroke-width="5"/> <rect x="668" y="516" width="26" height="16" rx="4" fill="#cfd8d6" stroke="#1d3d4d" stroke-width="5"/> <rect x="116" y="534" width="150" height="26" rx="6" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="140" y="514" width="64" height="22" rx="10" fill="#f08a3c" stroke="#1d3d4d" stroke-width="5"/> <rect x="270" y="470" width="320" height="90" rx="10" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="330" y="418" width="220" height="56" rx="8" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="385" y="372" width="130" height="50" rx="8" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="379" y="360" width="142" height="16" rx="5" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="396" y="386" width="108" height="20" rx="4" fill="#27506a"/> <rect x="276" y="400" width="48" height="74" rx="6" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="276" y="400" width="48" height="26" rx="6" fill="#e0563f" stroke="#1d3d4d" stroke-width="8"/> <g fill="#27506a"><rect x="360" y="434" width="28" height="22" rx="3"/><rect x="420" y="434" width="28" height="22" rx="3"/><rect x="480" y="434" width="28" height="22" rx="3"/><rect x="330" y="488" width="26" height="20" rx="3"/><rect x="390" y="488" width="26" height="20" rx="3"/><rect x="450" y="488" width="26" height="20" rx="3"/><rect x="510" y="488" width="26" height="20" rx="3"/></g> <path d="M96 676 q40 -28 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" fill="none" stroke="#e8f7fc" stroke-width="5" opacity=".35"/> </g> </g></g><rect x="0" y="112" width="140" height="6" fill="'+(night?'#12294a':'#3f9cc4')+'" opacity=".6"/><path d="M4 114 Q16 111 28 114 T52 114 T76 114 T100 114 T124 114" stroke="'+(night?'#27487a':'#9bd6ea')+'" stroke-width="1" fill="none" opacity=".6"/></g>';
+    o += '<defs><clipPath id="hcI"><path id="hpI" d="M110 556 H690 Q735 556 752 536 L700 646 Q688 670 655 670 H170 Q128 670 118 640 Z"/></clipPath></defs><clipPath id="shipCut"><rect x="0" y="0" width="140" height="118"/></clipPath><g clip-path="url(#shipCut)"><g class="isl-ship">'+(isAdvancedShip() ? '<g transform="translate(-8 60) scale(.165)">'+BIGSHIP_SIDE+'</g>' : '<g transform="translate(2 12) scale(.16)"> <g stroke-linejoin="round" stroke-linecap="round"> <g stroke="#1d3d4d" stroke-width="8" fill="none"><path d="M470 392 V296"/><path d="M446 330 H494"/><path d="M470 296 L520 312" stroke-width="5"/></g> <rect x="440" y="318" width="60" height="9" rx="3" fill="#eae3d3" stroke="#1d3d4d" stroke-width="5"/> <path d="M520 312 l22 6 -22 8z" fill="#e0563f" stroke="#1d3d4d" stroke-width="4"/> <path d="M700 646 q24 -10 50 6" fill="none" stroke="#e8f7fc" stroke-width="5" stroke-linecap="round" opacity=".25"/> <use href="#hpI" fill="#fbf8ee"/> <g clip-path="url(#hcI)"> <rect x="100" y="606" width="700" height="24" fill="#2f6fb0"/> <rect x="100" y="634" width="700" height="8" fill="#e0563f"/> <rect x="100" y="652" width="700" height="30" fill="#9c3a2e"/> <g fill="#3a9fd0" opacity=".95"><circle cx="380" cy="584" r="7"/><circle cx="440" cy="584" r="7"/><circle cx="500" cy="584" r="7"/><circle cx="560" cy="584" r="7"/></g> </g> <use href="#hpI" fill="none" stroke="#1d3d4d" stroke-width="10"/> <rect x="590" y="530" width="148" height="28" rx="6" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="620" y="512" width="30" height="20" rx="4" fill="#cfd8d6" stroke="#1d3d4d" stroke-width="5"/> <rect x="668" y="516" width="26" height="16" rx="4" fill="#cfd8d6" stroke="#1d3d4d" stroke-width="5"/> <rect x="116" y="534" width="150" height="26" rx="6" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="140" y="514" width="64" height="22" rx="10" fill="#f08a3c" stroke="#1d3d4d" stroke-width="5"/> <rect x="270" y="470" width="320" height="90" rx="10" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="330" y="418" width="220" height="56" rx="8" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="385" y="372" width="130" height="50" rx="8" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="379" y="360" width="142" height="16" rx="5" fill="#4f9a55" stroke="#1d3d4d" stroke-width="6"/> <rect x="396" y="386" width="108" height="20" rx="4" fill="#27506a"/> <rect x="276" y="400" width="48" height="74" rx="6" fill="#fbf8ee" stroke="#1d3d4d" stroke-width="8"/> <rect x="276" y="400" width="48" height="26" rx="6" fill="#e0563f" stroke="#1d3d4d" stroke-width="8"/> <g fill="#27506a"><rect x="360" y="434" width="28" height="22" rx="3"/><rect x="420" y="434" width="28" height="22" rx="3"/><rect x="480" y="434" width="28" height="22" rx="3"/><rect x="330" y="488" width="26" height="20" rx="3"/><rect x="390" y="488" width="26" height="20" rx="3"/><rect x="450" y="488" width="26" height="20" rx="3"/><rect x="510" y="488" width="26" height="20" rx="3"/></g> <path d="M96 676 q40 -28 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" fill="none" stroke="#e8f7fc" stroke-width="5" opacity=".35"/> </g> </g>')+'</g><rect x="0" y="112" width="140" height="6" fill="'+(night?'#12294a':'#3f9cc4')+'" opacity=".6"/><path d="M4 114 Q16 111 28 114 T52 114 T76 114 T100 114 T124 114" stroke="'+(night?'#27487a':'#9bd6ea')+'" stroke-width="1" fill="none" opacity=".6"/></g>';
     o += '</svg>';
     return o;
   }
@@ -3341,13 +3399,13 @@ body{background:#123548;}
   var SICK_DURATION = 13000, SICK_PENALTY = 35, SICK_NEED = 3, SICK_MAX_MISS = 2;
   var SICK_WIN = 140, SICK_WIN_FINAL = 175, SICK_EARLY = 420; // ms either side of the beat that count as a hit
   var TORN_DURATION = 12000, TORN_PENALTY = 35, TORN_WRONG_COST = 2000; // a wrong fit costs 2s of the clock
-  var TORN_W = 140, TORN_H = 100, TORN_R = 120, TORN_SNAP = 30;
-  var TORN_YS = [0,16,33,50,67,84,100], TORN_LINE_YS = [30,44,58,72,86];
+  var TORN_W = 140, TORN_H = 130, TORN_R = 120, TORN_SNAP = 30; // ver.107 紙を縦長に（100→130）
+  var TORN_YS = [0,21,43,65,87,109,130], TORN_LINE_YS = [32,50,68,86,104,120];
   var BREAKER_SWIPE_MIN_DY = 26; // upward drag distance to flip a breaker on
   // Mopping is a safety action like the leak/breaker/iceberg checks (success
   // just avoids the penalty), not a bonus action, so it carries no reward.
   var MOP_DURATION_ADV = 10000, MOP_DROP_TIME_PER = 1500, MOP_DROP_TIME_BASE = 3000, MOP_HAZE_PHASE_DONE = 0.04, MOP_GLASS_CLEAR = 0.003, MOP_DROPS_MIN = 3, MOP_DROPS_VAR = 1, MOP_DROP_GAP_MS = 900;
-  var MOP_DURATION = 11000, MOP_PENALTY = 35, MOP_CLEAR_RATIO = 0.01, MOP_BRUSH_RADIUS = 26, MOP_BONUS = 0;
+  var MOP_DURATION = 11000, MOP_PENALTY = 35, MOP_CLEAR_RATIO = 0.01, MOP_BRUSH_RADIUS = 33, MOP_BONUS = 0;
   var BINOC_TARGETS = ['birds','dolphin','ship','island','waterspout'];
   var BINOC_LABELS = {birds:'鳥の群れ', dolphin:'イルカ', ship:'他の船', island:'島', waterspout:'竜巻', whale:'クジラ'};
   var BINOC_DURATION = 10000, BINOC_PENALTY = 35, BINOC_BONUS = 15;
@@ -3938,6 +3996,9 @@ body{background:#123548;}
 
   function boatTop(progress){ return BOAT_TOP_START - (BOAT_TOP_START-BOAT_TOP_END)*(progress/100); }
   // during the iceberg action the ship sits high so the big steering wheel fits below it
+  // ver.106 航行中の船は top を動かさず translate で動かす（毎コマのレイアウト計算をなくして、端末の負荷を下げる）
+  function boatPx(pct){ var app = document.getElementById('app'); return Math.round((app ? app.offsetHeight : 844) * pct) / 100; }
+  function boatPosCss(pct){ return state.phase==='event' ? 'top:'+pct+'%' : 'top:0;translate:0 '+boatPx(pct)+'px'; }
   function boatTopNow(){ var e = state.currentEvent; return (e && e.type==='iceberg') ? 33 : fsTop(boatTop(state.progress)); }
   // ver.96 ふつうの航行中は海が画面いっぱいなので、メーターと汽笛ボタンの間に収まるよう位置を換算する
   function fsTop(p){
@@ -4713,8 +4774,8 @@ body{background:#123548;}
       '<div class="deck-scene">'+
         '<div class="ambient-layer" id="ambientLayer">'+ambientLayerHtml()+'</div>'+
         (hudObj ? '' : skyCloudsHtml())+
-        '<div class="wake-trail" id="wakeTrail" style="top:'+bTop+'%"><span></span><span></span><span></span></div>'+
-        '<div class="boat-topdown'+bigCls()+'" id="boatTopdown" style="top:'+bTop+'%">'+
+        '<div class="wake-trail" id="wakeTrail" style="'+boatPosCss(bTop)+'"><span></span><span></span><span></span></div>'+
+        '<div class="boat-topdown'+bigCls()+'" id="boatTopdown" style="'+boatPosCss(bTop)+'">'+
           boatFxSvg()+ferryTopdownSvg()+
           '<div class="boat-deck-icons" id="boatDeckIcons">'+loadedIconsHtml()+'</div>'+
         '</div>'+
@@ -4738,17 +4799,17 @@ body{background:#123548;}
       '<filter id="bfxBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4"/></filter>'+
       '<linearGradient id="bfxSideG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="70"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".55" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'+
       '<radialGradient id="bfxFade" gradientUnits="userSpaceOnUse" cx="50" cy="20" r="'+(H*1.15)+'"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>'+
-      '<mask id="bfxMask" maskUnits="userSpaceOnUse" x="-120" y="-20" width="340" height="'+(H*1.7)+'"><rect x="-120" y="-20" width="340" height="'+(H*1.7)+'" fill="url(#bfxFade)"/></mask></defs>';
+      '<linearGradient id="bfxKelG" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="'+(H*1.35).toFixed(0)+'"><stop offset="0" stop-color="#fff"/><stop offset=".45" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>';
     // 船尾の航跡：スクリューでかき回された白い水が、細く出て後ろで広がりながら消える
-    o += '<path class="bfx-wake" d="M34 '+(st-6)+' Q50 '+(st-2)+' 66 '+(st-6)+' L84 '+(st+125)+' L16 '+(st+125)+' Z" fill="url(#bfxW)" filter="url(#bfxBlur)"/>';
+    o += '<path class="bfx-wake" d="M34 '+(st-6)+' Q50 '+(st-2)+' 66 '+(st-6)+' L84 '+(st+125)+' L16 '+(st+125)+' Z" fill="url(#bfxW)"/>';
     // ケルビン波：船の肩から約20度で細く広がる2本の波。とぎれとぎれで後ろへ流れる
     var aL = 'M30 30 L'+(30-0.36*(H*1.35-30)).toFixed(1)+' '+(H*1.35).toFixed(1), aR = 'M70 30 L'+(70+0.36*(H*1.35-30)).toFixed(1)+' '+(H*1.35).toFixed(1);
-    o += '<g mask="url(#bfxMask)"><path class="bfx-kel" d="'+aL+'"/><path class="bfx-kel" d="'+aR+'"/>'+
+    o += '<g stroke="url(#bfxKelG)"><path class="bfx-kel" d="'+aL+'"/><path class="bfx-kel" d="'+aR+'"/>'+
          '<path class="bfx-kel k2" d="'+aL+'"/><path class="bfx-kel k2" d="'+aR+'"/></g>';
     // 船首が押しのける水：船首の先の小さな白い盛り上がり
-    o += '<path class="bfx-bow" d="M37 12 Q50 -3 63 12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" filter="url(#bfxBlur)"/>';
+    o += '<path class="bfx-bow" d="M37 12 Q50 -3 63 12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>';
     // 船首が押しのけた白波：船体の前半だけに沿って、後ろへ行くほど細く・薄くなる
-    o += '<g class="bfx-side" filter="url(#bfxBlur)">'+
+    o += '<g class="bfx-side">'+
       '<path d="M50 1 Q36 6 30 18 Q25 30 24.5 46 L24 66 Q19 60 18.5 46 Q19 28 26 15 Q35 2 50 -2 Z" fill="url(#bfxSideG)"/>'+
       '<path d="M50 1 Q64 6 70 18 Q75 30 75.5 46 L76 66 Q81 60 81.5 46 Q81 28 74 15 Q65 2 50 -2 Z" fill="url(#bfxSideG)"/></g>';
     // 白波からはがれた泡が、船の外側へ離れながら流れて消える
@@ -4799,7 +4860,7 @@ body{background:#123548;}
   function ambientObjHtml(obj){
     var svg = obj.svg || (obj.kind==='fish' ? fishSchoolSvg() : obj.kind==='gull' ? gullSvg() : obj.kind==='islet' ? isletSvg() : obj.kind==='ship' ? (obj.svg = passShipSvg()) : reefSvg());
     return '<div class="ambient-obj ambient-'+obj.kind+'" id="amb-'+obj.id+'" '+
-      'style="top:'+obj.top+'%;left:'+obj.left+'%'+(obj.rot!=null?';--rot:'+obj.rot+'deg':'')+'">'+svg+'</div>';
+      'data-l0="'+obj.left+'" data-t0="'+obj.top+'" style="top:'+obj.top+'%;left:'+obj.left+'%'+(obj.rot!=null?';--rot:'+obj.rot+'deg':'')+'">'+svg+'</div>';
   }
   function ambientLayerHtml(){
     return state.ambientObjects.map(ambientObjHtml).join('');
@@ -4857,8 +4918,15 @@ body{background:#123548;}
     state.ambientObjects.forEach(function(obj){
       if(obj.scattering) return;
       var el = document.getElementById('amb-'+obj.id);
-      if(el){ el.style.top = obj.top+'%'; if(obj.dx) el.style.left = obj.left+'%'; }
+      if(el) ambMove(el, obj, obj.left, obj.top);
     });
+  }
+  // 置いた位置(top/left %)からのずれを translate(px) で表す。レイアウトを動かさないので軽い
+  function ambMove(el, obj, left, top){
+    var L = document.getElementById('ambientLayer'); if(!L) return;
+    var W = L.clientWidth, H = L.clientHeight;
+    var l0 = parseFloat(el.getAttribute('data-l0')), t0 = parseFloat(el.getAttribute('data-t0'));
+    el.style.translate = ((left-l0)*W/100).toFixed(1)+'px '+((top-t0)*H/100).toFixed(1)+'px';
   }
 
   function scatterAmbient(obj){
@@ -4871,8 +4939,7 @@ body{background:#123548;}
       el.classList.add('turning');
       setTimeout(function(){
         el.classList.add('scattering');
-        el.style.left = Math.max(-6, Math.min(106, obj.left + dir*16))+'%';
-        if(obj.kind==='gull') el.style.top = (obj.top - 6)+'%';
+        ambMove(el, obj, Math.max(-6, Math.min(106, obj.left + dir*16)), obj.kind==='gull' ? obj.top - 6 : obj.top);
       }, 180);
     }
     setTimeout(function(){
@@ -4912,6 +4979,40 @@ body{background:#123548;}
     }
     return audioCtx;
   }
+
+  // ===== ver.105 効果音の「作り置き」 =====
+  // 合成で作っていた効果音は、最初に一度だけ OfflineAudioContext で録音しておき、
+  // 以後はその録音を再生するだけにする（鳴らすたびの計算をなくして、録画中などの音切れを防ぐ）。
+  var SFX_BAKED = {}, SFX_BAKING = {};
+  function sfxBake(name, dur, build){
+    if(SFX_BAKED[name] || SFX_BAKING[name]) return;
+    var ctx = audioCtx; if(!ctx) return;
+    var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext; if(!OAC) return;
+    SFX_BAKING[name] = true;
+    try{
+      var oc = new OAC(2, Math.ceil(ctx.sampleRate*dur), ctx.sampleRate);
+      build(oc, oc.destination, 0);
+      var done = function(b){ if(b) SFX_BAKED[name] = b; SFX_BAKING[name] = false; };
+      oc.oncomplete = function(e){ done(e.renderedBuffer); };
+      var pr = oc.startRendering();
+      if(pr && pr.then) pr.then(done, function(){ SFX_BAKING[name] = false; });
+    }catch(e){ SFX_BAKING[name] = false; }
+  }
+  // 作り置きがあれば再生、まだなら今回だけその場で合成して、裏で作り置きを用意する
+  function sfxPlay(name, dur, build){
+    try{
+      var ctx = ensureAudioCtx(); if(!ctx) return;
+      var b = SFX_BAKED[name];
+      if(b){ var src = ctx.createBufferSource(); src.buffer = b; src.connect(sfxOut(ctx)); src.start(); return; }
+      build(ctx, sfxOut(ctx), ctx.currentTime);
+      sfxBake(name, dur, build);
+    }catch(e){}
+  }
+  var SFX_LIST = [];   // [name, dur, build] — 最初のタップ後にまとめて作り置き
+  function sfxBakeAll(){
+    var k = 0;
+    (function next(){ if(k>=SFX_LIST.length){ ambBake(); return; } var it = SFX_LIST[k++]; sfxBake(it[0], it[1], it[2]); setTimeout(next, 30); })();
+  }
   // 画面に戻ってきた時・触った時に音の機能を目覚めさせる（無音を1コマ鳴らすのが iOS では確実）
   function unlockAudio(){
     try{
@@ -4922,19 +5023,16 @@ body{background:#123548;}
     }catch(e){}
   }
   document.addEventListener('visibilitychange', function(){ if(!document.hidden) unlockAudio(); });
+  document.addEventListener('pointerdown', function _bk(){ document.removeEventListener('pointerdown', _bk, true); setTimeout(function(){ try{ ensureAudioCtx(); sfxBakeAll(); }catch(e){} }, 300); }, true);
   setTimeout(function(){ try{ loadTapBuf(); loadCoinBuf(); }catch(e){} }, 0); // 最初のボタンから効果音を鳴らせるよう先に読み込む
   window.addEventListener('pageshow', unlockAudio);
   window.addEventListener('focus', unlockAudio);
   document.addEventListener('touchend', function(){ if(audioCtx && audioCtx.state!=='running') unlockAudio(); }, true);
   document.addEventListener('click', function(){ if(audioCtx && audioCtx.state!=='running') unlockAudio(); }, true);
-  function playHornSound(){
-    try{
-      var ctx = ensureAudioCtx();
-      if(!ctx) return;
-      var now = ctx.currentTime;
+  function buildHorn(ctx, out, now){
       var master = ctx.createGain();
       master.gain.value = 0;
-      master.connect(sfxOut(ctx));
+      master.connect(out);
       [110,165].forEach(function(freq,i){
         var osc = ctx.createOscillator();
         osc.type = 'sawtooth';
@@ -4948,8 +5046,10 @@ body{background:#123548;}
       master.gain.linearRampToValueAtTime(0.5, now+0.08);
       master.gain.setValueAtTime(0.5, now+0.55);
       master.gain.linearRampToValueAtTime(0, now+0.95);
-    }catch(e){ /* audio unavailable; the visual ring still plays */ }
   }
+  function playHornSound(){ sfxPlay('horn', 1.0, buildHorn); }
+  SFX_LIST.push(['horn', 1.0, buildHorn]);
+
 
   // Clear success/failure cues for checkpoint events (storm, pirate, leak,
   // etc.) — resolveEvent() calls exactly one of these every time an event
@@ -5077,30 +5177,30 @@ body{background:#123548;}
     playTapSound();
   }, true);
   // クラッカー（パーティークラッカー）の音：「パン！」という破裂音＋紙テープがひらひらする音
-  function playCrackerSound(){
-    try{
-      var ctx = ensureAudioCtx(); if(!ctx) return;
-      var now = ctx.currentTime, sr = ctx.sampleRate;
+  function buildCracker(ctx, out, now){
+      var sr = ctx.sampleRate;
       function noise(sec){ var b = ctx.createBuffer(1, Math.floor(sr*sec), sr), d = b.getChannelData(0); for(var i=0;i<d.length;i++) d[i] = Math.random()*2-1; return b; }
       // 破裂音
       var pop = ctx.createBufferSource(); pop.buffer = noise(.25);
       var hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 900;
       var pg = ctx.createGain(); pg.gain.setValueAtTime(0, now); pg.gain.linearRampToValueAtTime(.9, now+.004); pg.gain.exponentialRampToValueAtTime(.001, now+.16);
-      pop.connect(hp); hp.connect(pg); pg.connect(sfxOut(ctx)); pop.start(now); pop.stop(now+.25);
+      pop.connect(hp); hp.connect(pg); pg.connect(out); pop.start(now); pop.stop(now+.25);
       // 低い「ボン」
       var o = ctx.createOscillator(); o.type = 'sine'; o.frequency.setValueAtTime(190, now); o.frequency.exponentialRampToValueAtTime(60, now+.12);
       var og = ctx.createGain(); og.gain.setValueAtTime(.55, now); og.gain.exponentialRampToValueAtTime(.001, now+.14);
-      o.connect(og); og.connect(sfxOut(ctx)); o.start(now); o.stop(now+.16);
+      o.connect(og); og.connect(out); o.start(now); o.stop(now+.16);
       // 紙ふぶきがひらひら（小さなカサカサ音を散らす）
       for(var k=0;k<14;k++){
         var t = now + .08 + Math.random()*.7;
         var n = ctx.createBufferSource(); n.buffer = noise(.05);
         var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 3000+Math.random()*4000; bp.Q.value = 1.5;
         var g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.06+Math.random()*.06, t+.005); g.gain.exponentialRampToValueAtTime(.001, t+.05);
-        n.connect(bp); bp.connect(g); g.connect(sfxOut(ctx)); n.start(t); n.stop(t+.06);
+        n.connect(bp); bp.connect(g); g.connect(out); n.start(t); n.stop(t+.06);
       }
-    }catch(e){}
   }
+  function playCrackerSound(){ sfxPlay('cracker', 0.95, buildCracker); }
+  SFX_LIST.push(['cracker', 0.95, buildCracker]);
+
 
   // ---------- ver.74 環境音：スタート画面と航海中は「さざ波」、港ではときどき「カモメ」 ----------
   var amb = {mode:null, master:null, gullTimer:null};
@@ -5125,8 +5225,51 @@ body{background:#123548;}
     });
     return b;
   }
+  // 波の音：フィルター等の処理を毎回せず、一度だけ録音したループ（約7秒・継ぎ目はクロスフェード）を流す
+  var AMB_LOOP = null, AMB_BAKING = false;
+  function ambBake(){
+    if(AMB_LOOP || AMB_BAKING || !audioCtx) return;
+    var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext; if(!OAC) return;
+    AMB_BAKING = true;
+    try{
+      var sr = audioCtx.sampleRate, P = 0; AMB_WAVES.forEach(function(w){ P += w*0.55; });
+      var X = 1.0, oc = new OAC(1, Math.ceil(sr*(P+X)), sr);
+      ambSurf(oc, oc.destination);
+      var done = function(b){
+        AMB_BAKING = false; if(!b) return;
+        var n = Math.floor(sr*P), xn = Math.floor(sr*X), src = b.getChannelData(0);
+        var lp = audioCtx.createBuffer(1, n, sr), d = lp.getChannelData(0);
+        for(var i=0;i<n;i++) d[i] = src[i];
+        for(var k=0;k<xn && k+n<src.length;k++){ var w = k/xn; d[k] = src[k]*w + src[k+n]*(1-w); }
+        AMB_LOOP = lp;
+      };
+      oc.oncomplete = function(e){ done(e.renderedBuffer); };
+      var pr = oc.startRendering(); if(pr && pr.then) pr.then(done, function(){ AMB_BAKING = false; });
+    }catch(e){ AMB_BAKING = false; }
+  }
+  // 元の波の音の作り方（ノイズ→フィルター→波の強弱）。作り置きに使う／作り置きが無いときだけ直接鳴らす
+  function ambSurf(ctx, dest){
+    var sr = ctx.sampleRate, len = Math.floor(sr*4);
+    var nb = ctx.createBuffer(1, len, sr), nd = nb.getChannelData(0), b0=0,b1=0,b2=0;
+    for(var i=0;i<len;i++){ var w = Math.random()*2-1; b0 = .99765*b0 + w*.0990460; b1 = .96300*b1 + w*.2965164; b2 = .57000*b2 + w*1.0526913; nd[i] = (b0+b1+b2+w*.1848)*0.18; }
+    var src = ctx.createBufferSource(); src.buffer = nb; src.loop = true;
+    var hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 260;
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200;
+    var g = ctx.createGain(); g.gain.value = 0;
+    var env = ctx.createBufferSource(); env.buffer = ambWaveEnv(ctx); env.loop = true;
+    env.connect(g.gain);
+    src.connect(hp); hp.connect(lp); lp.connect(g); g.connect(dest);
+    src.start(0); env.start(0);
+  }
   function ambBuild(ctx){
     if(amb.master) return;
+    if(AMB_LOOP){
+      var m0 = ctx.createGain(); m0.gain.value = 0; m0.connect(sfxOut(ctx));
+      var s0 = ctx.createBufferSource(); s0.buffer = AMB_LOOP; s0.loop = true; s0.connect(m0); s0.start(0);
+      amb.master = m0;
+      return;
+    }
+    ambBake();
     var sr = ctx.sampleRate, len = Math.floor(sr*4);
     var nb = ctx.createBuffer(1, len, sr), nd = nb.getChannelData(0), b0=0,b1=0,b2=0;
     for(var i=0;i<len;i++){ var w = Math.random()*2-1; b0 = .99765*b0 + w*.0990460; b1 = .96300*b1 + w*.2965164; b2 = .57000*b2 + w*1.0526913; nd[i] = (b0+b1+b2+w*.1848)*0.18; } // ピンクノイズ
@@ -5293,33 +5436,26 @@ body{background:#123548;}
   });
   // 最初に画面に触れたときに音を目覚めさせる（スタート画面のさざ波もここから鳴り始める）
   document.addEventListener('pointerdown', function(){ var c = audioCtx; if(c && c.state!=='running'){ unlockAudio(); } setTimeout(ambientSync, 60); }, true);
-  function playClearSound(){
-    try{
-      var ctx = ensureAudioCtx();
-      if(!ctx) return;
-      var now = ctx.currentTime;
+  function buildClear(ctx, out, now){
       // A quick two-note rising chime ("ding-ding!").
       [{f:784, t:0, d:.16}, {f:1047, t:.09, d:.24}].forEach(function(note){
         var osc = ctx.createOscillator();
         osc.type = 'triangle';
         osc.frequency.value = note.f;
         var g = ctx.createGain();
-        osc.connect(g); g.connect(sfxOut(ctx));
+        osc.connect(g); g.connect(out);
         var start = now + note.t;
         g.gain.setValueAtTime(0, start);
         g.gain.linearRampToValueAtTime(.32, start+.02);
         g.gain.linearRampToValueAtTime(0, start+note.d);
         osc.start(start); osc.stop(start+note.d+.02);
       });
-    }catch(e){ /* audio unavailable; the log line still says what happened */ }
   }
-  function playFailSound(){
-    try{
-      var ctx = ensureAudioCtx();
-      if(!ctx) return;
-      var now = ctx.currentTime;
-      // A short descending buzz — two slightly detuned square waves falling
-      // in pitch together read as an "error/malfunction" rather than music.
+  function playClearSound(){ sfxPlay('clear', 0.4, buildClear); }
+  SFX_LIST.push(['clear', 0.4, buildClear]);
+
+  function buildFail(ctx, out, now){
+      // A short descending buzz — two slightly detuned square waves falling in pitch together.
       [{f0:220, f1:90, g:.26}, {f0:207, f1:85, g:.13}].forEach(function(v){
         var osc = ctx.createOscillator();
         osc.type = 'square';
@@ -5328,11 +5464,13 @@ body{background:#123548;}
         var g = ctx.createGain();
         g.gain.setValueAtTime(v.g, now);
         g.gain.linearRampToValueAtTime(0, now+.4);
-        osc.connect(g); g.connect(sfxOut(ctx));
+        osc.connect(g); g.connect(out);
         osc.start(now); osc.stop(now+.42);
       });
-    }catch(e){ /* audio unavailable; the log line still says what happened */ }
   }
+  function playFailSound(){ sfxPlay('fail', 0.5, buildFail); }
+  SFX_LIST.push(['fail', 0.5, buildFail]);
+
 
   function honk(){
     if(state.phase!=='sailing') return;
@@ -5342,15 +5480,21 @@ body{background:#123548;}
     playHornSound();
 
     var sceneEl = document.querySelector('.deck-scene');
+    // ver.103 汽笛の輪は、実際に描かれている船の真ん中から（船を大きくしても合うように実寸で測る）
+    var boatTopPct = boatTop(state.progress) + 22;
+    var boatEl = document.getElementById('boatTopdown');
+    if(sceneEl && boatEl && sceneEl.clientHeight){
+      var sr0 = sceneEl.getBoundingClientRect(), br0 = boatEl.getBoundingClientRect();
+      if(sr0.height) boatTopPct = (br0.top + br0.height/2 - sr0.top) / sr0.height * 100;
+    }
     if(sceneEl){
       var ring = document.createElement('div');
       ring.className = 'horn-ring';
-      ring.style.top = (boatTop(state.progress) + 22) + '%';
+      ring.style.top = boatTopPct + '%';
       sceneEl.appendChild(ring);
       setTimeout(function(){ ring.remove(); }, 720);
     }
 
-    var boatTopPct = boatTop(state.progress) + 22; // roughly the boat's center
     state.ambientObjects.forEach(function(obj){
       if(obj.scattering || (obj.kind!=='fish' && obj.kind!=='gull')) return; // 逃げるのは魚と鳥だけ（島・岩・船はそのまま）
       if(Math.abs(obj.top - boatTopPct) <= HONK_RANGE) scatterAmbient(obj);
@@ -6140,7 +6284,7 @@ body{background:#123548;}
     var arr = [{correct:true, prof:base, shift:0, ends:[]}];
     var shifts = shuffleArr([0,0,7,-7,6]);
     for(var i=0;i<5;i++) arr.push({correct:false, prof:tornDecoyOf(base), shift:shifts[i], ends:[]});
-    arr.forEach(function(p){ for(var k=0;k<5;k++) p.ends.push(70+Math.round(Math.random()*34)); });
+    arr.forEach(function(p){ for(var k=0;k<TORN_LINE_YS.length;k++) p.ends.push(70+Math.round(Math.random()*34)); });
     arr = shuffleArr(arr);
     arr.forEach(function(p,i){ p.id=i; p.x=null; p.y=null; p.rot=Math.round(Math.random()*18-9); });
     return {base:base, list:arr};
@@ -6163,8 +6307,8 @@ body{background:#123548;}
     return '<svg viewBox="0 0 '+(R+12)+' '+TORN_H+'"><defs><clipPath id="tcR'+p.id+'"><polygon points="'+all.join(' ')+'"/></clipPath></defs>'+
       '<polygon points="'+all.join(' ')+'" fill="#f3ead4" stroke="#fffaf0" stroke-width="1.5"/>'+
       '<g clip-path="url(#tcR'+p.id+')">'+lines+
-      '<circle cx="'+(R-4)+'" cy="76" r="12" fill="none" stroke="#c4453a" stroke-width="2"/>'+
-      '<text x="'+(R-4)+'" y="80" font-size="11" font-weight="700" text-anchor="middle" fill="#c4453a" font-family="sans-serif">承</text></g></svg>';
+      '<circle cx="'+(R-4)+'" cy="98" r="12" fill="none" stroke="#c4453a" stroke-width="2"/>'+
+      '<text x="'+(R-4)+'" y="102" font-size="11" font-weight="700" text-anchor="middle" fill="#c4453a" font-family="sans-serif">承</text></g></svg>';
   }
   function renderTornScene(){
     var ev = state.currentEvent;
@@ -6181,6 +6325,9 @@ body{background:#123548;}
       '</div>'+
       '<div class="voyage-instruction flash">破れた資料の片割れを探せ！ 右にスライドさせて、つなげ！</div>'+
       '<div class="progress-caption">はな島まで残り '+fmt(100-state.progress)+'%</div>';
+    // 合わせる側（航海日誌）は画面の下のほうに置く。散らばった片割れは上側
+    var tScene0 = document.getElementById('tornScene'), tLeft0 = document.getElementById('tornLeft');
+    if(tScene0 && tLeft0){ tLeft0.style.top = Math.max(196, tScene0.clientHeight - TORN_H - 40)+'px'; }
     if(!ev.laidOut){
       ev.laidOut = true;
       var scene = document.getElementById('tornScene');
@@ -6576,15 +6723,17 @@ body{background:#123548;}
     var ctx = canvas.getContext('2d');
     ctx.globalCompositeOperation = 'destination-out';
     var steps = 1;
-    var x0 = lastClientX!=null ? lastClientX-rect.left : clientX-rect.left;
-    var y0 = lastClientY!=null ? lastClientY-rect.top : clientY-rect.top;
-    var x1 = clientX-rect.left, y1 = clientY-rect.top;
+    // キャンバスの内部サイズと画面上の大きさがずれていても、触った場所を正しく拭く
+    var kx = rect.width ? canvas.width/rect.width : 1, ky = rect.height ? canvas.height/rect.height : 1;
+    var x0 = (lastClientX!=null ? lastClientX-rect.left : clientX-rect.left)*kx;
+    var y0 = (lastClientY!=null ? lastClientY-rect.top : clientY-rect.top)*ky;
+    var x1 = (clientX-rect.left)*kx, y1 = (clientY-rect.top)*ky;
     var dist = Math.hypot(x1-x0, y1-y0);
     steps = Math.max(1, Math.ceil(dist/8));
     for(var i=1;i<=steps;i++){
       var x = x0+(x1-x0)*(i/steps), y = y0+(y1-y0)*(i/steps);
       ctx.beginPath();
-      ctx.arc(x, y, MOP_BRUSH_RADIUS, 0, Math.PI*2);
+      ctx.arc(x, y, MOP_BRUSH_RADIUS*EK*kx, 0, Math.PI*2);
       ctx.fill();
     }
     ctx.globalCompositeOperation = 'source-over';
@@ -7496,7 +7645,7 @@ body{background:#123548;}
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin ・ ver.100</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.107</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -7556,7 +7705,7 @@ body{background:#123548;}
         '<div class="ts-bottom">'+
           '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '</div>'+
-        '<p class="credit">© 2026 Shimabin ・ ver.100　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.107　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
       '</div>';
   }
   var titleLeaving = false;
@@ -7611,8 +7760,13 @@ body{background:#123548;}
     var ah = app.offsetHeight;
     var top = hd && hd.offsetHeight ? hd.offsetTop + hd.offsetHeight + 6 : 8;
     var bot = lg && lg.offsetHeight ? ah - lg.offsetTop + 6 : 8;
-    app.style.setProperty('--ovT', top+'px'); app.style.setProperty('--ovB', bot+'px');
+    app.style.setProperty('--ovT', top+'px'); app.style.setProperty('--ovB', bot+'px'); app.style.setProperty('--sh', ah+'px');
+    // ver.102 アクション画面の中身の拡大率（縦にどれだけ余裕があるか／横幅の上限から決める）
+    var sceneH = ah - top - bot - 110, sceneW = app.offsetWidth - 20;
+    EK = Math.max(1, Math.min(1.5, sceneH/330, sceneW/250));
+    app.style.setProperty('--ek', EK.toFixed(3));
   }
+  var EK = 1;
   try{ if(window.ResizeObserver){ var _ro = new ResizeObserver(function(){ measureOverlays(); });
     document.addEventListener('DOMContentLoaded', function(){}); setTimeout(function(){ var a=document.getElementById('app'); if(!a) return; _ro.observe(a); var h=a.querySelector('.bridge-bar'), l=a.querySelector('.log-panel'); if(h) _ro.observe(h); if(l) _ro.observe(l); }, 0); } }catch(e){}
   // ver.98 アクション画面：縦に広がった分、中身ごと拡大して画面に合わせる
@@ -7646,7 +7800,8 @@ body{background:#123548;}
   function render(){
     var _st = document.getElementById('stage'); var _keep = _st ? _st.scrollTop : 0, _ph = render._ph; render._ph = state.phase;
     var appEl = document.getElementById('app');
-    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.classList.toggle('at-dock', state.phase==='dock'); appEl.classList.toggle('at-home', state.phase==='home'); appEl.classList.toggle('at-sea', state.phase==='sailing' || state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island' || state.phase==='drills' || state.phase==='shipyard'); appEl.classList.toggle('drilling', !!state.drill); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); }
+    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.setAttribute('data-ev', (state.phase==='event' && state.currentEvent) ? state.currentEvent.type : ''); appEl.setAttribute('data-adv', (state.currentEvent && state.currentEvent.adv) ? '1' : '0'); appEl.classList.toggle('at-dock', state.phase==='dock'); appEl.classList.toggle('at-home', state.phase==='home'); appEl.classList.toggle('at-sea', state.phase==='sailing' || state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island' || state.phase==='drills' || state.phase==='shipyard'); appEl.classList.toggle('drilling', !!state.drill); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); }
+    measureOverlays();
     renderGauges();
     if(state.phase==='dock') renderDock();
     else if(state.phase==='sailing' || state.phase==='event' || state.phase==='intro') renderSea();
@@ -7803,9 +7958,9 @@ body{background:#123548;}
 
     var bTop = boatTopNow();
     var boatEl = document.getElementById('boatTopdown');
-    if(boatEl) boatEl.style.top = bTop+'%';
+    if(boatEl) boatEl.style.translate = '0 '+boatPx(bTop)+'px';
     var wakeEl = document.getElementById('wakeTrail');
-    if(wakeEl) wakeEl.style.top = bTop+'%';
+    if(wakeEl) wakeEl.style.translate = '0 '+boatPx(bTop)+'px';
     ambientTick();
 
     var cp = state.checkpoints.find(function(c){ return !c.fired && state.progress>=c.at; });
@@ -8082,7 +8237,7 @@ body{background:#123548;}
     var sc = document.getElementById('papersScene');
     ev.sw = sc.clientWidth; ev.sh = sc.clientHeight;
     if(ev.crewX==null){ ev.crewX = ev.sw/2; ev.crewTarget = ev.sw/2; }
-    ev.catchY = ev.sh - 46 - 40;       // height of the crew member's hands
+    ev.catchY = ev.sh - 34 - 52*EK;     // height of the crew member's hands (ver.102 船員を拡大したぶん)
     ev.sheets.forEach(function(p){ p.el = null; });   // re-created by the loop
     if(!ev.landScheduled){ ev.landScheduled = true; ev.sheets.forEach(function(p){ p.spawnAt = Math.max(150, p.landAt - (ev.catchY+20)/p.vy*1000); }); }
     syncEventTimerBar();
@@ -8131,7 +8286,7 @@ body{background:#123548;}
       p.rot = (p.swayer ? 52 : 38)*Math.sin(tSec*p.swayW+p.swayP+1.2);
       el.style.transform = 'translate('+drawX.toFixed(1)+'px,'+p.y.toFixed(1)+'px) rotate('+p.rot.toFixed(0)+'deg)';
       if(p.state==='fall' && p.y >= ev.catchY){
-        if(Math.abs(drawX-ev.crewX) <= PAPERS_CATCH_HALF){
+        if(Math.abs(drawX-ev.crewX) <= PAPERS_CATCH_HALF*EK){
           p.state='got'; ev.got = (ev.got||0)+1;
           if(el.parentNode) el.classList.add('got');
           setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 200);
@@ -8163,7 +8318,7 @@ body{background:#123548;}
   function papersMove(e){
     var ev = state.currentEvent, d = activeDrag;
     if(!ev || ev.type!=='papers' || !d) return;
-    var dx = e.clientX - d.lastX; d.lastX = e.clientX;
+    var dx = (e.clientX - d.lastX)*LK(); d.lastX = e.clientX;
     ev.crewTarget = Math.max(24, Math.min(ev.sw-24, ev.crewTarget + dx*PAPERS_DRAG_GAIN));
   }
 
@@ -8190,20 +8345,21 @@ body{background:#123548;}
     return ['','タップ'];
   }
   var introSeq = 0;
-  function playCountBeep(go){
-    try{
-      var ctx = ensureAudioCtx(); if(!ctx) return;
-      var t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+  function buildBeep(go){ return function(ctx, out, t){
+      var o = ctx.createOscillator(), g = ctx.createGain();
       o.type = 'square'; o.frequency.value = go ? 1046 : 660;
       g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(go?0.16:0.12, t+0.01);
       g.gain.exponentialRampToValueAtTime(0.0001, t+(go?0.45:0.16));
       var f = ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value = 2600;
-      o.connect(f); f.connect(g); g.connect(sfxOut(ctx)); o.start(t); o.stop(t+(go?0.5:0.2));
+      o.connect(f); f.connect(g); g.connect(out); o.start(t); o.stop(t+(go?0.5:0.2));
       if(go){ var o2 = ctx.createOscillator(); o2.type='square'; o2.frequency.value = 1568; var g2 = ctx.createGain();
         g2.gain.setValueAtTime(0.0001,t); g2.gain.exponentialRampToValueAtTime(0.06,t+0.01); g2.gain.exponentialRampToValueAtTime(0.0001,t+0.4);
-        o2.connect(f); f.connect(g2); g2.connect(sfxOut(ctx)); o2.start(t); o2.stop(t+0.45); }
-    }catch(e){}
-  }
+        o2.connect(f); f.connect(g2); g2.connect(out); o2.start(t); o2.stop(t+0.45); }
+  }; }
+  var BEEP_BUILD = [buildBeep(false), buildBeep(true)];
+  function playCountBeep(go){ sfxPlay(go?'beepGo':'beep', go?0.55:0.25, BEEP_BUILD[go?1:0]); }
+  SFX_LIST.push(['beep', 0.25, BEEP_BUILD[0]], ['beepGo', 0.55, BEEP_BUILD[1]]);
+
   function removeIntro(){ var el = document.getElementById('actIntro'); if(el && el.parentNode) el.parentNode.removeChild(el); }
   function triggerEvent(type){
     var reduce = false; try{ reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){}
@@ -8854,7 +9010,17 @@ body{background:#123548;}
   var activeDrag = null; // {kind:'wheel', ...} | {kind:'cargo', ...}
   var CARGO_EDGE_RATIO = 0.16; // must drag within this fraction of an edge to toss
 
+  // ver.101 画面全体を拡大縮小して表示しているぶん、指の移動量(画面px)をゲーム内px に直す係数
+  function LK(){ var a = document.getElementById('app'); if(!a || !a.offsetWidth) return 1; var w = a.getBoundingClientRect().width; return w ? a.offsetWidth/w : 1; }
+  // ver.107 指1本だけで操作：2本目の指（持ち手の指が画面の端に触れた場合など）は無視する。
+  // 双眼鏡のピント合わせだけは2本指で操作するので対象外。
   function onScenePointerDown(e){
+    if(activeDrag && activeDrag.pid!=null && activeDrag.ev===state.currentEvent) return;
+    var before = activeDrag;
+    onScenePointerDown0(e);
+    if(activeDrag && activeDrag!==before && activeDrag.kind!=='binoc'){ activeDrag.pid = e.pointerId; activeDrag.ev = state.currentEvent; }
+  }
+  function onScenePointerDown0(e){
     if(state.phase!=='event' || !state.currentEvent) return;
     var ev = state.currentEvent;
     if(ev.type!=='storm' && ev.resolving) return;
@@ -8885,15 +9051,16 @@ body{background:#123548;}
       var sceneEl = document.querySelector('.deck-scene');
       var sceneRect = sceneEl.getBoundingClientRect();
       var cRect = crateEl.getBoundingClientRect();
-      var startLeft = cRect.left + cRect.width/2 - sceneRect.left;
-      var startTop = cRect.top + cRect.height/2 - sceneRect.top;
+      var lk = LK();
+      var startLeft = (cRect.left + cRect.width/2 - sceneRect.left)*lk;
+      var startTop = (cRect.top + cRect.height/2 - sceneRect.top)*lk;
       crateEl.style.transition = 'none';
       crateEl.style.left = startLeft+'px';
       crateEl.style.top = startTop+'px';
       crateEl.style.transform = 'translate(-50%,-50%) scale(1.12)';
       crateEl.classList.add('grabbed');
       activeDrag = {kind:'cargo', x0:e.clientX, y0:e.clientY, startLeft:startLeft, startTop:startTop,
-        sceneWidth:sceneRect.width, crateEl:crateEl};
+        sceneWidth:sceneRect.width*lk, crateEl:crateEl, lk:lk};
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='trouble'){
       var paxEl = e.target.closest ? e.target.closest('#troublePax') : null;
@@ -8914,7 +9081,7 @@ body{background:#123548;}
     } else if(ev.type==='rescue' && ev.stage==='aim'){
       var ringEl = e.target.closest ? e.target.closest('#rescueRing') : null;
       if(!ringEl) return;
-      activeDrag = {kind:'aim', ringEl:ringEl, x0:e.clientX, y0:e.clientY};
+      activeDrag = {kind:'aim', ringEl:ringEl, x0:e.clientX, y0:e.clientY, lk:LK()};
       ringEl.classList.add('dragging');
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='rescue' && ev.stage==='reel'){
@@ -8944,8 +9111,8 @@ body{background:#123548;}
       if(!(e.target.closest && e.target.closest('#crackScene'))) return;
       var csr = document.getElementById('crackScene').getBoundingClientRect();
       ev.strokeId = (ev.strokeId||0)+1;
-      activeDrag = {kind:'tape', lx:null, ly:null, ox:csr.left+1, oy:csr.top+1};
-      crackPaintTo(e.clientX-activeDrag.ox, e.clientY-activeDrag.oy);
+      activeDrag = {kind:'tape', lx:null, ly:null, ox:csr.left+1, oy:csr.top+1, lk:LK()};
+      crackPaintTo((e.clientX-activeDrag.ox)*activeDrag.lk, (e.clientY-activeDrag.oy)*activeDrag.lk);
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='sick'){
       if(e.target.closest && e.target.closest('#sickScene')) sickTap();
@@ -8963,7 +9130,7 @@ body{background:#123548;}
       var tp = tornPieceById(parseInt(tEl.getAttribute('data-id'),10));
       if(tp) tp.z = ev.zTop;
       tEl.classList.add('grabbed');
-      activeDrag = {kind:'torn', el:tEl, offX:e.clientX-tR.left-(tR.width-tEl.offsetWidth)/2, offY:e.clientY-tR.top-(tR.height-tEl.offsetHeight)/2};
+      var tlk = LK(); activeDrag = {kind:'torn', el:tEl, lk:tlk, offX:(e.clientX-tR.left)*tlk-(tR.width*tlk-tEl.offsetWidth)/2, offY:(e.clientY-tR.top)*tlk-(tR.height*tlk-tEl.offsetHeight)/2};
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='fuse'){
       var fSc = document.getElementById('fuseScene'), fR = fSc.getBoundingClientRect(), fEl = null;
@@ -8984,8 +9151,8 @@ body{background:#123548;}
       }
       fSc.appendChild(fEl);
       fEl.classList.add('grabbed');
-      activeDrag = {kind:'fuse', el:fEl, sx:fR.left, sy:fR.top};
-      fEl.style.left = (e.clientX-fR.left)+'px'; fEl.style.top = (e.clientY-fR.top)+'px';
+      activeDrag = {kind:'fuse', el:fEl, sx:fR.left, sy:fR.top, lk:LK()};
+      fEl.style.left = ((e.clientX-fR.left)*activeDrag.lk)+'px'; fEl.style.top = ((e.clientY-fR.top)*activeDrag.lk)+'px';
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='breaker'){
       var slotEl = e.target.closest ? e.target.closest('.breaker-slot:not([disabled])') : null;
@@ -8997,14 +9164,14 @@ body{background:#123548;}
       if(!mopScene0) return;
       var mopRect0 = mopScene0.getBoundingClientRect();
       var mopEl0 = document.getElementById('mopHead');
-      if(mopEl0){ mopEl0.style.left = (e.clientX-mopRect0.left)+'px'; mopEl0.style.top = (e.clientY-mopRect0.top)+'px'; }
+      var mlk0 = LK(); if(mopEl0){ mopEl0.style.left = ((e.clientX-mopRect0.left)*mlk0)+'px'; mopEl0.style.top = ((e.clientY-mopRect0.top)*mlk0)+'px'; }
       activeDrag = {kind:'mop', lastX:e.clientX, lastY:e.clientY};
       mopErase(e.clientX, e.clientY, null, null);
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='binoculars' && ev.chase){
       if(ev.resolving) return;
       ev.holding = true; // gauge only fills while a finger is on the screen
-      activeDrag = {kind:'chase', lastX:e.clientX, lastY:e.clientY};
+      activeDrag = {kind:'chase', lastX:e.clientX, lastY:e.clientY, lk:LK()};
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='binoculars'){
       var lensEl = e.target.closest ? e.target.closest('.binoc-scene') : null;
@@ -9017,6 +9184,10 @@ body{background:#123548;}
   }
 
   function onScenePointerMove(e){
+    if(activeDrag && activeDrag.pid!=null && e.pointerId!==activeDrag.pid) return;
+    onScenePointerMove0(e);
+  }
+  function onScenePointerMove0(e){
     if(!activeDrag) return;
     if(activeDrag.kind==='turtle'){ turtleMove(e); return; }
     if(activeDrag.kind==='papers'){ papersMove(e); return; }
@@ -9065,25 +9236,26 @@ body{background:#123548;}
         if(isRockwall) resolveRockwall(direction); else bumpEvent('iceberg', direction);
       }
     } else if(activeDrag.kind==='fuse'){
-      activeDrag.el.style.left = (e.clientX-activeDrag.sx)+'px'; activeDrag.el.style.top = (e.clientY-activeDrag.sy)+'px';
+      activeDrag.el.style.left = ((e.clientX-activeDrag.sx)*activeDrag.lk)+'px'; activeDrag.el.style.top = ((e.clientY-activeDrag.sy)*activeDrag.lk)+'px';
       fuseMoveHint(activeDrag.el);
     } else if(activeDrag.kind==='tape'){
-      crackPaintTo(e.clientX-activeDrag.ox, e.clientY-activeDrag.oy);
+      crackPaintTo((e.clientX-activeDrag.ox)*activeDrag.lk, (e.clientY-activeDrag.oy)*activeDrag.lk);
     } else if(activeDrag.kind==='torn'){
       var tSc = document.getElementById('tornScene');
       if(tSc){
         var tsr = tSc.getBoundingClientRect();
-        var nx = e.clientX - tsr.left - activeDrag.offX, ny = e.clientY - tsr.top - activeDrag.offY;
-        nx = Math.max(-10, Math.min(tsr.width-(TORN_R+2), nx));
-        ny = Math.max(-6, Math.min(tsr.height-60, ny));
+        var tk = activeDrag.lk||1;
+        var nx = (e.clientX - tsr.left)*tk - activeDrag.offX, ny = (e.clientY - tsr.top)*tk - activeDrag.offY;
+        nx = Math.max(-10, Math.min(tsr.width*tk-(TORN_R+2), nx));
+        ny = Math.max(-6, Math.min(tsr.height*tk-60, ny));
         activeDrag.el.style.left = nx+'px'; activeDrag.el.style.top = ny+'px';
       }
     } else if(activeDrag.kind==='cargo'){
-      var dx = e.clientX - activeDrag.x0, dy = e.clientY - activeDrag.y0;
+      var dx = (e.clientX - activeDrag.x0)*activeDrag.lk, dy = (e.clientY - activeDrag.y0)*activeDrag.lk;
       activeDrag.crateEl.style.left = (activeDrag.startLeft+dx)+'px';
       activeDrag.crateEl.style.top = (activeDrag.startTop+dy*0.5)+'px';
     } else if(activeDrag.kind==='aim'){
-      var adx = e.clientX - activeDrag.x0, ady = e.clientY - activeDrag.y0;
+      var adx = (e.clientX - activeDrag.x0)*activeDrag.lk, ady = (e.clientY - activeDrag.y0)*activeDrag.lk;
       activeDrag.ringEl.style.transform = 'translate(calc(-50% + '+adx+'px), '+ady+'px)';
     } else if(activeDrag.kind==='spray'){
       activeDrag.lastX = e.clientX;
@@ -9094,7 +9266,7 @@ body{background:#123548;}
       if(mopScene1){
         var mopRect1 = mopScene1.getBoundingClientRect();
         var mopEl1 = document.getElementById('mopHead');
-        if(mopEl1){ mopEl1.style.left = (e.clientX-mopRect1.left)+'px'; mopEl1.style.top = (e.clientY-mopRect1.top)+'px'; }
+        var mlk1 = LK(); if(mopEl1){ mopEl1.style.left = ((e.clientX-mopRect1.left)*mlk1)+'px'; mopEl1.style.top = ((e.clientY-mopRect1.top)*mlk1)+'px'; }
       }
       mopErase(e.clientX, e.clientY, activeDrag.lastX, activeDrag.lastY);
       activeDrag.lastX = e.clientX;
@@ -9102,8 +9274,8 @@ body{background:#123548;}
     } else if(activeDrag.kind==='chase'){
       var cev = state.currentEvent;
       if(cev && cev.chase && !cev.resolving){
-        cev.lx = Math.max(0, Math.min(CHASE_W, cev.lx + (e.clientX-activeDrag.lastX)*1.4));
-        cev.ly = Math.max(0, Math.min(CHASE_H, cev.ly + (e.clientY-activeDrag.lastY)*1.4));
+        cev.lx = Math.max(0, Math.min(CHASE_W, cev.lx + (e.clientX-activeDrag.lastX)*1.4*activeDrag.lk));
+        cev.ly = Math.max(0, Math.min(CHASE_H, cev.ly + (e.clientY-activeDrag.lastY)*1.4*activeDrag.lk));
         activeDrag.lastX = e.clientX; activeDrag.lastY = e.clientY;
         chasePlace(cev);
       }
@@ -9130,6 +9302,10 @@ body{background:#123548;}
   }
 
   function onScenePointerUp(e){
+    if(activeDrag && activeDrag.pid!=null && e.pointerId!==activeDrag.pid) return;
+    onScenePointerUp0(e);
+  }
+  function onScenePointerUp0(e){
     if(!activeDrag) return;
     if(activeDrag.kind==='papers'){ activeDrag = null; return; }
     if(activeDrag.kind==='wheel'){
@@ -9149,7 +9325,7 @@ body{background:#123548;}
       if(Math.abs(netDeg) < need) return;
       if(isRockwall) resolveRockwall(direction); else bumpEvent('iceberg', direction);
     } else if(activeDrag.kind==='cargo'){
-      var dx = e.clientX - activeDrag.x0;
+      var dx = (e.clientX - activeDrag.x0)*(activeDrag.lk||1);
       var finalLeft = activeDrag.startLeft + dx;
       var crateEl = activeDrag.crateEl;
       var edgeMargin = activeDrag.sceneWidth * CARGO_EDGE_RATIO;
@@ -9476,7 +9652,7 @@ body{background:#123548;}
     state:function(){ return state; }, wallet:function(){ return wallet; }, render:function(){ render(); },
     endVoyage:endVoyage, goHome:goHome, freshState:freshState, setState:function(s){ state = s; }, runUnlocks:runUnlocks,
     trigger:function(t){ startEventNow(t); }, triggerIntro:function(t){ triggerEvent(t); },
-    screenCTM:screenCTM, load:function(ids, side){ ids.forEach(function(id){ toggleItemSide(id, side||'L'); }); }
+    screenCTM:screenCTM, sfx:function(){ return Object.keys(SFX_BAKED).concat(AMB_LOOP?['amb:'+AMB_LOOP.duration.toFixed(2)]:[]).concat(amb.master?['master']:[]); }, load:function(ids, side){ ids.forEach(function(id){ toggleItemSide(id, side||'L'); }); }
   }; }catch(e){}
 
   function start(data){
