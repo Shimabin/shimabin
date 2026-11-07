@@ -1942,6 +1942,8 @@ button:focus-visible,[data-action]:focus-visible{outline-color:var(--gold-ink);}
 
 /* ===================== ver.92 画面固定（iPhone縦サイズの枠） ===================== */
 html,body{height:100%;overflow:hidden;overscroll-behavior:none;}
+/* ver.108 双眼鏡のピンチ中はどこを触ってもブラウザが拡大しない */
+body.binoc-on, body.binoc-on *{touch-action:none !important;}
 body{background:#123548;}
 .app{position:fixed;left:50%;top:50%;width:390px;height:var(--fh,844px);max-width:none;margin:0;
   transform:translate(-50%,-50%) scale(var(--fk,1));transform-origin:center center;
@@ -7645,7 +7647,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin ・ ver.107</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.108</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -7705,7 +7707,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         '<div class="ts-bottom">'+
           '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '</div>'+
-        '<p class="credit">© 2026 Shimabin ・ ver.107　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.108　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
       '</div>';
   }
   var titleLeaving = false;
@@ -7798,6 +7800,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   window.addEventListener('orientationchange', function(){ setTimeout(fitFrame, 200); });
   fitFrame();
   function render(){
+    try{ var _bev = state.currentEvent; document.body.classList.toggle('binoc-on', state.phase==='event' && !!_bev && _bev.type==='binoculars' && !_bev.chase); }catch(_e){}
     var _st = document.getElementById('stage'); var _keep = _st ? _st.scrollTop : 0, _ph = render._ph; render._ph = state.phase;
     var appEl = document.getElementById('app');
     if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.setAttribute('data-ev', (state.phase==='event' && state.currentEvent) ? state.currentEvent.type : ''); appEl.setAttribute('data-adv', (state.currentEvent && state.currentEvent.adv) ? '1' : '0'); appEl.classList.toggle('at-dock', state.phase==='dock'); appEl.classList.toggle('at-home', state.phase==='home'); appEl.classList.toggle('at-sea', state.phase==='sailing' || state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island' || state.phase==='drills' || state.phase==='shipyard'); appEl.classList.toggle('drilling', !!state.drill); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); }
@@ -9174,8 +9177,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       activeDrag = {kind:'chase', lastX:e.clientX, lastY:e.clientY, lk:LK()};
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='binoculars'){
-      var lensEl = e.target.closest ? e.target.closest('.binoc-scene') : null;
-      if(!lensEl) return;
+      // ver.108 画面のどこでも2本指でピント合わせ（説明欄の上に指が乗っても反応させる）
       binocTouches[e.pointerId] = {x:e.clientX, y:e.clientY};
       if(!activeDrag || activeDrag.kind!=='binoc') activeDrag = {kind:'binoc', lastDist:null};
       if(Object.keys(binocTouches).length>=2) activeDrag.lastDist = binocPinchDist();
@@ -9609,6 +9611,15 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   stageEl.addEventListener('pointerup', onScenePointerUp);
   stageEl.addEventListener('pointercancel', onScenePointerUp);
   stageEl.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  // ver.108 双眼鏡のピンチ：ステージの外で触れた指も受け付ける（iPhone で2本目の指が説明欄に乗るとピンチアウトできなかった）
+  function binocPinchActive(){ var ev = state.currentEvent; return state.phase==='event' && ev && ev.type==='binoculars' && !ev.chase && !ev.resolving; }
+  document.addEventListener('pointerdown', function(e){ if(binocPinchActive() && !stageEl.contains(e.target)) onScenePointerDown(e); }, true);
+  document.addEventListener('pointermove', function(e){ if(binocTouches[e.pointerId] && !stageEl.contains(e.target)) onScenePointerMove(e); }, true);
+  document.addEventListener('pointerup', function(e){ if(binocTouches[e.pointerId] && !stageEl.contains(e.target)) onScenePointerUp(e); }, true);
+  document.addEventListener('pointercancel', function(e){ if(binocTouches[e.pointerId] && !stageEl.contains(e.target)) onScenePointerUp(e); }, true);
+  // ver.108 2本指の操作でブラウザ自体が拡大（ピンチアウト）しないようにする。ゲーム内でページ拡大は使わない
+  document.addEventListener('touchmove', function(e){ if(e.touches && e.touches.length > 1) e.preventDefault(); }, {passive:false});
+  ['gesturestart','gesturechange','gestureend'].forEach(function(n){ document.addEventListener(n, function(e){ e.preventDefault(); }, {passive:false}); });
   // パソコン向け: 双眼鏡のズームはマウスホイール（トラックパッドのピンチ）でも操作できる
   stageEl.addEventListener('wheel', function(e){
     var ev = state.currentEvent;
