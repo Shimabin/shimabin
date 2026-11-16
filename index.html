@@ -1094,7 +1094,7 @@ img,svg{-webkit-user-drag:none;}
 
 /* Iceberg (large ship, dev): bergs are JS-positioned (drifting / wall of bergs). */
 .lane-object.iceberg-obj.ice-adv{animation:none!important;cursor:default;opacity:1;}
-.lane-object.iceberg-obj.ice-adv.ice-piece{clip-path:polygon(50% 0%,78% 42%,100% 100%,0% 100%,24% 48%);}
+.lane-object.iceberg-obj.ice-adv.ice-piece:not(.reef2){clip-path:polygon(50% 0%,78% 42%,100% 100%,0% 100%,24% 48%);}
 
 .ice-lanes{position:absolute;left:0;top:0;width:100%;height:100%;z-index:2;pointer-events:none;}
 .ice-lane{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed rgba(255,255,255,.18);z-index:2;pointer-events:none;}
@@ -1557,6 +1557,10 @@ img,svg{-webkit-user-drag:none;}
 .score-row{display:flex;justify-content:space-between;padding:7px 2px;border-bottom:1px solid var(--border);font:500 13px var(--font-body);}
 .score-row.muted{color:var(--ink-dim);}
 .score-row.total{font-family:var(--font-mono);font-weight:600;color:var(--brass-bright);}
+/* ver.133 今回の獲得合計は大きく赤く */
+.score-table .score-row.total{color:#d6362a;font:800 17px var(--font-body);align-items:center;padding:10px 4px;}
+.score-table .score-row.total span:last-child{font:800 30px/1 var(--font-mono);color:#d6362a;}
+.score-table .score-row.total span:last-child::after{content:' フェリポ';font:800 14px var(--font-body);}
 .score-row span:last-child{font-family:var(--font-mono);font-variant-numeric:tabular-nums;}
 .score-row.wallet-row{border-top:1px solid var(--border);margin-top:4px;padding-top:11px;font-family:var(--font-mono);font-weight:600;color:var(--ink);}
 .result-actions{display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px;}
@@ -1630,7 +1634,7 @@ img,svg{-webkit-user-drag:none;}
 .ph-tap{animation:phTap 1s ease-in-out infinite;}
 @keyframes phTap{0%,100%{transform:translateY(10px) scale(1);}50%{transform:translateY(0) scale(.88);}}
 .ph-drag{animation:phDrag 1.9s ease-in-out infinite;}
-@keyframes phDrag{0%{transform:translate(0,0);opacity:0;}12%{opacity:1;}78%{transform:translate(var(--dx,-90px),0);opacity:1;}100%{transform:translate(var(--dx,-90px),0);opacity:0;}}
+@keyframes phDrag{0%{transform:translate(0,0);opacity:0;}12%{opacity:1;}78%{transform:translate(var(--dx,-90px),var(--dy,0px));opacity:1;}100%{transform:translate(var(--dx,-90px),var(--dy,0px));opacity:0;}}
 .ph-rotate{animation:phRot 2.2s linear infinite;}
 .ph-rotate.dir-ccw{animation-direction:reverse;}
 @keyframes phRot{from{transform:rotate(0deg) translateX(36px) rotate(0deg);}to{transform:rotate(360deg) translateX(36px) rotate(-360deg);}}
@@ -2159,6 +2163,7 @@ body{background:#123548;}
   .dk-scene .ds{height:86px;} .dk-scene .ds .ds-boat{transform:translate(-50%,-50%) scale(.4);}
   .rk{gap:3px;margin-top:4px;} .rk-tile{height:41px;width:44px;padding-bottom:11px;} .rk-tile .swatch{transform:scale(.75);}
   .meter{width:66px;height:64px;} .meter svg,.m-center{width:58px;height:58px;} .m-label{bottom:-2px;}
+  .meter.tut-ring::after{left:0;top:-4px;width:66px;height:66px;}
   .log-panel{height:54px;} .dk-hint{margin-bottom:3px;} .dk-top{margin-bottom:4px;} .dk-scene .mission-banner{padding:4px 8px;font-size:11.5px;}
   .app > .stage{padding:8px 10px;} .app > .stage .depart-row{margin-top:4px;padding:4px 0 2px;}
 }
@@ -2327,6 +2332,239 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
 /* ver.106 航行中の船・航跡は translate で動かす（GPUだけで動いて軽い） */
 .app.at-sea:not(.in-action) .boat-topdown,.app.at-sea:not(.in-action) .wake-trail{transition:translate .25s linear;will-change:translate;}
 .app.at-sea:not(.in-action) .boat-topdown.tilting,.app.at-sea:not(.in-action) .boat-topdown.tilt-back{transition:translate .25s linear,transform .3s ease;}
+
+/* ===================== ver.134 結果画面：画面に収める（島・内訳スクロール・獲得と操作は下に固定） ===================== */
+.app.at-result .bridge-bar,.app.at-result .log-panel{display:none !important;}
+.app.at-result > .stage{display:flex;flex-direction:column;overflow:hidden;padding:8px;}
+.res2{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:8px;}
+.res2-top{flex:none;}
+.res2-top .hana-wrap.res-top{margin:0;}
+.res2-top .isl-title{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:6px 10px 6px;font-size:12px;}
+.res2-h{font:800 17px var(--font-body);color:var(--good);}
+.res2-mid{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:12px;background:rgba(0,0,0,.12);padding:6px 10px 10px;}
+.res2-note{margin:2px 0 4px;font:500 12px/1.5 var(--font-body);color:var(--ink-dim);text-align:left;}
+.res2-list .score-row{padding:8px 2px;font-size:13px;}
+.res2-list .score-row .dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:7px;vertical-align:0;background:var(--seg);}
+.res2-list .score-row span:last-child{font-weight:700;}
+.res2-list .score-row.muted .dot{background:#777;}
+.c-car{--seg:#4fa3d1;} .c-box{--seg:#e0873f;} .c-pax{--seg:#6fae6a;} .c-mat{--seg:#9a7b5a;} .c-bonus{--seg:#f0c363;} .c-mis{--seg:#e07aa0;}
+.res2-mid.anim .res2-list .score-row,.res2-mid.anim .mats-row,.res2-mid.anim .bd-new,.res2-mid.anim .goal-mini{opacity:0;transform:translateX(-14px);transition:opacity .25s, transform .3s cubic-bezier(.2,1.4,.4,1);}
+.res2-mid.anim .in{opacity:1 !important;transform:none !important;}
+.res2-mid .hanko{opacity:1;}
+.res2-mid.anim .hanko{opacity:0;}
+.res2-mid.anim .hanko.in{animation:hankoIn .4s cubic-bezier(.3,1.6,.5,1) forwards;}
+.res2-mid .bd-new,.res2-mid .goal-mini{margin-top:10px;}
+.res2-bot{flex:none;border-radius:14px;background:var(--card,#fbf7ec);border:1px solid var(--card-line,#e5dcc4);padding:10px 12px 10px;box-shadow:0 -4px 14px rgba(0,0,0,.18);}
+.res2-bot .score-row.res2-gain{display:flex;align-items:baseline;justify-content:space-between;border:0;padding:0 2px 6px;color:#d6362a;font:800 16px var(--font-body);}
+.res2-num b{font:800 38px/1 var(--font-mono);color:#d6362a;font-variant-numeric:tabular-nums;display:inline-block;}
+.res2-num small{font:800 14px var(--font-body);margin-left:3px;}
+.res2-meter{display:flex;height:14px;border-radius:7px;background:rgba(0,0,0,.12);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.25);}
+.res2-meter i{display:block;height:100%;background:var(--seg);box-shadow:inset -1px 0 0 rgba(255,255,255,.5);}
+.res2-bot.anim .res2-meter i{max-width:0;transition:max-width .32s ease-out;}
+.res2-bot.anim .res2-meter i.on{max-width:100%;}
+.res2-bot.ban .res2-num b{animation:resBan .55s cubic-bezier(.2,1.9,.4,1);}
+.res2-bot.ban .res2-meter{animation:resGlow .8s ease-out;}
+@keyframes resBan{0%{transform:scale(1)}35%{transform:scale(1.55) rotate(-4deg)}100%{transform:scale(1)}}
+@keyframes resGlow{0%{box-shadow:0 0 0 0 rgba(240,195,99,.9)}100%{box-shadow:0 0 0 10px rgba(240,195,99,0)}}
+.res2-wal{display:flex;gap:8px;margin:8px 0;}
+.res2-wal > div{flex:1;display:flex;justify-content:space-between;align-items:baseline;padding:5px 10px;border-radius:9px;background:rgba(0,0,0,.06);font:600 12px var(--font-body);color:var(--ink-dim);}
+.res2-wal b{font:700 16px var(--font-mono);color:var(--ink);font-variant-numeric:tabular-nums;}
+.res2-btns{display:flex;gap:8px;}
+.res2-btns button{flex:1;margin:0;min-height:46px;}
+.res2-btns .btn-primary{flex:1.4;}
+.res2 .score-row.total.tut-ring{outline-offset:6px;}
+/* チュートリアルの吹き出しは、島と獲得の間（内訳の上）に出す */
+#app.at-result #storyUI{background:linear-gradient(0deg,rgba(13,27,36,0) 0,rgba(13,27,36,0) 200px,rgba(13,27,36,.55) 260px,rgba(13,27,36,0) 420px);}
+#app.at-result #storyUI .story-top{bottom:var(--resb,230px);}
+
+/* ver.135 積荷の枠をコンパクトに（ボタン・アイコン・文字の大きさはそのまま） */
+.rack{grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:6px;}
+.rack-group{margin:0 0 8px;padding:6px 6px 7px;}
+.rack-group-head{margin:0 2px 5px;}
+.rack-item{gap:3px;padding:6px 2px 5px;}
+.rack-item .rk-name{white-space:nowrap;}
+.rack-item .side-buttons{gap:4px;}
+
+/* ver.136 積み込み画面：船を大きく、岸壁に寄せて、積荷部分にズーム */
+.app.at-dock .dk-scene .ds .ds-boat{left:50%;top:calc(50% - var(--dky,96px));transform:translate(-50%,-50%) scale(2.4);}
+.app.at-dock .dk-scene .ds.big .ds-boat{left:50%;top:calc(50% - var(--dky,142px));transform:translate(-50%,-50%) scale(2.6);}
+@container (max-height:760px){
+  .app.at-dock .dk-scene .ds .ds-boat{left:50%;top:calc(50% - var(--dky,80px));transform:translate(-50%,-50%) scale(2.1);}
+  .app.at-dock .dk-scene .ds.big .ds-boat{left:50%;top:calc(50% - var(--dky,118px));transform:translate(-50%,-50%) scale(2.2);}
+}
+.app.at-dock .dk-side.r{right:6px;}
+/* ver.137 船を真ん中に。岸壁を船のすぐ横まで伸ばす */
+.app.at-dock .dk-scene .ds .ds-quay{width:calc(50% - 120px);}
+.app.at-dock .dk-scene .ds.big .ds-quay{width:calc(50% - 132px);}
+@container (max-height:760px){
+  .app.at-dock .dk-scene .ds .ds-quay{width:calc(50% - 106px);}
+  .app.at-dock .dk-scene .ds.big .ds-quay{width:calc(50% - 114px);}
+}
+/* ver.138 タワークレーンのブームを船の上まで伸ばす */
+.app.at-dock .dk-scene .ds-quay{overflow:visible;z-index:3;border-left:0;box-shadow:none;}
+.app.at-dock .dk-scene .ds-quay-svg{overflow:visible;}
+/* ver.139 ブームは船の舷側（岸壁の端）まで。積荷の上には掛けない */
+/* ver.140 積み込み時に動くタワークレーン */
+.ds.crane-busy .qcrane{opacity:0;}
+.dk-crane{position:absolute;z-index:4;pointer-events:none;}
+.dk-crane svg{display:block;position:relative;}
+.dk-ext{position:absolute;right:calc(100% - 4px);transform-origin:100% 50%;transform:scaleX(0);background:linear-gradient(180deg,#e0b030 0 30%,#f4d56a 30% 52%,#e0b030 52%);border:1px solid #8a6a2f;box-sizing:border-box;}
+.dk-ext i{position:absolute;left:-2px;top:50%;transform:translateY(-50%);background:#3a4654;border:1px solid #1f2830;border-radius:2px;box-sizing:border-box;}
+/* ver.141 甲板の荷物は枠内に収める */
+.boat-deck-icons .swatch{zoom:var(--dz,1);}
+.boat-deck-icons .deck-col{gap:calc(3px * var(--dz,1));overflow:visible;}
+.boat-topdown.big .boat-deck-icons{inset:55.4% 29.5% 19.2% 29.5%;}
+
+/* ===================== ver.142 浸水アクション：ポップアップの横長窓 ===================== */
+.lk-wrap{position:relative;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:10px;}
+.app.in-action > .stage:has(.lk-wrap){display:flex;flex-direction:column;}
+.lk-sea{position:absolute;inset:0;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,var(--water-light,#3fa6d6),var(--water,#2a84b3));filter:saturate(.7) brightness(.7);}
+.lk-sea .ds-waves{position:absolute;inset:0;}
+.lk-boat{position:absolute;left:50%;top:22%;transform:translate(-50%,-50%) scale(1.3);opacity:.9;}
+.lk-pop{position:relative;z-index:2;margin:0 2px;border-radius:16px;background:#f7efdc;border:3px solid #5b4630;box-shadow:0 14px 34px rgba(0,0,0,.5);padding:6px 6px 8px;}
+.lk-pop.pop-in{animation:lkPop .42s cubic-bezier(.2,1.5,.45,1);}
+@keyframes lkPop{0%{transform:scale(.3);opacity:0}60%{opacity:1}100%{transform:scale(1)}}
+.lk-pop-head{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:2px 6px 6px;}
+.lk-pop-head span{font:800 16px var(--font-body);color:#b33a2a;}
+.deck-scene.leak-scene.lk-hull{position:relative;height:auto;aspect-ratio:5/4;min-height:0;border-radius:10px;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.35) 100%),
+    repeating-linear-gradient(90deg,rgba(0,0,0,0) 0 54px,rgba(0,0,0,.28) 54px 56px,rgba(255,255,255,.08) 56px 57px),
+    repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 44px,rgba(0,0,0,.3) 44px 46px,rgba(255,255,255,.1) 46px 47px),
+    linear-gradient(180deg,#5d7d8c,#46626f);}
+.lk-hull::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(20,30,36,.55) 1.6px,rgba(255,255,255,.18) 2.2px,transparent 2.6px);
+  background-size:56px 47px;background-position:-2px 21px;}
+.lk-water{position:absolute;left:0;right:0;bottom:0;height:16%;z-index:1;background:linear-gradient(180deg,rgba(150,215,240,.85),rgba(40,120,170,.95));
+  border-top:2px solid rgba(225,247,255,.9);animation:lkSlosh 2.2s ease-in-out infinite;}
+@keyframes lkSlosh{0%,100%{transform:translateY(0) skewY(-1deg)}50%{transform:translateY(3px) skewY(1deg)}}
+.lk-hull .hud-timer{z-index:6;}
+.app.in-action .lk-hull .leak-spot{--k:1;}
+.leak-spot.lk2{width:88px;height:88px;animation:none;}
+.leak-spot.lk2:not(.patched) .lk-hole{animation:lkThrob 1s ease-in-out infinite;}
+@keyframes lkThrob{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.06)}}
+.lk-hole{position:absolute;left:50%;top:50%;width:76px;height:76px;transform:translate(-50%,-50%);overflow:visible;}
+.lk-hole-edge{fill:#c7d3d9;stroke:#2c3d46;stroke-width:1.4;stroke-linejoin:miter;}
+.lk-hole-in{fill:#04111a;stroke:#0b2533;stroke-width:1;}
+.lk-spray{position:absolute;left:50%;top:52%;width:12px;height:38px;margin-left:-6px;z-index:2;border-radius:6px 6px 10px 10px;
+  background:linear-gradient(180deg,rgba(225,247,255,.95),rgba(170,225,250,0));transform-origin:50% 0;animation:lkJet .38s ease-in-out infinite;}
+.lk-spray.s2{width:7px;margin-left:5px;height:30px;transform:rotate(-24deg);animation-delay:-.18s;}
+@keyframes lkJet{0%,100%{opacity:.6;scale:1 .75}50%{opacity:1;scale:1 1.15}}
+.leak-spot.lk2.t1 .lk-spray{height:24px;opacity:.75;} .leak-spot.lk2.t1 .lk-spray.s2{display:none;}
+.leak-spot.lk2.t2 .lk-spray{height:12px;opacity:.5;}
+.leak-spot.lk2.patched .lk-spray{display:none;}
+.leak-spot.lk2.patched .lk-hole{filter:brightness(.8);}
+.lk-plank{position:absolute;left:50%;top:50%;width:90px;height:16px;margin:-8px 0 0 -45px;z-index:3;border-radius:3px;
+  background:linear-gradient(180deg,#c99a5c 0,#b5824a 45%,#9c6c3a 100%);border:1.5px solid #5c3f1e;box-shadow:0 2px 3px rgba(0,0,0,.45);}
+.lk-plank::before{content:"";position:absolute;left:8px;right:8px;top:5px;height:1px;background:rgba(92,63,30,.45);}
+.lk-plank b{position:absolute;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:#3a3a3a;box-shadow:inset 1px 1px 0 rgba(255,255,255,.5);}
+.lk-plank b:first-child{left:5px;} .lk-plank b:last-child{right:5px;}
+.lk-plank.p2{transform:rotate(60deg);} .lk-plank.p3{transform:rotate(-60deg);}
+.lk-plank.new{animation:lkNail .28s cubic-bezier(.2,1.6,.5,1);}
+.lk-plank.p2.new{animation-name:lkNail2;} .lk-plank.p3.new{animation-name:lkNail3;}
+@keyframes lkNail{0%{transform:scale(1.6);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes lkNail2{0%{transform:rotate(60deg) scale(1.6);opacity:0}100%{transform:rotate(60deg) scale(1);opacity:1}}
+@keyframes lkNail3{0%{transform:rotate(-60deg) scale(1.6);opacity:0}100%{transform:rotate(-60deg) scale(1);opacity:1}}
+.leak-spot.lk2 .leak-dots{top:-12px;z-index:4;}
+.lk-cap{position:relative;z-index:2;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);}
+/* ver.143 天候メーター */
+.meters .meter{flex:0 1 76px;}
+#mWx .m-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;}
+#mWx .wx-big{font-size:28px;line-height:1;}
+#mWx small{font:700 10px var(--font-mono);color:var(--ink-dim);margin-top:4px;line-height:1;}
+#mWx.rain small{color:var(--alert);}
+#mWx.rain .m-bg{stroke:#9fb3c4;}
+#mWx.unknown .wx-big{opacity:.7;}
+@container (max-height:760px){ #mWx .wx-big{font-size:23px;} }
+
+/* ===================== ver.144 船用品を捨てる：密漁船と同じ画角・同じ画風（奥の海へ投げる） ===================== */
+.deck-scene.storm-deck.sd3{background:linear-gradient(180deg,#16304a 0%,#214a68 14%,var(--water-light) 22%,var(--water) 64%,#4a3826 71%,#42311f 100%);}
+.deck-scene.storm-deck.sd3::before{content:none;animation:none;}
+.sd3 .chest-wave{z-index:1;}
+.dk-edge{position:absolute;left:0;right:0;z-index:2;pointer-events:none;}
+.dk-floor{position:absolute;left:0;right:0;bottom:0;z-index:1;pointer-events:none;}
+.dk-edge svg,.dk-floor svg{display:block;width:100%;height:100%;}
+.dk-edge.night,.dk-floor.night{filter:brightness(.4) saturate(.75);}
+.sd3 > .lane-object.cargo{z-index:4;}
+.sd3 > .lane-object.cargo.tossing{z-index:3;pointer-events:none;animation:none!important;}
+.sd3 > .lane-object.cargo.grabbed{z-index:6;}
+.sd3-splash{position:absolute;z-index:2;width:0;height:0;pointer-events:none;}
+.sd3-splash b{position:absolute;left:-16px;top:-5px;width:32px;height:10px;border-radius:50%;border:2px solid rgba(235,247,252,.9);opacity:0;animation:sd3Ring .8s ease-out 560ms forwards;}
+.sd3-splash i{position:absolute;left:-2px;top:-16px;width:4px;height:16px;border-radius:3px;background:rgba(235,247,252,.95);opacity:0;transform-origin:50% 100%;animation:sd3Jet .55s ease-out 560ms forwards;}
+.sd3-splash i:nth-child(1){transform:rotate(-28deg);} .sd3-splash i:nth-child(3){transform:rotate(28deg);}
+@keyframes sd3Ring{0%{opacity:.95;transform:scale(.3)}100%{opacity:0;transform:scale(2)}}
+@keyframes sd3Jet{0%{opacity:1;scale:1 .2}45%{opacity:1;scale:1 1.2}100%{opacity:0;scale:1 .6}}
+.sd3 #stormOrder{top:4%;}
+.app.in-action .storm-deck.sd3 > .lane-object.cargo{--k:calc(var(--ek) * 1.3);}
+.app.in-action .storm-deck.sd3:has(#stormOrder) > .lane-object.cargo{--k:calc(var(--ek) * 1.1);}
+/* ver.146 航海マップ（紙の海図ふう） */
+.vmap{position:absolute;left:12px;top:calc(var(--ovT,150px) + 10px);z-index:7;width:96px;transform:rotate(-3deg);filter:drop-shadow(0 4px 5px rgba(8,40,70,.35));pointer-events:none;}
+.vmap svg{display:block;width:100%;height:auto;overflow:visible;}
+.vm-grid line{stroke:#d6c39a;stroke-width:.6;}
+.vm-route{fill:none;stroke:#8a6a3a;stroke-width:1.3;stroke-dasharray:2.5 2.5;stroke-linecap:round;}
+.vm-done{fill:none;stroke:#b8452f;stroke-width:2.2;stroke-linecap:round;}
+.vm-n{font:800 6px var(--font-body);fill:#8a6a3a;text-anchor:middle;}
+.vm-name{font:800 7px var(--font-body);fill:#5a4a2a;text-anchor:middle;}
+.vm-p{font:800 9px var(--font-mono);fill:#4a3a1e;text-anchor:middle;}
+.app.at-sea:not(.in-action) > .stage > .progress-caption{display:none;}
+.app.at-sea:not(.in-action) > .stage > .horn-row{margin-top:auto;}
+/* ver.150 アクション中は地図を出さない。岩礁・遭難者は窓ではなく、航海中の海の画面のままで */
+.app.in-action .vmap{display:none;}
+.app.at-sea.in-action:is([data-ev="iceberg"],[data-ev="rescue"]) > .stage::before{content:"";position:absolute;inset:-26px 0 0 0;z-index:0;pointer-events:none;
+  background:repeating-linear-gradient(3deg,rgba(255,255,255,.12) 0 5px,transparent 5px 26px);animation:sea-flow 900ms linear infinite;}
+.app.at-sea.in-action:is([data-ev="iceberg"],[data-ev="rescue"]) > .stage > .deck-scene{background:transparent;border:none;border-radius:0;box-shadow:none;margin-left:-10px;margin-right:-10px;overflow:visible;}
+.app.at-sea.in-action:is([data-ev="iceberg"],[data-ev="rescue"]) > .stage > .deck-scene::before{content:none;}
+
+/* ===================== ver.151 岩礁アクション：上から下へ流れる岩場・なめらかな舵 ===================== */
+.lane-object.iceberg-obj.reef2{width:84px;height:70px;background:none;clip-path:none;}
+.reef2 svg,.reef2g svg{display:block;width:100%;height:100%;overflow:visible;}
+.lane-object.iceberg-obj.reef2.approaching{animation:reefFlow var(--rdur,10s) linear forwards;}
+@keyframes reefFlow{from{top:var(--a-start,-14%);transform:translate(-50%,-50%);}to{top:var(--a-end,40%);transform:translate(-50%,-50%);}}
+.rf-foam{animation:rfFoam 1.4s ease-in-out infinite;transform-origin:50% 55%;}
+@keyframes rfFoam{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.06);opacity:1}}
+.app.in-action[data-ev="iceberg"] .boat-topdown.tilting{transition:none;}
+.iceberg-ghost.reef2g{width:84px;height:70px;background:none;clip-path:none;transform:translate(-50%,0);animation:reefPass 1.1s linear forwards;}
+@keyframes reefPass{0%{transform:translate(-50%,0);opacity:1}80%{opacity:1}100%{transform:translate(-50%,240px);opacity:0}}
+.boat-topdown.steer-left.dodge2{animation:dodgeL 1.2s ease-in-out;}
+.boat-topdown.steer-right.dodge2{animation:dodgeR 1.2s ease-in-out;}
+@keyframes dodgeL{0%{transform:translate(calc(-50% + var(--sx,0px)),0) rotate(var(--sr,0deg));}25%{transform:translate(calc(-50% - 82px),0) rotate(-8deg);}60%{transform:translate(calc(-50% - 82px),0) rotate(2deg);}100%{transform:translate(-50%,0) rotate(0deg);}}
+@keyframes dodgeR{0%{transform:translate(calc(-50% + var(--sx,0px)),0) rotate(var(--sr,0deg));}25%{transform:translate(calc(-50% + 82px),0) rotate(8deg);}60%{transform:translate(calc(-50% + 82px),0) rotate(-2deg);}100%{transform:translate(-50%,0) rotate(0deg);}}
+/* ver.152 岩礁・遭難者アクション中も、船は普通の航海中と同じ大きさ */
+.app.in-action:is([data-ev="iceberg"],[data-ev="rescue"]) .deck-scene .boat-topdown{width:111px;height:177px;}
+.app.in-action:is([data-ev="iceberg"],[data-ev="rescue"]) .deck-scene .boat-topdown.big{height:203px;}
+.app.in-action[data-ev="iceberg"] .deck-scene .boat-topdown{margin-top:-28px;}
+/* ver.153 浸水は「穴から水が滴る」程度に。下の水たまりはなし */
+.lk-trickle{position:absolute;left:50%;top:50%;width:5px;height:30px;margin-left:-2.5px;z-index:2;border-radius:3px;
+  background:linear-gradient(180deg,rgba(200,236,252,.95),rgba(170,220,245,.15));animation:lkTrickle 1s ease-in-out infinite;}
+@keyframes lkTrickle{0%,100%{opacity:.75;transform:scaleY(.85)}50%{opacity:1;transform:scaleY(1.05)}}
+.lk-drop{position:absolute;left:50%;top:62%;width:7px;height:9px;margin-left:-3.5px;z-index:2;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 35% 35%,#f4fbff,#9fd6f0 70%);opacity:0;animation:lkDrop 1.1s ease-in infinite;}
+.lk-drop.d2{animation-delay:.37s;margin-left:-6px;} .lk-drop.d3{animation-delay:.74s;margin-left:0;}
+@keyframes lkDrop{0%{opacity:0;transform:translateY(0) scale(.6)}15%{opacity:1;transform:translateY(4px) scale(1)}100%{opacity:0;transform:translateY(70px) scale(.9)}}
+.leak-spot.lk2.t1 .lk-trickle{height:18px;} .leak-spot.lk2.t1 .lk-drop.d3{display:none;}
+.leak-spot.lk2.t2 .lk-trickle{height:9px;opacity:.6;} .leak-spot.lk2.t2 .lk-drop.d2,.leak-spot.lk2.t2 .lk-drop.d3{display:none;}
+.leak-spot.lk2.patched .lk-trickle,.leak-spot.lk2.patched .lk-drop{display:none;}
+/* ver.155 天候アイコン（自作） */
+#mWx .wx-big{display:block;width:30px;height:30px;font-size:0;}
+#mWx .wx-big svg{position:static;display:block;width:100%;height:100%;overflow:visible;}
+#mWx.unknown .wx-big{opacity:1;}
+#mWx small{font-size:9.5px;letter-spacing:-.02em;white-space:nowrap;}
+@container (max-height:760px){ #mWx .wx-big{width:25px;height:25px;} }
+#mWx small{display:none;}
+#mWx .wx-big{width:38px;height:38px;}
+@container (max-height:760px){ #mWx .wx-big{width:32px;height:32px;} }
+/* ver.157 メーターの円と下の文字を、枠の中央にそろえる */
+.meters .meter > svg,.meters .meter > .m-center{left:0;right:0;margin-left:auto;margin-right:auto;}
+#mWx .wx-big{width:46px;height:46px;}
+@container (max-height:760px){ #mWx .wx-big{width:40px;height:40px;} }
+/* ver.158 メーターの円と下の文字の間に少し隙間 */
+.meters .meter > .m-label{bottom:-9px;}
+.meters{padding-bottom:8px;}
+/* ver.159 チュートリアルの赤い円：位置と大きさは fitTutRing() が測って入れる */
+.meters .meter.tut-ring::after{left:var(--rl,1px);top:var(--rt,-3px);width:var(--rd,74px);height:var(--rd,74px);}
+/* ver.159 航海中の船をひと回り大きく（岩礁・遭難者アクション中も同じ大きさ） */
+.app.at-sea:not(.in-action) .boat-topdown,.app.in-action:is([data-ev="iceberg"],[data-ev="rescue"]) .deck-scene .boat-topdown{width:128px;height:204px;}
+.app.at-sea:not(.in-action) .boat-topdown.big,.app.in-action:is([data-ev="iceberg"],[data-ev="rescue"]) .deck-scene .boat-topdown.big{height:234px;}
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2349,6 +2587,8 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         <div class="m-center low"><b id="speedValue">×1.00</b></div><div class="m-label">速度</div></div>
       <div class="meter" id="mStab"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="m-bg" cx="40" cy="40" r="31"/><circle class="m-arc" id="mStabArc" cx="40" cy="40" r="31" pathLength="100" stroke-dasharray="100 100"/></svg>
         <div class="m-center"><b id="stabilityValue">安定</b></div><div class="m-label">安定度</div></div>
+      <div class="meter" id="mWx"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="m-bg" cx="40" cy="40" r="31"/></svg>
+        <div class="m-center"><span id="wxIcon" class="wx-big"></span><small id="wxSub"></small></div><div class="m-label">天候</div></div>
     </div>
   </header>
 
@@ -3543,6 +3783,8 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   var CARGO_NAMES = {anchor:'錨', ring:'浮き輪', rope:'ロープ', crate:'木箱', barrel:'ドラム缶'};
   var CARGO_SLOTS_ADV = [{left:30,top:40},{left:50,top:36},{left:70,top:40},{left:40,top:70},{left:62,top:70}];
   var STORM_DURATION_ADV = 11000;
+  var CARGO_SLOTS3 = [{left:22,top:79},{left:50,top:86},{left:78,top:79}];
+  var CARGO_SLOTS_ADV3 = [{left:15,top:79},{left:33,top:88},{left:51,top:79},{left:69,top:88},{left:86,top:79}];
   var CARGO_SLOTS = [
     {left:36, top:42}, {left:64, top:42}, {left:50, top:70}
   ];
@@ -3698,7 +3940,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     var OBJECT_FLING_MS = 380;
   var CARGO_TOSS_MS = 620;
   var LANES = [36, 50, 64]; // stay inside the hull's silhouette width
-  var ICEBERG_LANES = {L:45, R:55}; // almost dead ahead, just a hair off-center
+  var ICEBERG_LANES = {L:38, R:62}; // almost dead ahead, just a hair off-center
   var BOAT_TOP_START = 78, BOAT_TOP_END = 32; // % from top of the scene, dock -> island
   // Ship-aware: an advanced-only car/passenger must never be picked as this
   // voyage's troublemaker/luxury-car when the player isn't on that ship, or
@@ -3889,9 +4131,9 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     {id:'school', ic:'🏫', name:'島の学校',       what:'修学旅行',   need:{pax:6},          pay:10, rush:6}
   ];
   var WX_TYPES = [
-    {k:'sunny',  ic:'☀️', name:'晴れ',     p:0.1,  w:0.4},
-    {k:'cloudy', ic:'⛅', name:'くもり',   p:0.4,  w:0.35},
-    {k:'rough',  ic:'🌧️', name:'荒れ模様', p:0.75, w:0.25}
+    {k:'sunny',  ic:'☀️', name:'晴れ',     p:0.03, w:0.4},
+    {k:'cloudy', ic:'⛅', name:'くもり',   p:0.18, w:0.35},
+    {k:'rough',  ic:'🌧️', name:'荒れ模様', p:0.5,  w:0.25}
   ];
   var ROUGH_ACTIONS = ['storm','leak','mop','iceberg','breaker','fuse','papers','sick'];
   var FRAGILE_BREAKERS = ['storm','leak','iceberg','rockwall','mop'];
@@ -3959,9 +4201,6 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   function contractsHtml(){
     var wx = state.wx, onN = state.offers.filter(function(x){ return x.on; }).length, mx = contractMax();
     var o = '<div class="cboard">'+
-      (islCount('obs')>0
-        ? '<div class="wx-row'+(wx.k==='rough'?' rough':'')+'"><span class="wx-ic">'+wx.ic+'</span><span>今日の海：'+wx.name+'</span><span class="wx-p">🔭 嵐の確率 '+Math.round(wx.p*100)+'%</span></div>'
-        : '<div class="wx-row unknown"><span class="wx-ic">❔</span><span>今日の海：？</span><span class="wx-p">出てみないと分からない</span></div>')+
       (contractEarly() ? '<div class="cb-head"><b>🎯 積付指示書</b><span>アイコンの付いた荷物を積もう</span></div><div class="cards">'
         : '<div class="cb-head"><b>📋 依頼ボード</b><span>受けられるのは '+mx+' 件まで（'+onN+' / '+mx+'）</span></div><div class="cards">');
     state.offers.forEach(function(c){
@@ -4201,6 +4440,26 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     });
     g.innerHTML = o;
   }
+  // ver.155 天候アイコン（絵文字は使わず、ゲームの画風に合わせた自作の絵）
+  function wxIconSvg(k){
+    var cloud = function(x,y,sc,fill,stroke){ return '<g transform="translate('+x+' '+y+') scale('+sc+')"><path d="M-14 6 Q-20 6 -20 0 Q-20 -6 -13 -6 Q-12 -14 -3 -14 Q5 -14 7 -7 Q15 -8 16 0 Q17 6 10 6 Z" fill="'+fill+'" stroke="'+stroke+'" stroke-width="1.6" stroke-linejoin="round"/></g>'; };
+    var o = '<svg viewBox="-24 -24 48 48" aria-hidden="true">';
+    if(k==='sun'){
+      var rays=''; for(var i=0;i<8;i++){ var a=i*Math.PI/4; rays += '<line x1="'+(Math.cos(a)*13).toFixed(1)+'" y1="'+(Math.sin(a)*13).toFixed(1)+'" x2="'+(Math.cos(a)*19).toFixed(1)+'" y2="'+(Math.sin(a)*19).toFixed(1)+'" stroke="#e8a33a" stroke-width="3" stroke-linecap="round"/>'; }
+      o += rays+'<circle r="9.5" fill="#f6c453" stroke="#d98f2a" stroke-width="1.6"/><circle cx="-3" cy="-3" r="3" fill="#fbe3a0"/>';
+    } else if(k==='cloud'){
+      o += '<g transform="translate(6 -6)"><circle r="7" fill="#f6c453" stroke="#d98f2a" stroke-width="1.4"/></g>'+cloud(-1,5,1.05,'#eef3f5','#7d8f99');
+    } else if(k==='rain'){
+      o += cloud(0,-3,1.05,'#9fb0ba','#5f717b');
+      for(var j=0;j<3;j++) o += '<path d="M'+(-9+j*9)+' 8 l-3 8" stroke="#3f8fc2" stroke-width="3" stroke-linecap="round"/>';
+    } else if(k==='dusk'){
+      o += '<path d="M-20 6 L20 6" stroke="#c96b4a" stroke-width="2"/><path d="M-11 6 A11 11 0 0 1 11 6 Z" fill="#f08a4b" stroke="#c9603a" stroke-width="1.5"/>'+
+           '<path d="M-16 11 L16 11 M-11 15 L11 15" stroke="#c96b4a" stroke-width="2" stroke-linecap="round" opacity=".7"/>';
+    } else {
+      o += cloud(0,2,1.05,'#d9dde0','#8a959c')+'<text x="0" y="5.5" text-anchor="middle" font-size="15" font-weight="900" fill="#6d7880" font-family="var(--font-body)">?</text>';
+    }
+    return o+'</svg>';
+  }
   function renderGauges(){
     buildSpeedTicks();
     var _sn = document.getElementById('shipNameH'); if(_sn) _sn.textContent = currentShip().name;
@@ -4223,6 +4482,21 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     sa.setAttribute('stroke-dasharray', Math.max(0,Math.min(100,stability)).toFixed(1)+' 100');
     sa.style.stroke = stabilityTier==='danger' ? 'var(--alert)' : (stabilityTier==='warn' ? '#e0a33a' : 'var(--good)');
     var sv = document.getElementById('mStab'); if(sv) sv.className = 'meter tier-'+stabilityTier;
+    // ver.155 天候：出航前は観測所がなければ「予測不能」。航海に出たら今の空模様が分かる。アイコンは自作の絵
+    var wi = document.getElementById('wxIcon'), ws = document.getElementById('wxSub'), wm = document.getElementById('mWx');
+    if(wi){
+      var wx = state.wx, obs = islCount('obs')>0 && !!wx;
+      var atSea = ['sailing','event','intro'].indexOf(state.phase) > -1;
+      var kind, sub;
+      if(state.tutorial){ kind = 'dusk'; sub = '夕暮れ'; }
+      else if(state.rainOn){ kind = 'rain'; sub = '雨'; }
+      else if(atSea){ kind = (wx && wx.k==='sunny') ? 'sun' : 'cloud'; sub = kind==='sun' ? '晴れ' : 'くもり'; }
+      else if(obs){ kind = wx.k==='sunny' ? 'sun' : (wx.k==='rough' ? 'rain' : 'cloud'); sub = '嵐'+Math.round(wx.p*100)+'%'; }
+      else { kind = 'unknown'; sub = '予測不能'; }
+      if(wi.getAttribute('data-k')!==kind){ wi.setAttribute('data-k', kind); wi.innerHTML = wxIconSvg(kind); }
+      ws.textContent = ''; // ver.156 文字は出さず、アイコンだけで天気を伝える
+      if(wm){ wm.classList.toggle('rain', kind==='rain' && atSea); wm.classList.toggle('unknown', kind==='unknown'); }
+    }
   }
 
   function renderLog(){
@@ -4905,7 +5179,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     {t:'今日からは、お前の会社だ。<br>名前もお前が決めろ。'},
     {name:true},
     {t:function(){ return escName(wallet.company)+'か。<br>いい名前だ。'; }},
-    {t:'……さあ、行くぞ。<br>最初の航海は、俺も一緒に乗る。'}
+    {t:'……さあ、行くぞ。'}
   ];
   var PROL_ZOOM_MS = 7000;
   function prologueZoomAt(){ for(var i=0;i<PROLOGUE.length;i++){ if(PROLOGUE[i].zoomIn) return i; } return 0; }
@@ -5045,7 +5319,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     var chief = state.story.speaker==='chief';
     var line = (state.story.lines||STORY_LINES)[state.story.i], lineTxt = (line && typeof line==='object') ? line.t : line;
     clearTutRing();
-    if(line && typeof line==='object' && line.hl){ document.querySelectorAll(line.hl).forEach(function(el){ el.classList.add('tut-ring'); }); }
+    if(line && typeof line==='object' && line.hl){ document.querySelectorAll(line.hl).forEach(function(el){ el.classList.add('tut-ring'); fitTutRing(el); if(el.classList.contains('score-row') && !el.closest('.res2-bot')){ try{ el.scrollIntoView({block:'center', behavior:'smooth'}); }catch(e){} } }); }
     if(line && typeof line==='object' && line.fx==='hall') buildTownHall();
     if(line && typeof line==='object' && line.fx==='goal'){ state.hideGoal = false; document.querySelectorAll('.goal-mini.gm-wait').forEach(function(g){ g.classList.remove('gm-wait'); g.classList.add('gm-pop'); }); }
     ui.innerHTML =
@@ -5063,6 +5337,16 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       g.classList.remove('hall-wait'); g.classList.add('hall-pop');
     });
     try{ playClearSound(); }catch(e){}
+  }
+  // ver.159 赤い円は、実際に描かれているメーターの円を測って、その中心・大きさに合わせる（端末の大きさに左右されない）
+  function fitTutRing(el){
+    try{
+      if(!el.classList.contains('meter')) return;
+      var c = el.querySelector('svg'); if(!c) return;
+      var mr = el.getBoundingClientRect(), cr = c.getBoundingClientRect(), k = el.offsetWidth / (mr.width||1);
+      var d = (cr.width*0.87 + 12)*k, cx = (cr.left + cr.width/2 - mr.left)*k, cy = (cr.top + cr.height/2 - mr.top)*k;
+      el.style.setProperty('--rl', (cx - d/2).toFixed(1)+'px'); el.style.setProperty('--rt', (cy - d/2).toFixed(1)+'px'); el.style.setProperty('--rd', d.toFixed(1)+'px');
+    }catch(e){}
   }
   function clearTutRing(){ document.querySelectorAll('.tut-ring').forEach(function(el){ el.classList.remove('tut-ring'); }); }
   function removeStoryUI(){ clearTutRing(); var el = document.getElementById('storyUI'); if(el && el.parentNode) el.parentNode.removeChild(el); }
@@ -5125,7 +5409,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     h.style.left = cx+'px'; h.style.top = cy+'px'; h.style.opacity = 1;
     if(type==='drag'){
       var sc = document.querySelector('.deck-scene');
-      if(sc){ var sr = sc.getBoundingClientRect(); h.style.setProperty('--dx', (sr.left + 18 - cx)+'px'); }
+      if(sc){ var sr = sc.getBoundingClientRect(); h.style.setProperty('--dx', '0px'); h.style.setProperty('--dy', (sr.top + sr.height*0.42 - cy)+'px'); }
     }
     if(type==='rotate'){
       var inner = h.firstChild; // 岩礁が左 -> 右(時計回り)へ、右 -> 反時計回り
@@ -5210,8 +5494,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       var isNew = !state.tutorial && !state.tour && item.unlock && (wallet.total||0) - item.unlock < 100;
       return '<div class="rack-item'+(isLoaded?' loaded':'')+(isNew?' is-new':'')+'">'+
         swatch(item.shape, item.variant)+
-        '<span>'+item.label+'</span>'+
-        '<span class="weight-badge">'+item.weight+'t</span>'+
+        '<span class="rk-name">'+item.label+' <span class="weight-badge">'+item.weight+'t</span></span>'+
         '<div class="side-buttons">'+
           '<button type="button" class="side-btn'+(side==='L'?' active':'')+tgL+'" data-action="load-side" data-id="'+item.id+'" data-side="L"'+(wouldExceed?' disabled':'')+'>左</button>'+
           '<button type="button" class="side-btn'+(side==='R'?' active':'')+tgR+'" data-action="load-side" data-id="'+item.id+'" data-side="R"'+(wouldExceed?' disabled':'')+'>右</button>'+
@@ -5308,6 +5591,44 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     });
   }
 
+  // ver.146 航海中の小さな地図（左上）。紙の海図ふう。船は画面の上へ進むので、地図も下（本土）から上（はな島）へ
+  var VMAP_D = 'M44 84 C 40 74, 50 66, 46 56 S 40 40, 45 32 S 44 27, 42 24';
+  function voyageMapHtml(){
+    // ver.154 正方形に近い紙の海図。下の本土からまっすぐ上のはな島へ
+    var p = Math.max(0, Math.min(100, state.progress||0));
+    var grid = '';
+    for(var gx=17; gx<100; gx+=17) grid += '<line x1="'+gx+'" y1="5" x2="'+gx+'" y2="95" />';
+    for(var gy=17; gy<100; gy+=17) grid += '<line x1="5" y1="'+gy+'" x2="95" y2="'+gy+'" />';
+    return '<div class="vmap" id="vmap"><svg viewBox="0 0 100 100" aria-hidden="true">'+
+      '<path d="M3 4 L25 2.5 L50 4 L75 2 L97 3.5 L96 35 L97.5 66 L96.5 97 L70 96 L45 97.5 L20 96 L2.5 97.5 L4 66 L2 34 Z" fill="#efe2bf" stroke="#b08d55" stroke-width="1.4"/>'+
+      '<g class="vm-grid">'+grid+'</g>'+
+      '<path d="M3 80 Q14 75 24 80 Q34 86 40 90 Q52 87 64 91 Q78 86 97 79 L96.5 97 L2.5 97.5 Z" fill="#b9cf8e" stroke="#7a6a3e" stroke-width="1"/>'+
+      '<rect x="41" y="83" width="7" height="2.4" fill="#7a6a3e"/>'+
+      '<path d="M27 19 Q28 9 39 7.5 Q50 7 53 15 Q55 22 47 25.5 Q36 28 27 19 Z" fill="#b9cf8e" stroke="#7a6a3e" stroke-width="1"/>'+
+      '<path d="M36 12 Q42 11 45 16" fill="none" stroke="#7a6a3e" stroke-width=".8"/>'+
+      '<g transform="translate(60 30) scale(.62) translate(-63 -35)"><path d="M53 37 Q54 28 62 26.5 Q71 26 73 33 Q74 40 66 42 Q56 44 53 37 Z" fill="#b9cf8e" stroke="#7a6a3e" stroke-width="1.5"/>'+
+      '<path d="M60 30 Q65 29.5 67 33" fill="none" stroke="#7a6a3e" stroke-width="1"/></g>'+
+      '<path class="vm-route" d="'+VMAP_D+'"/>'+
+      '<path class="vm-done" id="vmDone" d="'+VMAP_D+'" pathLength="100" stroke-dasharray="'+p.toFixed(1)+' 100"/>'+
+      '<path id="vmMeasure" d="'+VMAP_D+'" fill="none" stroke="none"/>'+
+      '<g class="vm-rose" transform="translate(80 54)"><circle r="7" fill="none" stroke="#9a7a45" stroke-width=".7"/><path d="M0 -8 L2 0 L0 8 L-2 0 Z" fill="#9a7a45"/><path d="M0 -8 L2 0 L-2 0 Z" fill="#b8452f"/><text y="-10" class="vm-n">N</text></g>'+
+      '<text x="76" y="13" class="vm-name">はな島</text>'+
+      '<g id="vmShip"><path d="M0 -4.6 L2.6 -1 L2.6 3.6 L-2.6 3.6 L-2.6 -1 Z" fill="#b8452f" stroke="#fff8e6" stroke-width="1"/></g>'+
+      '<text x="72" y="93.5" class="vm-p" id="vmPct">残り '+fmt(100-p)+'%</text>'+
+    '</svg></div>';
+  }
+  function updateVoyageMap(){
+    var done = document.getElementById('vmDone'), ship = document.getElementById('vmShip'), pc = document.getElementById('vmPct');
+    if(!done || !ship) return;
+    var p = Math.max(0, Math.min(100, state.progress||0));
+    done.setAttribute('stroke-dasharray', p.toFixed(1)+' 100');
+    try{
+      var mp = document.getElementById('vmMeasure'), L = mp.getTotalLength(), a = mp.getPointAtLength(L*p/100), b = mp.getPointAtLength(Math.min(L, L*p/100+1.5)); if(b.x===a.x && b.y===a.y){ b = a; a = mp.getPointAtLength(Math.max(0, L*p/100-1.5)); var t=a; a=b; b={x:2*b.x-t.x, y:2*b.y-t.y}; }
+      var ang = Math.atan2(b.y-a.y, b.x-a.x)*180/Math.PI + 90;
+      ship.setAttribute('transform', 'translate('+a.x.toFixed(1)+' '+a.y.toFixed(1)+') rotate('+ang.toFixed(0)+')');
+    }catch(e){}
+    if(pc) pc.textContent = '残り '+fmt(100-p)+'%';
+  }
   function renderSea(){
     if(state.phase==='event' && state.currentEvent && state.currentEvent.type==='storm'){
       renderStormDeck();
@@ -5385,6 +5706,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
           '<div class="boat-deck-icons" id="boatDeckIcons">'+loadedIconsHtml()+'</div>'+
         '</div>'+
         (hudObj ? hudObj.html : '')+
+        voyageMapHtml()+
       '</div>'+
       (hudObj ? '<div class="voyage-instruction'+(hudObj.cls||'')+'">'+hudObj.instruction+'</div>' : '')+
       '<div class="progress-caption">はな島まで残り '+fmt(100-state.progress)+'%</div>'+
@@ -5392,6 +5714,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         '<span class="horn-icon">📯</span><span>汽笛を鳴らす</span></button></div>';
 
     syncEventTimerBar();
+    updateVoyageMap();
   }
 
 
@@ -6113,14 +6436,38 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   }
 
   function stormInstruction(ev){
-    if(ev.orders) return '指示された3つだけ捨てろ！';
-    return '船用品を捨てて船を安定させよ！';
+    if(ev.orders) return '指示された3つだけ、海へ投げ捨てろ！';
+    return '船用品を海へ投げ捨てて、船を安定させよ！';
   }
   function stormOrderHtml(ev){
     return '<div class="storm-order" id="stormOrder">'+ev.orders.map(function(t){
       var done = ev.thrownOrders.indexOf(t)!==-1;
       return '<div class="so-item'+(done?' done':'')+'"><div class="so-icon"><div class="lane-object cargo '+t+'"></div></div></div>';
     }).join('')+'</div>';
+  }
+  // ver.144 手前の舷墻（ふなべり）と甲板の床。フラットな画風で、船のエッジと床を分けて見せる
+  // 船用品を捨てる・密漁船・モールス信号で共通（top は舷墻の上端の位置 %、night は夜の色）
+  function deckEdgeHtml(top, night){
+    var ribs = '', scup = '', planks = '', y = 12, g = 7, n = 0;
+    for(var i=0;i<=10;i++){ var x = i*40; ribs += '<rect x="'+(x-3)+'" y="10" width="6" height="34" fill="#c4bca9"/><rect x="'+(x-3)+'" y="10" width="2" height="34" fill="#e6e0d2"/>'; }
+    for(var j=0;j<5;j++){ var sx = 40+j*80; scup += '<rect x="'+(sx-9)+'" y="37" width="18" height="6" rx="3" fill="#5b5446"/>'; }
+    // 横方向の板。手前ほど板の幅が広くなる（奥行き）。継ぎ目は段ごとにずらす
+    while(y < 140){
+      planks += '<rect x="0" y="'+y.toFixed(1)+'" width="400" height="1.6" fill="#3a2715"/>';
+      var off = (n%2 ? 60 : 0) + (n%3)*25, len = 120 + n*6;
+      for(var bx = off; bx < 400; bx += len) planks += '<rect x="'+bx.toFixed(1)+'" y="'+y.toFixed(1)+'" width="1.6" height="'+g.toFixed(1)+'" fill="#3a2715" opacity=".8"/>';
+      y += g; g *= 1.28; n++;
+    }
+    var h = 10;
+    return '<div class="dk-edge'+(night?' night':'')+'" style="top:'+top+'%;height:'+h+'%"><svg viewBox="0 0 400 48" preserveAspectRatio="none" aria-hidden="true">'+
+        '<rect x="0" y="10" width="400" height="34" fill="#d8d3c4"/>'+ribs+scup+
+        '<rect x="0" y="0" width="400" height="11" fill="#efeadf"/><rect x="0" y="0" width="400" height="3" fill="#fbf8f1"/><rect x="0" y="10" width="400" height="2.5" fill="#8f8873"/>'+
+        '<rect x="0" y="43" width="400" height="5" fill="#7c2f22"/>'+
+      '</svg></div>'+
+      '<div class="dk-floor'+(night?' night':'')+'" style="top:'+(top+h)+'%"><svg viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true">'+
+        '<rect x="0" y="0" width="400" height="140" fill="#6b4a2c"/>'+
+        '<rect x="0" y="0" width="400" height="12" fill="#4f3520"/>'+planks+
+      '</svg></div>';
   }
   function renderStormDeck(){
     var ev = state.currentEvent;
@@ -6132,11 +6479,11 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
 
     document.getElementById('stage').innerHTML =
       '<div class="phase-heading"><h2>デッキ — 荒天対応</h2></div>'+
-      '<div class="deck-scene storm-deck">'+
+      '<div class="deck-scene storm-deck sd3">'+
+        seaWavesHtml([24.5,27.5,31,35,40,46,50.5,54],true)+
+        deckEdgeHtml(57)+
         itemsHtml+
         (ev.orders ? stormOrderHtml(ev) : '')+
-        '<div class="cargo-zone left"></div><div class="cargo-zone right"></div>'+
-        '<div class="wave-splash left"></div><div class="wave-splash right"></div>'+
         '<div class="hud-timer"><div class="hud-timer-fill" id="eventTimerFill"></div></div>'+
       '</div>'+
       '<div class="voyage-instruction">'+stormInstruction(ev)+'</div>'+
@@ -6194,7 +6541,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       '<div class="phase-heading"><h2>デッキ — 密漁船襲来</h2></div>'+
       '<div class="deck-scene pirate-deck padv-scene" id="padvScene">'+
         seaWavesHtml([24.5,27.5,31,35,40,46,53,60],true)+
-        '<div class="pirate-rail"></div>'+
+        deckEdgeHtml(61)+
         '<div class="padv-line" id="padvLine"></div>'+
         '<div class="pirate-ship padv" id="padvShip" style="transform:translate(-50%,-50%) scale(1.25)">'+
           '<img class="pirate-img" alt="" draggable="false" src="'+PIRATE_SHIP_SRC+'">'+
@@ -6348,7 +6695,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       '<div class="phase-heading"><h2>デッキ — 密漁船襲来</h2></div>'+
       '<div class="deck-scene pirate-deck">'+
         seaWavesHtml([24.5,27.5,31,35,40,46,53,60],true)+
-        '<div class="pirate-rail"></div>'+
+        deckEdgeHtml(61)+
         '<div class="pirate-ship" id="pirateShip" style="left:'+ev.lane+'%;transform:translate(-50%,-50%) scale('+pirateShipScale(ev.gauge)+');opacity:'+(1-(ev.gauge/100)*0.3).toFixed(2)+'">'+
           '<img class="pirate-img" alt="" draggable="false" src="'+PIRATE_SHIP_SRC+'">'+
         '</div>'+
@@ -6360,12 +6707,21 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       '<div class="progress-caption">はな島まで残り '+fmt(100-state.progress)+'%</div>';
   }
 
+  // ギザギザの穴の輪郭（穴ごとに形を少し変える）
+  function leakJag(seed, k){
+    k = k||1; var n = 13, pts = [], r0 = [27,17,24,14,28,18,25,13,26,16,23,15,27];
+    for(var i=0;i<n;i++){
+      var a = (i/n)*Math.PI*2 + seed*.4, r = r0[(i+seed*3)%n]*k*(i%2 ? 1 : 1);
+      pts.push((Math.cos(a)*r*1.12).toFixed(1)+','+(Math.sin(a)*r*.9).toFixed(1));
+    }
+    return pts.join(' ');
+  }
   function tapLeak(idx){
     var ev = state.currentEvent;
     if(!ev || ev.type!=='leak' || ev.resolving) return;
     var leak = ev.leaks[idx];
     if(!leak || leak.patched) return;
-    leak.taps++;
+    leak.taps++; leak.lastTap = true;
     if(leak.taps>=leakTapsNeeded()){
       leak.patched = true;
       ev.patchedCount++;
@@ -6470,14 +6826,21 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   }
   function renderCrackScene(){
     var ev = state.currentEvent;
+    // ver.142 大型船の亀裂も、浸水と同じポップアップの窓・同じ壁で
+    var popIn = !ev.popShown; ev.popShown = true;
     document.getElementById('stage').innerHTML =
-      '<div class="phase-heading"><h2>船内 — 船体の亀裂</h2></div>'+
-      '<div class="deck-scene leak-scene crack-scene" id="crackScene">'+
-        '<svg id="crackSvg"></svg>'+
-        '<div class="hud-timer"><div class="hud-timer-fill" id="eventTimerFill"></div></div>'+
-      '</div>'+
       '<div class="voyage-instruction" id="crackInstr">'+crackInstruction(ev)+'</div>'+
-      '<div class="progress-caption">はな島まで残り '+fmt(100-state.progress)+'%</div>';
+      '<div class="lk-wrap">'+
+        '<div class="lk-sea"><div class="ds-waves"></div></div>'+
+        '<div class="lk-pop'+(popIn?' pop-in':'')+'">'+
+          '<div class="lk-pop-head"><span>⚠️ 船体に亀裂！</span></div>'+
+          '<div class="deck-scene leak-scene crack-scene lk-hull" id="crackScene">'+
+            '<svg id="crackSvg"></svg>'+
+            '<div class="hud-timer"><div class="hud-timer-fill" id="eventTimerFill"></div></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="progress-caption lk-cap">はな島まで残り '+fmt(100-state.progress)+'%</div>'+
+      '</div>';
     var scene = document.getElementById('crackScene');
     var W = scene.clientWidth, H = scene.clientHeight;
     if(!ev.cracks) crackBuild(ev, W, H);
@@ -6597,26 +6960,40 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   function renderLeakScene(){
     var ev = state.currentEvent;
     if(ev.crackMode){ renderCrackScene(); return; }
+    // ver.142 浸水アクションは、海の上にポップアップする横長の窓の中で行う。穴はギザギザ、板は1枚ずつ（横→斜め→斜めで＊形）
+    var need = leakTapsNeeded();
     var spotsHtml = LEAK_SLOTS.map(function(slot, idx){
       var leak = ev.leaks[idx];
       if(!leak) return '';
-      var remainTaps = Math.max(0, leakTapsNeeded()-leak.taps);
       if(state.practice) slot = {x:50, y:50};
-      return '<button type="button" class="leak-spot'+(leak.patched?' patched':'')+'" style="left:'+slot.x+'%;top:'+slot.y+'%" '+
+      var t = Math.min(leak.taps, need), boards = '';
+      for(var b=1;b<=Math.min(t,3);b++) boards += '<i class="lk-plank p'+b+(leak.lastTap && b===t ? ' new' : '')+'"><b></b><b></b></i>';
+      return '<button type="button" class="leak-spot lk2 t'+t+(leak.patched?' patched':'')+'" style="left:'+slot.x+'%;top:'+slot.y+'%" '+
         'data-action="leak-tap" data-idx="'+idx+'"'+(leak.patched?' disabled':'')+'>'+
-        '<div class="leak-hole"></div><div class="leak-spray"></div><div class="patch-board"></div>'+
-        (leak.patched ? '' : '<div class="leak-dots">'+Array.apply(null,Array(leakTapsNeeded())).map(function(_,di){ return '<i class="leak-dot'+(di<leak.taps?' on':'')+'"></i>'; }).join('')+'</div>')+
+        '<svg class="lk-hole" viewBox="-32 -32 64 64" aria-hidden="true">'+
+          '<polygon points="'+leakJag(idx)+'" class="lk-hole-edge"/>'+
+          '<polygon points="'+leakJag(idx, .78)+'" class="lk-hole-in"/>'+
+        '</svg>'+
+        '<i class="lk-trickle"></i><i class="lk-drop d1"></i><i class="lk-drop d2"></i><i class="lk-drop d3"></i>'+
+        boards+
+        (leak.patched ? '' : '<div class="leak-dots">'+Array.apply(null,Array(need)).map(function(_,di){ return '<i class="leak-dot'+(di<leak.taps?' on':'')+'"></i>'; }).join('')+'</div>')+
       '</button>';
     }).join('');
-
+    var popIn = !ev.popShown; ev.popShown = true;
+    Object.keys(ev.leaks).forEach(function(k){ if(ev.leaks[k]) ev.leaks[k].lastTap = false; });
     document.getElementById('stage').innerHTML =
-      '<div class="phase-heading"><h2>デッキ下 — 浸水対応</h2></div>'+
-      '<div class="deck-scene leak-scene">'+
-        spotsHtml+
-        '<div class="hud-timer"><div class="hud-timer-fill" id="eventTimerFill"></div></div>'+
-      '</div>'+
       '<div class="voyage-instruction">穴をタップして板を打ちつけろ！</div>'+
-      '<div class="progress-caption">はな島まで残り '+fmt(100-state.progress)+'%</div>';
+      '<div class="lk-wrap">'+
+        '<div class="lk-sea"><div class="ds-waves"></div></div>'+
+        '<div class="lk-pop'+(popIn?' pop-in':'')+'">'+
+          '<div class="lk-pop-head"><span>⚠️ 船に穴が開いた！</span></div>'+
+          '<div class="deck-scene leak-scene lk-hull">'+
+            spotsHtml+
+            '<div class="hud-timer"><div class="hud-timer-fill" id="eventTimerFill"></div></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="progress-caption lk-cap">はな島まで残り '+fmt(100-state.progress)+'%</div>'+
+      '</div>';
 
     syncEventTimerBar();
   }
@@ -6641,7 +7018,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
           '<div class="distant-ship-lamp" id="distantShipLamp"></div>'+
         '</div>'+
         (ev.msg ? '<div class="morse-msg">'+ev.msg.label+'</div>' : '')+
-        '<div class="morse-rail"></div>'+
+        deckEdgeHtml(53, true)+
         '<div class="morse-lamp-post">'+
           '<button type="button" class="morse-key'+(ev.demoing?' demo':'')+'" id="morseKey"'+(ev.demoing?' disabled':'')+'><div class="morse-lamp"></div></button>'+
         '</div>'+
@@ -7472,7 +7849,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   // The player dodges the berg first; some of the time it then breaks in two
   // and the pieces take up the other lanes (leaving exactly one lane open, never
   // the one the ship is in), so the ship has to dodge again. 3 rounds.
-  var ICE_TURNS = 2, ICE_ROUND_MS = 6500, ICE_COLS = [30, 50, 70];
+  var ICE_TURNS = 2, ICE_ROUND_MS = 6500, ICE_COLS = [24, 50, 76];
   var ICE_PIECE_W = 66, ICE_SPLIT_CHANCE = 0.5, ICE_PIECE_AT_SHIP = 0.8;
   function iceNewRound(ev){
     ev.bigSide = Math.random()<0.5 ? 0 : 1; // 0: blocks left+centre, 1: blocks centre+right
@@ -7497,9 +7874,9 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   function iceBergsHtml(ev){
     var h = ['<svg id="iceLanes" class="ice-lanes" xmlns="http://www.w3.org/2000/svg"></svg>'];
     var bx = 50;
-    h.push('<div class="lane-object iceberg-obj ice-adv" id="iceBig" style="left:'+bx+'%;top:-60px;width:130px;height:110px;transform:translate(-50%,-50%) scale(.5)"></div>');
+    h.push('<div class="lane-object iceberg-obj ice-adv reef2" id="iceBig" style="left:'+bx+'%;top:-60px;width:130px;height:110px;transform:translate(-50%,-50%)">'+reefSvg()+'</div>');
     for(var i=0;i<2;i++){
-      h.push('<div class="lane-object iceberg-obj ice-adv ice-piece" id="iceP'+i+'" style="display:none;left:'+bx+'%;top:-60px;width:'+ICE_PIECE_W+'px;height:'+ICE_PIECE_W+'px;transform:translate(-50%,-50%) scale(.5)"></div>');
+      h.push('<div class="lane-object iceberg-obj ice-adv ice-piece reef2" id="iceP'+i+'" style="display:none;left:'+bx+'%;top:-60px;width:'+ICE_PIECE_W+'px;height:'+Math.round(ICE_PIECE_W*.84)+'px;transform:translate(-50%,-50%)">'+reefSvg()+'</div>');
     }
     return h.join('');
   }
@@ -7507,15 +7884,16 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     var g = iceGeom(), p = Math.min(1, ev.rt/ICE_ROUND_MS);
     // perspective: the berg starts tiny at the vanishing point (top centre) and
     // grows / slides outwards toward its lane faster and faster as it nears
-    var fr = Math.pow(p, 1.6);
-    var yStart = g.H*0.05, yEnd = g.bt + g.bh*0.1;
-    var y = yStart + (yEnd-yStart)*fr, scl = 0.16 + 0.84*fr;
+    // ver.151 真上から見た画面なので、岩礁は大きさを変えずに上から下へまっすぐ流れる
+    var fr = p;
+    var yStart = -g.H*0.12, yEnd = g.bt + g.bh*0.1;
+    var y = yStart + (yEnd-yStart)*fr, scl = 1;
     var tf = 'translate(-50%,-50%) scale('+scl.toFixed(3)+')';
     var split = ev.willSplit && p >= ev.splitP;
     // lane lines converge on a vanishing point far above the scene, so they make a
     // narrow "V" that still runs all the way down to the bottom of the play screen
     var vy = -g.H*0.75;
-    function lat(yy){ return (yy-vy)/(yEnd-vy); }
+    function lat(yy){ return 1; }
     var lanes = document.getElementById('iceLanes');
     if(lanes && lanes.getAttribute('data-k') !== g.W+'x'+Math.round(yEnd)+'x'+g.H){
       lanes.setAttribute('data-k', g.W+'x'+Math.round(yEnd)+'x'+g.H);
@@ -7529,7 +7907,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     }
     // bergs leave dead centre, then settle onto their lane line
     // bergs appear next to the middle lane, then slide out onto their own lane
-    var sm = Math.min(1, fr/0.4); sm = sm*sm*(3-2*sm);
+    var sm = 1;
     function sx(L){ return 50 + (L-50)*lat(y)*sm; }
     var big = document.getElementById('iceBig');
     if(big){
@@ -7890,12 +8268,12 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     var instruction, objectHtml, controlsHtml='';
     // iceberg
     instruction = '岩礁を避けろ！';
-    var i = 'left:'+ev.lane+'%;--a-start:'+Math.max(2,bTop-58)+'%;--a-end:'+Math.min(70,bTop+8)+'%';
+    var i = 'left:'+ev.lane+'%;--a-start:-14%;--a-end:'+Math.max(20,bTop-16)+'%;--rdur:'+((ev.duration||ICEBERG_DURATION)/1000)+'s';
     if(ev.adv){
       instruction = '岩礁を避けろ！';
       objectHtml = '<div id="iceLayer">'+iceBergsHtml(ev)+'</div>';
     } else
-    objectHtml = '<div class="lane-object iceberg-obj approaching'+(ev.shake?' shake':'')+'" style="'+i+'"></div>';
+    objectHtml = '<div class="lane-object iceberg-obj reef2 approaching'+(ev.shake?' shake':'')+'" style="'+i+'">'+reefSvg()+'</div>';
     var wheelTopPx = Math.min(172, Math.round(270*bTop/100)+14);
     if(ev.type==='iceberg' && ev.adv) wheelTopPx = 188;
     var wheelPos = 'top:auto;bottom:3px';
@@ -7916,41 +8294,50 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     if(arrived){
       var s = state.score;
       var anim = !!state.resAnim;
+      var R = [];
+      function row(lb, v, cls, extra){ R.push({lb:lb, v:v||0, cls:cls||'', ex:extra||''}); }
+      if(!state.tour){ row('🚗 車 × '+s.cars+(s.luxuryLoaded?'（💎高級車含む）':''), s.carsValue, 'c-car'); row('📦 コンテナ × '+s.boxes, s.boxesValue, 'c-box'); }
+      row('🧑 '+(state.tour?'観光客':'乗客')+' × '+s.pax+(s.fare&&s.pax?'（運賃+'+s.fare+'/人）':''), s.paxValue, 'c-pax');
+      if(s.parcel) row('ダンボール × '+s.parcel, s.parcelValue, 'c-box');
+      if(s.wood) row('🪵 木材 × '+s.wood, s.woodValue, 'c-mat');
+      if(s.steel) row('🔩 鉄骨 × '+s.steel, s.steelValue, 'c-mat');
+      if(s.tourBonus) row('🎡 ツアー運賃（2倍）', s.tourBonus, 'c-bonus');
+      if(s.freightBonus) row('満載貨物ボーナス', s.freightBonus, 'c-bonus');
+      if(s.rescueBonus) row('🛟 救助ボーナス', s.rescueBonus, 'c-bonus');
+      if(s.mopBonus) row('🧹 浸水掃き出しボーナス', s.mopBonus, 'c-bonus');
+      if(s.heartBonus) row('💗 ハート亀裂ボーナス', s.heartBonus, 'c-bonus');
+      if(s.tipBonus) row('💴 乗客からのチップ', s.tipBonus, 'c-bonus');
+      if(s.binocBonus) row('🐬 イルカ発見ボーナス', s.binocBonus, 'c-bonus');
+      if(s.treasureBonus) row('🏝️ 宝島発見ボーナス', s.treasureBonus, 'c-bonus');
+      if(s.speedBonus) row('💨 早着ボーナス（×'+state.speedMult.toFixed(2)+'）', s.speedBonus, 'c-bonus');
+      if(s.perfectBonus) row('⭐ 完全クリアボーナス', s.perfectBonus, 'c-bonus');
+      if(s.contractRows){
+        if(s.contractRows.length){
+          s.contractRows.forEach(function(r){ row(r.c.ic+' '+r.c.name+'　'+(r.st==='ok'?'届けた':(r.st==='broken'?'割れた…':'積み忘れ')), r.pay, 'c-mis'+(r.st==='ok'?'':' muted')); });
+          var rush = s.contractRows.reduce(function(a,r){ return a + r.rush; }, 0);
+          if(rush) row('⚡ 急ぎの上乗せ', rush, 'c-mis');
+        } else row('📋 依頼は受けなかった', 0, 'c-mis muted');
+      } else row('🎯 '+state.mission.label+'（'+(s.missionAchieved?'達成':'未達成')+'）', s.missionBonus, 'c-mis'+(s.missionAchieved?'':' muted'), s.missionAchieved?'<i class="hanko">達成</i>':'');
+      var tot = Math.max(1, s.total);
       body =
-        '<div class="result-card arrived'+(anim?' anim':'')+'">'+
-        '<h2>到着 — はな島</h2>'+
-        '<p class="result-note">無事に積み荷と乗客をはな島まで届けた。'+
-          (state.luxuryCarId ? (s.luxuryLoaded ? '積んだ車の中に💎高級車が混ざっていた！' : '実は車の中に💎高級車が混ざっていたが、今回は積まずに見送った……') : '')+
-        '</p>'+
-        '<div class="score-table">'+
-          (state.tour ? '' : '<div class="score-row"><span>車 × '+s.cars+(s.luxuryLoaded?'（💎高級車含む）':'')+'</span><span>+'+s.carsValue+' フェリポ</span></div>'+
-          '<div class="score-row"><span>コンテナ × '+s.boxes+'</span><span>+'+s.boxesValue+' フェリポ</span></div>')+
-          '<div class="score-row"><span>'+(state.tour?'観光客':'乗客')+' × '+s.pax+(s.fare&&s.pax?'（運賃+'+s.fare+'/人）':'')+'</span><span>+'+s.paxValue+' フェリポ</span></div>'+
-          (s.parcel ? '<div class="score-row"><span>ダンボール × '+s.parcel+'</span><span>+'+s.parcelValue+' フェリポ</span></div>' : '')+
-          (s.wood ? '<div class="score-row"><span>木材 × '+s.wood+'</span><span>+'+s.woodValue+' フェリポ</span></div>' : '')+
-          (s.steel ? '<div class="score-row"><span>鉄骨 × '+s.steel+'</span><span>+'+s.steelValue+' フェリポ</span></div>' : '')+
-          (s.tourBonus ? '<div class="score-row"><span>🎡 ツアー運賃（2倍）</span><span>+'+s.tourBonus+' フェリポ</span></div>' : '')+
-          (s.freightBonus ? '<div class="score-row"><span>満載貨物ボーナス（コンテナのみ）</span><span>+'+s.freightBonus+' フェリポ</span></div>' : '')+
-          (s.rescueBonus ? '<div class="score-row"><span>🛟 救助ボーナス</span><span>+'+s.rescueBonus+' フェリポ</span></div>' : '')+
-          (s.mopBonus ? '<div class="score-row"><span>🧹 浸水掃き出しボーナス</span><span>+'+s.mopBonus+' フェリポ</span></div>' : '')+
-          (s.heartBonus ? '<div class="score-row"><span>💗 ハート亀裂ボーナス</span><span>+'+s.heartBonus+' フェリポ</span></div>' : '')+
-          (s.tipBonus ? '<div class="score-row"><span>💴 乗客からのチップ</span><span>+'+s.tipBonus+' フェリポ</span></div>' : '')+
-          (s.binocBonus ? '<div class="score-row"><span>🐬 イルカ発見ボーナス</span><span>+'+s.binocBonus+' フェリポ</span></div>' : '')+
-          (s.treasureBonus ? '<div class="score-row"><span>🏝️ 宝島発見ボーナス</span><span>+'+s.treasureBonus+' フェリポ</span></div>' : '')+
-          (s.speedBonus ? '<div class="score-row"><span>💨 早着ボーナス（航行速度 ×'+state.speedMult.toFixed(2)+'）</span><span>+'+s.speedBonus+' フェリポ</span></div>' : '')+
-          (s.perfectBonus ? '<div class="score-row"><span>⭐ 完全クリアボーナス</span><span>+'+s.perfectBonus+' フェリポ</span></div>' : '')+
-          (s.contractRows ? (s.contractRows.length ? s.contractRows.map(function(r){ return '<div class="score-row mission-row'+(r.st==='ok'?'':' muted')+'"><span>'+r.c.ic+' '+r.c.name+'　'+(r.st==='ok'?'届けた':(r.st==='broken'?'割れた…':'積み忘れ'))+'</span><span>'+(r.pay ? '+'+r.pay+' フェリポ' : '+0')+'</span></div>'; }).join('') +
-            (s.contractRows.some(function(r){ return r.rush; }) ? '<div class="score-row mission-row"><span>⚡ 急ぎの上乗せ</span><span>+'+s.contractRows.reduce(function(a,r){ return a + r.rush; }, 0)+' フェリポ</span></div>' : '') : '<div class="score-row mission-row muted"><span>📋 依頼は受けなかった</span><span>+0</span></div>') :
-'<div class="score-row mission-row'+(s.missionAchieved?'':' muted')+'"><span>🎯 '+state.mission.label+'（'+(s.missionAchieved?'達成':'未達成')+'）</span><span>'+(s.missionBonus?'+'+s.missionBonus+' フェリポ':'+0')+'</span>'+(s.missionAchieved?'<i class="hanko">達成</i>':'')+'</div>')+
-          '<div class="score-row total"><span>合計フェリポ</span><span data-cnt="'+s.total+'" data-from="0">'+(anim?0:s.total)+'</span></div>'+
-          '<div class="score-row wallet-row"><span>所持フェリポ</span><span data-cnt="'+wallet.ferripo+'" data-from="'+(wallet.ferripo-s.total)+'">'+fmtNum(anim?wallet.ferripo-s.total:wallet.ferripo)+'</span></div>'+
-          '<div class="score-row wallet-row"><span>累計フェリポ</span><span data-cnt="'+(wallet.total||0)+'" data-from="'+(state.prevTotal||0)+'">'+fmtNum(anim?(state.prevTotal||0):(wallet.total||0))+'</span></div>'+
+        '<div class="res2-mid scrollbox'+(anim?' anim':'')+'">'+
+          '<p class="res2-note">無事に積み荷と乗客をはな島まで届けた。'+
+            (state.luxuryCarId ? (s.luxuryLoaded ? '積んだ車の中に💎高級車が混ざっていた！' : '実は車の中に💎高級車が混ざっていたが、今回は積まずに見送った……') : '')+'</p>'+
+          '<div class="res2-list">'+R.map(function(r){
+            return '<div class="score-row '+r.cls+'" data-v="'+(r.cls.indexOf('muted')>-1?0:r.v)+'"><span>'+r.lb+'</span><span>'+(r.v?'+'+r.v:'+0')+'</span>'+r.ex+'</div>';
+          }).join('')+
           ((s.wood||s.steel) ? '<div class="score-row mats-row"><span>🏗️ 島の資材置き場へ</span><span>'+(s.wood?'木材+'+s.wood:'')+(s.wood&&s.steel?'・':'')+(s.steel?'鉄骨+'+s.steel:'')+'</span></div>' : '')+
+          '</div>'+
+          newBadgesHtml()+goalCardHtml()+
         '</div>'+
-        '<div class="result-actions">'+
-          '<button type="button" class="btn-primary" data-action="retry">次の便を出す</button>'+
-          '<button type="button" class="btn-secondary" data-action="go-home">ホームへ戻る</button>'+
-        '</div>'+
+        '<div class="res2-bot'+(anim?' anim':'')+'">'+
+          '<div class="score-row total res2-gain"><span>今回の獲得</span><span class="res2-num"><b data-gain="'+s.total+'">'+(anim?0:s.total)+'</b><small>フェリポ</small></span></div>'+
+          '<div class="res2-wal"><div><span>所持</span><b data-cnt="'+wallet.ferripo+'" data-from="'+(wallet.ferripo-s.total)+'">'+fmtNum(anim?wallet.ferripo-s.total:wallet.ferripo)+'</b></div>'+
+            '<div><span>累計</span><b data-cnt="'+(wallet.total||0)+'" data-from="'+(state.prevTotal||0)+'">'+fmtNum(anim?(state.prevTotal||0):(wallet.total||0))+'</b></div></div>'+
+          '<div class="res2-btns">'+
+            '<button type="button" class="btn-secondary" data-action="go-home">ホームへ戻る</button>'+
+            '<button type="button" class="btn-primary" data-action="retry">次の便を出す</button>'+
+          '</div>'+
         '</div>';
     } else {
       var overloaded = state.overloadedAtDeparture;
@@ -7970,42 +8357,56 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         '</div>'+
         '</div>';
     }
-    document.getElementById('stage').innerHTML =
-      '<div class="phase-heading"><h2>航海結果</h2></div>'+
-      (arrived ? islandBlock(state.prevTotal||0).replace('class="hana-wrap"','class="hana-wrap res-top'+(state.resAnim?' anim':'')+'"') : '')+
-      body+(arrived ? newBadgesHtml()+goalCardHtml() : goalCardHtml());
+    document.getElementById('stage').innerHTML = arrived ?
+      '<div class="res2">'+
+        '<div class="res2-top">'+islandBlock(state.prevTotal||0).replace('</b></div></div>','</b></span></div></div>').replace('class="hana-wrap"','class="hana-wrap res-top'+(state.resAnim?' anim':'')+'"').replace('<div class="isl-title">','<div class="isl-title"><span class="res2-h">到着 — はな島</span><span class="res2-ttl">')+'</div>'+
+        body+
+      '</div>' :
+      '<div class="phase-heading"><h2>航海結果</h2></div>'+body+goalCardHtml();
+    var rb = document.querySelector('.res2-bot'), apE = document.getElementById('app'); if(rb && apE) apE.style.setProperty('--resb', (rb.offsetHeight+26)+'px');
     if(arrived && state.resAnim){ state.resAnim = false; resultFx(); }
   }
   // ---------- ver.56 結果画面の演出：行が順に出る → 合計がカウントアップ → 指示書達成のハンコ → 紙ふぶき ----------
+  function resFxDur(){ return 1100 + document.querySelectorAll('.res2-list .score-row').length*380 + 350; }
   function resultFx(){
-    var card = document.querySelector('.result-card.anim');
-    if(!card) return;
-    var rows = card.querySelectorAll('.score-row'), t0 = 1.1, step = 0.11, cntAt = 0;
-    for(var i=0;i<rows.length;i++){
-      rows[i].style.animationDelay = (t0+i*step)+'s';
-      if(rows[i].classList.contains('total')) cntAt = t0+i*step+0.2;
-      var hk = rows[i].querySelector('.hanko');
-      if(hk){ hk.style.animationDelay = (t0+i*step+0.35)+'s'; (function(d){ setTimeout(function(){ if(state.phase==='result') playClearSound(); }, d*1000); })(t0+i*step+0.38); }
+    // ver.134 内訳が1行ずつ出る → そのぶんメーターが積み上がって数字が増える → 最後に合計がバン！
+    var mid = document.querySelector('.res2-mid.anim'), bot = document.querySelector('.res2-bot.anim');
+    if(!mid || !bot) return;
+    var rows = mid.querySelectorAll('.res2-list .score-row'), segs = bot.querySelectorAll('.res2-meter i');
+    var gain = bot.querySelector('[data-gain]'), target = +gain.getAttribute('data-gain');
+    var t0 = 1100, step = 380, acc = 0, si = 0, cur = 0;
+    function tweenGain(to){
+      var from = cur, st = null; cur = to;
+      function f(ts){ if(!st) st = ts; var p = Math.min(1,(ts-st)/260); if(!gain.isConnected) return; gain.textContent = fmtNum(Math.round(from+(to-from)*p)); if(p<1) requestAnimationFrame(f); }
+      requestAnimationFrame(f);
     }
-    var nums = card.querySelectorAll('[data-cnt]');
+    for(var i=0;i<rows.length;i++){
+      (function(r, d){
+        setTimeout(function(){
+          if(!r.isConnected) return;
+          r.classList.add('in');
+          try{ var lb = mid.getBoundingClientRect(), rb = r.getBoundingClientRect(); if(rb.bottom > lb.bottom-4) mid.scrollTop += rb.bottom - lb.bottom + 10; }catch(e){}
+          var v = +r.getAttribute('data-v');
+          if(v){ acc += v; if(segs[si]) segs[si++].classList.add('on'); tweenGain(Math.min(acc, target)); try{ playCoinSound(); }catch(e){} }
+          var hk = r.querySelector('.hanko'); if(hk){ hk.classList.add('in'); setTimeout(function(){ if(state.phase==='result') playClearSound(); }, 300); }
+        }, d);
+      })(rows[i], t0 + i*step);
+    }
+    var banAt = t0 + rows.length*step + 350;
     setTimeout(function(){
-      var start = null, dur = 750;
-      function step2(ts){
-        if(!start) start = ts;
-        var p = Math.min(1,(ts-start)/dur), e = 1-Math.pow(1-p,3);
-        for(var k=0;k<nums.length;k++){
-          var a = +nums[k].getAttribute('data-from'), b = +nums[k].getAttribute('data-cnt');
-          if(!nums[k].isConnected) return;
-          nums[k].textContent = fmtNum(a+(b-a)*e);
-        }
-        if(p<1) requestAnimationFrame(step2);
-        else {
-          for(var k2=0;k2<nums.length;k2++){ nums[k2].classList.remove('cnt-pop'); void nums[k2].offsetWidth; nums[k2].classList.add('cnt-pop'); }
-          if(state.phase==='result'){ playCrackerSound(); confetti(state.score && state.score.missionAchieved ? 70 : 40); }
-        }
+      if(!gain.isConnected) return;
+      gain.textContent = fmtNum(target);
+      bot.classList.add('ban');
+      mid.querySelectorAll('.mats-row,.bd-new,.goal-mini').forEach(function(e){ e.classList.add('in'); });
+      var nums = bot.querySelectorAll('[data-cnt]'), st = null;
+      function f(ts){
+        if(!st) st = ts; var p = Math.min(1,(ts-st)/600), e = 1-Math.pow(1-p,3);
+        for(var k=0;k<nums.length;k++){ if(!nums[k].isConnected) return; var a = +nums[k].getAttribute('data-from'), b = +nums[k].getAttribute('data-cnt'); nums[k].textContent = fmtNum(a+(b-a)*e); }
+        if(p<1) requestAnimationFrame(f);
       }
-      requestAnimationFrame(step2);
-    }, cntAt*1000);
+      requestAnimationFrame(f);
+      if(state.phase==='result'){ playCrackerSound(); confetti(state.score && state.score.missionAchieved ? 70 : 40); }
+    }, banAt);
   }
   function confetti(n){
     var box = document.createElement('div'); box.className = 'confetti';
@@ -8063,14 +8464,14 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     var ys=[12,60,330,376], n=0;
     [[44,12],[44,34],[70,12],[70,34],[44,300],[70,300],[44,322],[70,322],[44,356],[70,356],[44,378],[70,378]].forEach(function(pt){ o += box(pt[0],pt[1],24,20,cols[n++%cols.length]); });
     // クレーン（ブームが海側へ張り出す）
-    o += '<rect x="0" y="182" width="62" height="9" fill="#e0b030" stroke="#8a6a2f" stroke-width="1"/>'+
+    o += '<g class="qcrane"><rect x="0" y="182" width="62" height="9" fill="#e0b030" stroke="#8a6a2f" stroke-width="1"/>'+
          '<rect x="0" y="184.5" width="62" height="2" fill="#f4d56a"/>'+
          '<rect x="12" y="180" width="7" height="13" fill="#d9503d" stroke="#7a2d22" stroke-width=".8"/>'+
          '<rect x="56" y="168" width="34" height="34" fill="#e0b030" stroke="#8a6a2f" stroke-width="1.2"/>'+
          '<rect x="62" y="174" width="14" height="14" fill="#3a4654"/>'+
          '<rect x="52" y="166" width="7" height="8" fill="#4a5360"/><rect x="52" y="196" width="7" height="8" fill="#4a5360"/>'+
          '<rect x="86" y="166" width="7" height="8" fill="#4a5360"/><rect x="86" y="196" width="7" height="8" fill="#4a5360"/>'+
-         '<line x1="15" y1="191" x2="15" y2="200" stroke="rgba(0,0,0,.3)" stroke-width="1"/>';
+         '<line x1="15" y1="191" x2="15" y2="200" stroke="rgba(0,0,0,.3)" stroke-width="1"/></g>';
     return o + '</svg>';
   }
   // 船の側面と後ろ（船尾）に、縦に続く波線を引く
@@ -8252,7 +8653,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       (t>=1500 ? '<div class="shipyard-back"><button type="button" class="btn-primary" data-action="goal-open">日本一の画面を見る</button></div>'+
                  '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="sale-open">事業を売却する</button></div>' : '')+
       '<div class="shipyard-back"><button type="button" class="btn-secondary" data-action="go-home">戻る</button></div>'+
-      '<p class="credit">© 2026 Shimabin ・ ver.132</p>';
+      '<p class="credit">© 2026 Shimabin ・ ver.159</p>';
   }
   function goHome(){
     if(tickHandle){ clearInterval(tickHandle); tickHandle=null; }
@@ -8312,7 +8713,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         '<div class="ts-bottom">'+
           '<button type="button" class="btn-primary title-start" data-action="tut-start">はじめる</button>'+
         '</div>'+
-        '<p class="credit">© 2026 Shimabin ・ ver.132　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
+        '<p class="credit">© 2026 Shimabin ・ ver.159　<button type="button" class="privacy-link" data-action="privacy">プライバシー</button></p>'+
       '</div>';
   }
   var titleLeaving = false;
@@ -8408,7 +8809,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     try{ var _bev = state.currentEvent; document.body.classList.toggle('binoc-on', state.phase==='event' && !!_bev && _bev.type==='binoculars' && !_bev.chase); }catch(_e){}
     var _st = document.getElementById('stage'); var _keep = _st ? _st.scrollTop : 0, _ph = render._ph; render._ph = state.phase;
     var appEl = document.getElementById('app');
-    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.setAttribute('data-ev', (state.phase==='event' && state.currentEvent) ? state.currentEvent.type : ''); appEl.setAttribute('data-adv', (state.currentEvent && state.currentEvent.adv) ? '1' : '0'); appEl.classList.toggle('at-dock', state.phase==='dock'); appEl.classList.toggle('at-home', state.phase==='home' || state.phase==='prologue'); appEl.classList.toggle('at-sea', state.phase==='sailing' || state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island' || state.phase==='drills' || state.phase==='shipyard' || state.phase==='prologue'); appEl.classList.toggle('drilling', !!state.drill); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); appEl.classList.toggle('tut-dusk', tutPending() && ['sailing','event','intro','dock','result'].indexOf(state.phase)>-1); appEl.classList.toggle('wx-storm', !!state.stormy && !state.drill && !state.practice && (state.phase==='sailing' || state.phase==='event')); }
+    if(appEl){ appEl.classList.toggle('in-action', state.phase==='event'); appEl.setAttribute('data-ev', (state.phase==='event' && state.currentEvent) ? state.currentEvent.type : ''); appEl.setAttribute('data-adv', (state.currentEvent && state.currentEvent.adv) ? '1' : '0'); appEl.classList.toggle('at-dock', state.phase==='dock'); appEl.classList.toggle('at-result', state.phase==='result' && state.outcome==='arrived'); appEl.classList.toggle('at-home', state.phase==='home' || state.phase==='prologue'); appEl.classList.toggle('at-sea', state.phase==='sailing' || state.phase==='event' || state.phase==='intro'); appEl.classList.toggle('on-title', state.phase==='title' || state.phase==='home' || state.phase==='titles' || state.phase==='island' || state.phase==='drills' || state.phase==='shipyard' || state.phase==='prologue'); appEl.classList.toggle('drilling', !!state.drill); appEl.classList.toggle('story', !!state.story); appEl.classList.toggle('practice', !!state.practice); appEl.classList.toggle('tut-dusk', tutPending() && ['sailing','event','intro','dock','result'].indexOf(state.phase)>-1); appEl.classList.toggle('wx-storm', !!state.rainOn && !state.drill && !state.practice && (state.phase==='sailing' || state.phase==='event')); }
     measureOverlays();
     renderGauges();
     if(state.phase==='dock') renderDock();
@@ -8426,6 +8827,25 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     scaleEventScene();
     if(_st){ _st.scrollTop = (_ph===state.phase) ? _keep : 0; }
     ambientSync();
+
+    fitDeckIcons();
+  }
+  // ver.141 甲板の荷物が多いときは、甲板の枠に収まるまでアイコンを小さくする
+  function fitDeckIcons(){
+    try{
+      document.querySelectorAll('.boat-deck-icons').forEach(function(box){
+        var z = 1; box.style.setProperty('--dz', 1);
+        if(!box.querySelector('.swatch')) return;
+        for(var n=0; n<14; n++){
+          var b = box.getBoundingClientRect(), out = false;
+          if(!b.width || !b.height) return;
+          var sw = box.querySelectorAll('.swatch');
+          for(var i=0;i<sw.length;i++){ var r = sw[i].getBoundingClientRect(); if(r.left < b.left-.5 || r.right > b.right+.5 || r.top < b.top-.5 || r.bottom > b.bottom+.5){ out = true; break; } }
+          if(!out) return;
+          z *= .88; box.style.setProperty('--dz', z.toFixed(3));
+        }
+      });
+    }catch(e){}
   }
 
   // ---------- game logic ----------
@@ -8467,7 +8887,43 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     state.lastToggledId = id;
     render();
     state.lastToggledId = null;
+    if(state.placement[id]) craneGo(id);
     if(tl && tl.after){ var tAfter = tl.after; setTimeout(function(){ if(state.phase!=='dock' || state.story) return; state.story = {i:0, busy:false, lines:tAfter}; render(); storyUI(); }, 650); }
+  }
+
+
+  // ver.140 積んだ瞬間、岸壁のタワークレーンが荷物の位置まで動いて腕を伸ばし、置いたら戻る
+  function craneGo(id){
+    try{
+      var side = state.placement[id], ds = document.querySelector('.app.at-dock .dk-scene .ds');
+      if(!ds || !side || !ds.animate) return;
+      var svg = ds.querySelector('.ds-quay-svg'), cols = ds.querySelectorAll('.boat-deck-icons .deck-col');
+      var ids = state.loadedIds.filter(function(x){ return state.placement[x]===side; });
+      var tg = cols[side==='L'?0:1] && cols[side==='L'?0:1].children[ids.indexOf(id)];
+      if(!svg || !tg) return;
+      var dR = ds.getBoundingClientRect(), k = ds.offsetWidth / dR.width;
+      var sR = svg.getBoundingClientRect(), tR = tg.getBoundingClientRect();
+      var sw = sR.width*k, sh = sR.height*k, sx = (sR.left-dR.left)*k, sy = (sR.top-dR.top)*k;
+      var sc = Math.max(sw/100, sh/400), oy = (sh-400*sc)/2;
+      var tx = (tR.left+tR.width/2-dR.left)*k, ty = (tR.top+tR.height/2-dR.top)*k;
+      var boomY = sy + oy + 186.5*sc, ext = Math.max(0, sx - tx);
+      var old = ds.querySelector('.dk-crane'); if(old) old.remove();
+      var c = document.createElement('div');
+      c.className = 'dk-crane';
+      c.style.cssText = 'left:'+sx+'px;top:'+(sy+oy+166*sc)+'px;width:'+(95*sc)+'px;height:'+(38*sc)+'px;';
+      c.innerHTML = '<div class="dk-ext" style="top:'+(16*sc)+'px;height:'+(9*sc)+'px;width:'+(ext+6)+'px;"><i style="width:'+(12*sc)+'px;height:'+(17*sc)+'px;"></i></div>'+
+        '<svg viewBox="0 166 95 38" width="100%" height="100%" aria-hidden="true">'+
+          '<rect x="0" y="182" width="62" height="9" fill="#e0b030" stroke="#8a6a2f" stroke-width="1"/><rect x="0" y="184.5" width="62" height="2" fill="#f4d56a"/><rect x="12" y="180" width="7" height="13" fill="#d9503d" stroke="#7a2d22" stroke-width=".8"/>'+
+          '<rect x="56" y="168" width="34" height="34" fill="#e0b030" stroke="#8a6a2f" stroke-width="1.2"/><rect x="62" y="174" width="14" height="14" fill="#3a4654"/>'+
+          '<rect x="52" y="166" width="7" height="8" fill="#4a5360"/><rect x="52" y="196" width="7" height="8" fill="#4a5360"/><rect x="86" y="166" width="7" height="8" fill="#4a5360"/><rect x="86" y="196" width="7" height="8" fill="#4a5360"/>'+
+        '</svg>';
+      ds.appendChild(c); ds.classList.add('crane-busy');
+      var dy = ty - boomY, T = 1150;
+      c.animate([{transform:'translateY(0)'},{transform:'translateY('+dy+'px)',offset:.3},{transform:'translateY('+dy+'px)',offset:.7},{transform:'translateY(0)'}], {duration:T, easing:'ease-in-out'});
+      c.firstChild.animate([{transform:'scaleX(0)'},{transform:'scaleX(0)',offset:.12},{transform:'scaleX(1)',offset:.38},{transform:'scaleX(1)',offset:.62},{transform:'scaleX(0)',offset:.88},{transform:'scaleX(0)'}], {duration:T, easing:'ease-in-out'});
+      tg.animate([{opacity:0},{opacity:0,offset:.36},{opacity:1,offset:.42},{opacity:1}], {duration:T});
+      setTimeout(function(){ if(c.isConnected){ c.remove(); ds.classList.remove('crane-busy'); } }, T);
+    }catch(e){}
   }
 
   function shuffle2(a,b){ return Math.random()<0.5 ? [a,b] : [b,a]; }
@@ -8495,6 +8951,9 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     state.imbalanceAtDeparture = w.diff;
 
     state.stormy = !state.tutorial && !!state.wx && Math.random() < state.wx.p;
+    // ver.143 嵐の日も、雨は航海の途中から降り出す
+    state.rainAt = state.stormy ? 25 + Math.floor(Math.random()*21) : 999;
+    state.rainOn = false;
     state.fragileBroken = false;
     state.hasTroublemaker = state.loadedIds.some(function(id){ return state.troublemakerIds.indexOf(id)!==-1; });
     // One checkpoint per CHECKPOINTS_AT entry -- not hardcoded to 3, so adding
@@ -8517,8 +8976,10 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     var lastType = (isAdvancedShip() && Math.random() < ROCKWALL_POOL_CHANCE) ? 'rockwall' : pickStormOrRescue(prevForLast);
     types.push(lastType);
     prevVoyageLastType = lastType;
+    // 雨が降り出す前のアクションには、嵐・浸水の掃き出しは出さない
+    if(state.stormy){ for(var bi=0; bi<types.length; bi++){ if(CHECKPOINTS_AT[bi] < state.rainAt && (types[bi]==='storm' || types[bi]==='mop')){ var nt = types[bi], g = 0; while((nt==='storm' || nt==='mop' || nt===types[bi+1] || nt===types[bi-1]) && g++<20) nt = pickStormOrRescue(types[bi]); types[bi] = nt; } } }
     if(state.stormy && types.indexOf('storm')===-1){
-      var cand = []; for(var si=0; si<types.length; si++){ if(types[si]!=='trouble' && types[si]!=='rockwall' && types[si-1]!=='storm' && types[si+1]!=='storm') cand.push(si); }
+      var cand = []; for(var si=0; si<types.length; si++){ if(CHECKPOINTS_AT[si] > state.rainAt && types[si]!=='trouble' && types[si]!=='rockwall' && types[si-1]!=='storm' && types[si+1]!=='storm') cand.push(si); }
       if(cand.length) types[cand[Math.floor(Math.random()*cand.length)]] = 'storm';
     }
     // ツアー便：お客さん対応の「船酔い」アクションを必ず1回入れる
@@ -8552,7 +9013,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     state.progress=0;
     log('出航した（積載 '+fmt(state.weight)+'t / 安定度：'+stabilityLabelFor(state.stability)+' / 航行速度 ×'+state.speedMult.toFixed(2)+'）');
     if(state.overloadedAtDeparture) log('積みすぎで喫水が深い。航行速度が落ちている。');
-    if(!state.tutorial) log(state.stormy ? '空が暗くなってきた……嵐だ！' : '今日の海は'+(state.wx && state.wx.k==='sunny' ? '穏やかだ。' : 'まずまず。荒れずにすみそうだ。'), state.stormy ? 'log-fail' : '');
+    if(!state.tutorial) log('今日の海は'+(state.wx && state.wx.k==='sunny' ? '穏やかだ。' : (state.wx && state.wx.k==='rough' ? '少しうねりがある。' : 'まずまずだ。')));
     if(imbalancePenalty>0) log('左右の重量バランスが悪い（左 '+fmt(w.left)+'t／右 '+fmt(w.right)+'t）。安定度が下がっている。');
 
     render();
@@ -8583,6 +9044,12 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   function tick(){
     if(state.phase!=='sailing') return;
     state.progress = Math.min(100, state.progress + PROGRESS_STEP*state.speedMult*(state.tutorial?2:1)); // お手本航海は短い航路（2倍速）
+    if(state.stormy && !state.rainOn && state.progress >= state.rainAt){
+      state.rainOn = true;
+      log('空が暗くなってきた……雨だ！嵐になるぞ！', 'log-fail');
+      var _ap = document.getElementById('app'); if(_ap) _ap.classList.add('wx-storm');
+      renderGauges();
+    }
 
     var bTop = boatTopNow();
     var boatEl = document.getElementById('boatTopdown');
@@ -8607,6 +9074,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
 
     var cap = document.querySelector('.progress-caption');
     if(cap) cap.textContent = 'はな島まで残り '+fmt(100-state.progress)+'%';
+    updateVoyageMap();
   }
 
   var ROCKWALL_WARN_MS = 3000; // 3 blinks x 1000ms
@@ -9042,11 +9510,9 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       }
       // Jitter each base slot a bit every time so the layout itself isn't
       // always the same triangle, on top of shuffling which item lands where.
-      var slots = shuffleArr(isAdvancedShip() ? CARGO_SLOTS_ADV : CARGO_SLOTS).map(function(s){
-        return {
-          left: Math.max(18, Math.min(82, s.left + (Math.random()*20-10))),
-          top: Math.max(28, Math.min(78, s.top + (Math.random()*16-8)))
-        };
+      // ver.144 船用品は手前の甲板に並べ、奥の海へ投げ捨てる
+      var slots = shuffleArr(isAdvancedShip() ? CARGO_SLOTS_ADV3 : CARGO_SLOTS3).map(function(s){
+        return { left: s.left + (Math.random()*6-3), top: s.top + (Math.random()*4-2) };
       });
       var slotFor = {};
       stormItems.forEach(function(itemType,i){ slotFor[itemType] = slots[i]; });
@@ -9229,6 +9695,18 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     }
   }
 
+  function steerTick(ad){
+    if(activeDrag!==ad){ return; }
+    var tb = document.getElementById('boatTopdown');
+    ad.tpC += ((ad.tpT||0) - ad.tpC)*0.28;
+    if(tb){
+      if(!tb.classList.contains('tilting')){ tb.classList.remove('tilt-back','steer-left','steer-right'); tb.classList.add('tilting'); }
+      var sx = (ad.tpC*72).toFixed(1), sr = (ad.tpC*10).toFixed(1);
+      tb.style.setProperty('--sx', sx+'px'); tb.style.setProperty('--sr', sr+'deg');
+      tb.style.transform = 'translate(calc(-50% + '+sx+'px),0) rotate('+sr+'deg)';
+    }
+    requestAnimationFrame(function(){ steerTick(ad); });
+  }
   function bumpEvent(kind, direction){
     if(state.phase!=='event' || !state.currentEvent || state.currentEvent.resolving) return;
     var ev = state.currentEvent;
@@ -9248,6 +9726,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         boatEl.style.transform='';
         void boatEl.offsetWidth;
         boatEl.classList.add(direction==='L' ? 'steer-left' : 'steer-right');
+        if(direction!==ev.sequence[ev.count]){ boatEl.classList.add('dodge2'); setTimeout(function(){ boatEl.classList.remove('dodge2'); }, 1300); }
       }
       var bergSide = ev.sequence[ev.count];
       if(direction===bergSide){
@@ -9262,7 +9741,8 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       var sceneEl0 = document.querySelector('.deck-scene');
       if(bergEl && sceneEl0){
         var br = bergEl.getBoundingClientRect(), sr = sceneEl0.getBoundingClientRect();
-        dodged = {x: br.left + br.width/2 - sr.left, y: br.top - sr.top, side: bergSide};
+        var _lk = LK();
+        dodged = {x: (br.left + br.width/2 - sr.left)*_lk, y: (br.top - sr.top)*_lk, w: br.width*_lk, h: br.height*_lk, side: bergSide};
       }
       ev.count++;
       if(ev.count>=ev.target){
@@ -9275,11 +9755,33 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         clearTimeout(eventTimeoutId);
         ev.startedAt = Date.now();
         eventTimeoutId = setTimeout(function(){ resolveEvent(false); }, ev.duration);
+        var _sx = boatEl ? boatEl.style.getPropertyValue('--sx') : '', _sr = boatEl ? boatEl.style.getPropertyValue('--sr') : '';
         renderSea();
         if(dodged) showIcebergDodged(dodged);
+        var nb = document.getElementById('boatTopdown');
+        if(nb){ nb.style.setProperty('--sx', _sx||'0px'); nb.style.setProperty('--sr', _sr||'0deg'); nb.classList.add(direction==='L' ? 'steer-left' : 'steer-right', 'dodge2'); setTimeout(function(){ nb.classList.remove('dodge2','steer-left','steer-right'); }, 1300); }
       }
       return;
     }
+  }
+  // ver.151 岩礁（真上から見た岩場）。白波に囲まれた岩のかたまり
+  function reefSvg(){
+    return '<svg viewBox="0 0 100 84" aria-hidden="true">'+
+      '<ellipse class="rf-foam" cx="50" cy="46" rx="41" ry="30" fill="rgba(235,247,252,.55)"/>'+
+      '<ellipse cx="52" cy="50" rx="34" ry="24" fill="rgba(20,50,60,.35)"/>'+
+      '<path d="M18 50 L24 34 L38 26 L50 30 L58 22 L72 26 L82 40 L80 56 L66 64 L48 66 L30 62 Z" fill="#5f5a56"/>'+
+      '<path d="M24 34 L38 26 L50 30 L44 42 L30 46 Z" fill="#9b948c"/>'+
+      '<path d="M50 30 L58 22 L72 26 L66 38 L54 40 Z" fill="#b7b0a7"/>'+
+      '<path d="M44 42 L54 40 L66 38 L70 50 L58 56 L46 54 Z" fill="#7d7670"/>'+
+      '<path d="M72 26 L82 40 L80 56 L70 50 L66 38 Z" fill="#4a4643"/>'+
+      '<path d="M30 46 L44 42 L46 54 L34 58 L22 52 Z" fill="#6c6661"/>'+
+      '<path d="M38 26 L44 42 M54 40 L58 22 M46 54 L48 66 M66 38 L70 50" stroke="#3a3634" stroke-width="1.2" fill="none"/>'+
+      '<path d="M30 30 L36 27 M56 25 L63 24" stroke="#d8d2c8" stroke-width="1.4" stroke-linecap="round"/>'+
+      '<path d="M84 58 L90 54 L94 60 L88 64 Z" fill="#6c6661"/><path d="M84 58 L90 54 L88 58 Z" fill="#a39c93"/>'+
+      '<path d="M10 40 L15 36 L19 41 L14 44 Z" fill="#5f5a56"/>'+
+      '<path d="M22 60 q4 3 8 1 M60 66 q5 3 10 0 M80 40 q3 -2 6 0" stroke="#4f6b3a" stroke-width="2" fill="none" stroke-linecap="round"/>'+
+      '<path d="M14 30 q6 -4 12 0 M74 70 q6 -4 12 0 M8 56 q5 -3 10 0" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".8"/>'+
+    '</svg>';
   }
   function showIcebergDodged(d){
     try{
@@ -9288,7 +9790,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       var wrap = document.createElement('div');
       wrap.innerHTML =
         '<div class="iceberg-ripple" style="left:'+d.x+'px;top:'+(d.y+52)+'px"></div>'+
-        '<div class="iceberg-ghost" style="left:'+d.x+'px;top:'+d.y+'px;--dx:'+(d.side==='L'?-70:70)+'px"></div>'+
+        '<div class="iceberg-ghost reef2g" style="left:'+d.x+'px;top:'+d.y+'px;width:'+(d.w||84)+'px;height:'+(d.h||70)+'px">'+reefSvg()+'</div>'+
         '<div class="dodge-pop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4,13 L10,19 L20,6"/></svg>回避！</div>';
       var nodes = Array.prototype.slice.call(wrap.children);
       nodes.forEach(function(n){ scene.appendChild(n); });
@@ -9616,10 +10118,11 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       if(state.score.tipBonus) grantBadge('tip');
       checkBadges();
       saveWallet();
-      if(!wasTut) setTimeout(function(){ if(state.phase==='result') runUnlocks(); }, state.resAnim ? 3300 : 900);
+      var _ra = state.resAnim;
+      if(!wasTut) setTimeout(function(){ setTimeout(function(){ if(state.phase==='result') runUnlocks(); }, _ra ? resFxDur()+1500 : 900); }, 0);
       if(state.score.tipBonus) log('乗客からチップをもらった！（+'+state.score.tipBonus+' フェリポ）');
       log('はな島に到着した。フェリポ '+state.score.total);
-      if(wasTut) setTimeout(function(){ if(state.phase==='result'){ state.story = {i:0, busy:false, lines:END_LINES, final:true}; render(); storyUI(); } }, 600);
+      if(wasTut) setTimeout(function(){ setTimeout(function(){ if(state.phase==='result'){ state.story = {i:0, busy:false, lines:END_LINES, final:true}; render(); storyUI(); } }, resFxDur()+1300); }, 0);
     } else {
       log('沈没した。');
       wallet.streak = 0; saveWallet();
@@ -9690,7 +10193,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     } else if(ev.type==='storm'){
       if(ev.wrongThrow) return;
       var crateEl = e.target.closest ? e.target.closest('.lane-object.cargo') : null;
-      if(!crateEl || crateEl.classList.contains('grabbed') || crateEl.classList.contains('toss-left') || crateEl.classList.contains('toss-right')) return;
+      if(!crateEl || crateEl.classList.contains('grabbed') || crateEl.classList.contains('toss-left') || crateEl.classList.contains('toss-right') || crateEl.classList.contains('tossing')) return;
       var sceneEl = document.querySelector('.deck-scene');
       var sceneRect = sceneEl.getBoundingClientRect();
       var cRect = crateEl.getBoundingClientRect();
@@ -9703,7 +10206,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       crateEl.style.transform = 'translate(-50%,-50%) scale(1.12)';
       crateEl.classList.add('grabbed');
       activeDrag = {kind:'cargo', x0:e.clientX, y0:e.clientY, startLeft:startLeft, startTop:startTop,
-        sceneWidth:sceneRect.width*lk, crateEl:crateEl, lk:lk};
+        sceneWidth:sceneRect.width*lk, sceneHeight:sceneRect.height*lk, crateEl:crateEl, lk:lk, t0:Date.now()};
       if(e.target.setPointerCapture){ try{ e.target.setPointerCapture(e.pointerId); }catch(err){} }
     } else if(ev.type==='trouble'){
       var paxEl = e.target.closest ? e.target.closest('#troublePax') : null;
@@ -9860,15 +10363,9 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
         }
       }
       if(!isRockwall){
-        var tp = Math.max(-1, Math.min(1, netDeg/need));
-        var tb = document.getElementById('boatTopdown');
-        if(tb){
-          tb.classList.remove('tilt-back','steer-left','steer-right');
-          tb.classList.add('tilting');
-          tb.style.setProperty('--sx', (tp*34).toFixed(1)+'px');
-          tb.style.setProperty('--sr', (tp*12).toFixed(1)+'deg');
-          tb.style.transform = 'translate(calc(-50% + '+(tp*34).toFixed(1)+'px),0) rotate('+(tp*12).toFixed(1)+'deg)';
-        }
+        // ver.151 スマホでもなめらかに：指の動きは目標値だけ更新し、描画は毎フレーム目標へ寄せる
+        activeDrag.tpT = Math.max(-1, Math.min(1, netDeg/need));
+        if(!activeDrag.steerLoop){ activeDrag.steerLoop = true; activeDrag.tpC = activeDrag.tpC||0; steerTick(activeDrag); }
       }
       if(Math.abs(netDeg) >= need){
         var wheelEl = activeDrag.wheelEl;
@@ -9895,7 +10392,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     } else if(activeDrag.kind==='cargo'){
       var dx = (e.clientX - activeDrag.x0)*activeDrag.lk, dy = (e.clientY - activeDrag.y0)*activeDrag.lk;
       activeDrag.crateEl.style.left = (activeDrag.startLeft+dx)+'px';
-      activeDrag.crateEl.style.top = (activeDrag.startTop+dy*0.5)+'px';
+      activeDrag.crateEl.style.top = (activeDrag.startTop+dy*(activeDrag.sceneHeight ? 1 : 0.5))+'px';
     } else if(activeDrag.kind==='aim'){
       var adx = (e.clientX - activeDrag.x0)*activeDrag.lk, ady = (e.clientY - activeDrag.y0)*activeDrag.lk;
       activeDrag.ringEl.style.transform = 'translate(calc(-50% + '+adx+'px), '+ady+'px)';
@@ -9972,10 +10469,13 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
       var crateEl = activeDrag.crateEl;
       var edgeMargin = activeDrag.sceneWidth * CARGO_EDGE_RATIO;
       var sceneWidth = activeDrag.sceneWidth;
-      var startLeft = activeDrag.startLeft, startTop = activeDrag.startTop;
+      var startLeft = activeDrag.startLeft, startTop = activeDrag.startTop, _cd = activeDrag;
       activeDrag = null;
-      if(finalLeft <= edgeMargin) finishCargoToss(crateEl, 'L');
-      else if(finalLeft >= sceneWidth-edgeMargin) finishCargoToss(crateEl, 'R');
+      // ver.144 手すり（画面の6割の高さ）を越えるまで上へ引くか、上へ勢いよくはじけば、奥の海へ投げ捨てる
+      var upDy = (e.clientY - (_cd.y0))*(_cd.lk||1), sH = _cd.sceneHeight||0, fast = upDy < -sH*0.1 && (Date.now()-_cd.t0) < 260;
+      if(sH && (startTop + upDy < sH*0.64 || fast)) finishCargoToss(crateEl, 'U');
+      else if(!sH && finalLeft <= edgeMargin) finishCargoToss(crateEl, 'L');
+      else if(!sH && finalLeft >= sceneWidth-edgeMargin) finishCargoToss(crateEl, 'R');
       else cancelCargoDrag(crateEl, startLeft, startTop);
     } else if(activeDrag.kind==='hold'){
       clearTimeout(activeDrag.timeoutId);
@@ -10141,12 +10641,32 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
     crateEl.classList.remove('grabbed');
     crateEl.style.transition = '';
     crateEl.style.transform = '';
-    crateEl.classList.add(direction==='L' ? 'toss-left' : 'toss-right');
+    var sceneEl = document.querySelector('.deck-scene');
+    if(direction==='U' && sceneEl){
+      // ver.144 奥の海へ放物線で飛んでいき、小さくなって着水
+      crateEl.classList.add('tossing');
+      var W = sceneEl.offsetWidth, H = sceneEl.offsetHeight, l0 = parseFloat(crateEl.style.left)||W/2, t0 = parseFloat(crateEl.style.top)||H*.8;
+      var lx = W/2 + (l0 - W/2)*0.45 + (Math.random()*30-15), ly = H*(0.36 + Math.random()*0.12);
+      var spin = (Math.random()<.5?-1:1)*(240+Math.random()*200);
+      try{
+        crateEl.animate([
+          {left:l0+'px', top:t0+'px', transform:'translate(-50%,-50%) scale(1.12) rotate(0deg)', opacity:1},
+          {left:((l0+lx)/2)+'px', top:(ly - H*0.2)+'px', transform:'translate(-50%,-50%) scale(.62) rotate('+(spin*.55)+'deg)', opacity:1, offset:.55},
+          {left:lx+'px', top:ly+'px', transform:'translate(-50%,-50%) scale(.3) rotate('+spin+'deg)', opacity:.85, offset:.92},
+          {left:lx+'px', top:(ly+4)+'px', transform:'translate(-50%,-50%) scale(.22) rotate('+spin+'deg)', opacity:0}
+        ], {duration:CARGO_TOSS_MS, easing:'cubic-bezier(.25,.6,.4,1)', fill:'forwards'});
+      }catch(e){}
+      var sp = document.createElement('div');
+      sp.className = 'sd3-splash';
+      sp.style.left = lx+'px'; sp.style.top = ly+'px';
+      sp.innerHTML = '<i></i><i></i><i></i><b></b>';
+      sceneEl.appendChild(sp);
+      setTimeout(function(){ sp.remove(); }, CARGO_TOSS_MS+900);
+    } else crateEl.classList.add(direction==='L' ? 'toss-left' : 'toss-right');
 
     // A splash where it lands in the water, timed to the bottom of the arc
     // rather than the moment it leaves your hand.
-    var sceneEl = document.querySelector('.deck-scene');
-    if(sceneEl){
+    if(sceneEl && direction!=='U'){
       var splash = document.createElement('div');
       splash.className = 'cargo-splash';
       splash.style.left = crateEl.style.left;
@@ -10280,6 +10800,7 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   var scrollTouch = null;
   document.addEventListener('touchstart', function(e){
     var t = e.target; if(!t || !t.closest) return;
+    if(t.closest('input, textarea, select')){ scrollTouch = null; return; } // ver.133 入力欄はふつうに触れるように（会社名の入力）
     if(t.closest('[data-action]') || t.closest('button:not(.morse-key)')){ scrollTouch = null; return; }
     if(e.cancelable) e.preventDefault();
     var tc = e.touches[0];
@@ -10300,15 +10821,15 @@ body,.app,.app *{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   document.addEventListener('touchcancel', function(){ scrollTouch = null; });
   // Belt and braces: if the browser still manages to start a selection, drop it immediately.
   document.addEventListener('selectionchange', function(){
-    try{ var sel = window.getSelection(); if(sel && sel.rangeCount && !sel.isCollapsed) sel.removeAllRanges(); }catch(err){}
+    try{ var ae = document.activeElement; if(ae && (ae.tagName==='INPUT' || ae.tagName==='TEXTAREA')) return; var sel = window.getSelection(); if(sel && sel.rangeCount && !sel.isCollapsed) sel.removeAllRanges(); }catch(err){}
   });
-  ['contextmenu','selectstart','dragstart'].forEach(function(t){ document.addEventListener(t, function(e){ e.preventDefault(); }); });
+  ['contextmenu','selectstart','dragstart'].forEach(function(t){ document.addEventListener(t, function(e){ if(e.target && e.target.closest && e.target.closest('input, textarea')) return; e.preventDefault(); }); });
 
   // 動作確認用（URLに ?sbdebug を付けたときだけ）
   try{ if(/[?&]sbdebug/.test(location.search)) window.__sb = {
     state:function(){ return state; }, wallet:function(){ return wallet; }, render:function(){ render(); },
     endVoyage:endVoyage, goHome:goHome, freshState:freshState, setState:function(s){ state = s; }, runUnlocks:runUnlocks,
-    trigger:function(t){ startEventNow(t); }, triggerIntro:function(t){ triggerEvent(t); },
+    trigger:function(t){ startEventNow(t); }, fitTutRing:function(e){ fitTutRing(e); }, triggerIntro:function(t){ triggerEvent(t); },
     screenCTM:screenCTM, sfx:function(){ return Object.keys(SFX_BAKED).concat(AMB_LOOP?['amb:'+AMB_LOOP.duration.toFixed(2)]:[]).concat(amb.master?['master']:[]); }, load:function(ids, side){ ids.forEach(function(id){ toggleItemSide(id, side||'L'); }); }
   }; }catch(e){}
 
